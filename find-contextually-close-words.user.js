@@ -77,7 +77,7 @@
     target.disabled = true;
     seeContextuallyCloseWords(input.value)
       .then((contextuallyCloseWords) => contextuallyCloseWords.forEach(({ word }) => {
-        insertContentElement('p', ['josh'], word);
+        insertContentElement('p', ['josh'], word, div);
       }))
       .then(() => { target.disabled = false; })
       .catch((r) => {
