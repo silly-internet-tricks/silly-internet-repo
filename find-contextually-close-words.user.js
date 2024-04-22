@@ -10,10 +10,20 @@
 // ==/UserScript==
 
 (function findContextuallyCloseWords() {
+  const div = document.createElement('div');
+
   const insertCSS = function insertCSS(css) {
     const style = document.createElement('style');
     style.appendChild(new Text(css));
     document.body.appendChild(style);
+  };
+
+  const insertContentElement = function insertContentElement(tagName, classes, text = '', parentNode = document.body) {
+    const element = document.createElement(tagName);
+    classes.forEach((c) => element.classList.add(c));
+    element.appendChild(new Text(text));
+    parentNode.appendChild(element);
+    return element;
   };
 
   const fetchThatRejectsWhenNotOkay = function fetchThatRejectsWhenNotOkay(url) {
@@ -39,23 +49,13 @@
 
         const { gameNumber, distance } = sortedGuesses[0];
 
-        // TODO: this should be in its own function
-        const p = document.createElement('p');
-        p.classList.add('josh');
-        p.appendChild(new Text(`distance: ${distance} game number: ${gameNumber}`));
-        document.body.appendChild(p);
+        div.innerHTML = '';
+        insertContentElement('p', ['josh'], `distance: ${distance} game number: ${gameNumber}`, div);
 
         return Promise.all(new Array(30).fill().map((_, i) => (
           fetch(`https://api.contexto.me/machado/en/tip/${gameNumber}/${i}`)
             .then((r) => r.json())
         )));
-      })
-      .catch((r) => {
-        const p = document.createElement('p');
-        p.classList.add('josh');
-        p.classList.add('josh-error');
-        p.appendChild(new Text(`error: ${r.status}`));
-        document.body.appendChild(p);
       });
   };
 
@@ -71,20 +71,21 @@
   }
   `);
 
-  const input = document.createElement('input');
-  const button = document.createElement('button');
-  input.classList.add('josh');
-  button.classList.add('josh');
-  button.appendChild(new Text('click me'));
-  document.body.appendChild(input);
-  document.body.appendChild(button);
-  button.addEventListener('click', () => {
+  const input = insertContentElement('input', ['josh']);
+
+  insertContentElement('button', ['josh'], 'click me').addEventListener('click', ({ target }) => {
+    target.disabled = true;
     seeContextuallyCloseWords(input.value)
       .then((contextuallyCloseWords) => contextuallyCloseWords.forEach(({ word }) => {
-        const p = document.createElement('p');
-        p.classList.add('josh');
-        p.appendChild(new Text(word));
-        document.body.appendChild(p);
-      }));
+        insertContentElement('p', ['josh'], word);
+      }))
+      .then(() => { target.disabled = false; })
+      .catch((r) => {
+        div.innerHTML = '';
+        insertContentElement('p', ['josh', 'josh-error'], `error: ${r.status} (on word ${input.value})`, div);
+        target.disabled = false;
+      });
   });
+
+  document.body.appendChild(div);
 }());
