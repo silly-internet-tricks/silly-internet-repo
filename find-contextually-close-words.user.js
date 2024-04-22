@@ -79,7 +79,10 @@
       .then((contextuallyCloseWords) => contextuallyCloseWords.forEach(({ word }) => {
         insertContentElement('p', ['josh'], word, div);
       }))
-      .then(() => { target.disabled = false; })
+      .then(() => {
+        // TODO: should we consider doing something else?
+        target.disabled = false;
+      })
       .catch((r) => {
         div.innerHTML = '';
         insertContentElement('p', ['josh', 'josh-error'], `error: ${r.status} (on word ${input.value})`, div);

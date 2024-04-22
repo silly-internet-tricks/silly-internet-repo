@@ -18,37 +18,56 @@
 
   const binarizerHandler = function binarizerHandler(event) {
     event.preventDefault();
-
     const { target } = event;
+    if (!target.targetChildNodes) {
+      const targetChildNodes = [...target.childNodes];
 
-    const targetChildNodes = [...target.childNodes];
+      target.targetChildNodes = targetChildNodes;
 
-    target.targetChildNodes = targetChildNodes;
+      const childNodeBinarizer = function childNodeBinarizer(childNodes) {
+        const newChildNodes = [];
 
-    const childNodeBinarizer = function childNodeBinarizer(childNodes) {
-      const newChildNodes = [];
+        let prevNodeWasText = false;
+        childNodes.forEach((node) => {
+          if (node.nodeName === '#text') {
+            if (prevNodeWasText) newChildNodes.push(new Text(' '));
+            newChildNodes.push(new Text(makeTextBinary(node.textContent)));
+            prevNodeWasText = true;
+          } else {
+            const freshNode = document.createElement(node.tagName);
+            const freshChildNodes = childNodeBinarizer([...node.childNodes]);
+            freshChildNodes.forEach((freshChildNode) => {
+              freshNode.appendChild(freshChildNode);
+            });
 
-      childNodes.forEach((node) => {
-        if (node.nodeName === '#text') {
-          newChildNodes.push(new Text(makeTextBinary(node.textContent)));
-        } else {
-          const freshNode = document.createElement(node.tagName);
-          const freshChildNodes = childNodeBinarizer([...node.childNodes]);
-          freshChildNodes.forEach((freshChildNode) => {
-            freshNode.appendChild(freshChildNode);
-          });
+            newChildNodes.push(freshNode);
+            prevNodeWasText = false;
+          }
+        });
 
-          newChildNodes.push(freshNode);
-        }
+        return newChildNodes;
+      };
+
+      target.innerHTML = '';
+      childNodeBinarizer(targetChildNodes).forEach((node) => target.appendChild(node));
+
+      document.removeEventListener('click', binarizerHandler);
+    }
+  };
+
+  // TODO: update linter
+  const revertChildNodes = function revertChildNodes(element) {
+    if (!element) return;
+    if (element.targetChildNodes) {
+      element.innerHTML = '';
+      element.targetChildNodes.forEach((node) => {
+        element.appendChild(node);
       });
 
-      return newChildNodes;
-    };
-
-    target.innerHTML = '';
-    childNodeBinarizer(targetChildNodes).forEach((node) => target.appendChild(node));
-
-    document.removeEventListener('click', binarizerHandler);
+      delete element.targetChildNodes;
+    } else {
+      revertChildNodes(element.parentNode);
+    }
   };
 
   // TODO: this is basically what I had in the binary bot: opportunity for code reuse
@@ -57,14 +76,7 @@
 
     const { target } = event;
 
-    if (target.targetChildNodes) {
-      target.innerHTML = '';
-      target.targetChildNodes.forEach((node) => {
-        target.appendChild(node);
-      });
-
-      delete target.targetChildNodes;
-    }
+    revertChildNodes(target);
   };
 
   document.addEventListener('keydown', ({ code }) => {
