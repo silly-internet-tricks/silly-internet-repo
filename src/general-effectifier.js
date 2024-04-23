@@ -1,3 +1,5 @@
+import holdKeyAndClick from './hold-key-and-click';
+
 export default function generalEffectifier(affectText) {
  const effectifierHandler = function effectifierHandler(event) {
   const COMMENT_NODE_TYPE = 8;
@@ -63,7 +65,6 @@ export default function generalEffectifier(affectText) {
   }
  };
 
- // TODO: this is basically what I had in the binary bot: opportunity for code reuse
  const undoHandler = function undoHandler(event) {
   event.preventDefault();
 
@@ -72,23 +73,5 @@ export default function generalEffectifier(affectText) {
   revertChildNodes(target);
  };
 
- document.addEventListener('keydown', ({ code }) => {
-  if (code === 'KeyB') {
-   document.addEventListener('click', effectifierHandler);
-  }
-
-  if (code === 'KeyZ') {
-   document.addEventListener('click', undoHandler);
-  }
- });
-
- document.addEventListener('keyup', ({ code }) => {
-  if (code === 'KeyB') {
-   document.removeEventListener('click', effectifierHandler);
-  }
-
-  if (code === 'KeyZ') {
-   document.removeEventListener('click', undoHandler);
-  }
- });
+ holdKeyAndClick({ B: effectifierHandler, Z: undoHandler });
 }
