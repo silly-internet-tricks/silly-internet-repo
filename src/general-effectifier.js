@@ -16,7 +16,10 @@ export default function generalEffectifier(affectText) {
     childNodes.forEach((node) => {
      if (node.nodeName === '#text') {
       if (prevNodeWasText) newChildNodes.push(new Text(' '));
-      newChildNodes.push(new Text(affectText(node.textContent)));
+      affectText(node.textContent).forEach((affectedNode) => {
+       newChildNodes.push(affectedNode);
+      });
+
       prevNodeWasText = true;
      } else if (node.nodeType === COMMENT_NODE_TYPE) {
       newChildNodes.push(new Comment(node.textContent));

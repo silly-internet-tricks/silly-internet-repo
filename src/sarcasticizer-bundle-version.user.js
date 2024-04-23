@@ -13,8 +13,8 @@ import generalEffectifier from './general-effectifier';
 
 (function sarcasticizer() {
  generalEffectifier((text) => (
-  [...text].map((c, i) => (
+  [new Text([...text].map((c, i) => (
    i % 2 ? c.toLocaleLowerCase() : c.toLocaleUpperCase()
-  )).join('')
+  )).join(''))]
  ));
 }());

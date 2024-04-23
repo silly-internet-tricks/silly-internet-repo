@@ -13,8 +13,8 @@ import generalEffectifier from './general-effectifier';
 
 (function binarizer() {
  generalEffectifier((text) => (
-  [...text].map((c) => (
+  [new Text([...text].map((c) => (
    c.charCodeAt(0).toString(2).padStart(8, '0')
-  )).join(' ')
+  )).join(' '))]
  ));
 }());
