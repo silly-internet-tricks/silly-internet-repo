@@ -10,7 +10,7 @@
 // ==/UserScript==
 
 (function showMoreItems() {
-  const css = `
+ const css = `
 #__layout canvas ~ .sidebar {
   width: 100%;
 }
@@ -20,7 +20,7 @@
 }
 `;
 
-  const style = document.createElement('style');
-  style.appendChild(new Text(css));
-  document.body.appendChild(style);
+ const style = document.createElement('style');
+ style.appendChild(new Text(css));
+ document.body.appendChild(style);
 }());

@@ -13,7 +13,7 @@
 import insertCSS from './insert-css';
 
 (function noHotNetworkQuestions() {
-  insertCSS(`
+ insertCSS(`
 div#hot-network-questions {
     display: none;
 }
