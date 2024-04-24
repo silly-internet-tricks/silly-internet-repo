@@ -20,8 +20,8 @@ import('@octokit/core').then(({ Octokit }) => {
     const gistId = gistIdMatch[1];
     const description = fileContentString.match(/description\s+(.*)/)[1];
     const filename = file.includes('meta')
-     ? fileContentString.match(/updateURL.*raw\/([^/]*)/)[1]
-     : fileContentString.match(/downloadURL.*raw\/([^/]*)/)[1];
+     ? fileContentString.match(/updateURL.*raw\/([^/]*)/)[1].trim()
+     : fileContentString.match(/downloadURL.*raw\/([^/]*)/)[1].trim();
 
     const octokitRequestOptions = {
      gist_id: gistId,
@@ -29,7 +29,7 @@ import('@octokit/core').then(({ Octokit }) => {
      files: {
       [filename]: {
        filename,
-       fileContentString,
+       content: fileContentString,
       },
      },
     };
