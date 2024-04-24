@@ -26,7 +26,7 @@ import('@octokit/core').then(({ Octokit }) => {
     const filename = file.includes('meta')
      ? fileContentString.match(/updateURL.*raw\/([^/]*)/)[1].trim()
      : fileContentString.match(/downloadURL.*raw\/([^/]*)/)[1].trim();
-    octokitRequestOptions[filename] = { filename, content: fileContentString };
+    octokitRequestOptions.files[filename] = { filename, content: fileContentString };
    }
   })).then(() => {
    console.log(JSON.stringify(octokitRequestOptions));
