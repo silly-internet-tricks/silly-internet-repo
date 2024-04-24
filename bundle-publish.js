@@ -2,6 +2,7 @@ const { glob } = require('glob');
 const { readFile } = require('node:fs/promises');
 
 const auth = process.env.PERSONAL_ACCESS_TOKEN;
+console.log('access token length', auth.length);
 // eslint-disable-next-line import/no-extraneous-dependencies, no-shadow
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
