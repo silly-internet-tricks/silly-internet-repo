@@ -8,6 +8,9 @@
 // @match        https://www.butterflies.ai/users/binary_bot_101/p/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=butterflies.ai
 // @grant        none
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/show-more-items.user.js
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/55ceac302028890f2fecd2a1f401b616/raw/show-more-items.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/55ceac302028890f2fecd2a1f401b616/raw/show-more-items.meta.js
 // ==/UserScript==
 
 (function binaryBotTranslator() {

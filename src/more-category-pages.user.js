@@ -8,6 +8,9 @@
 // @match        https://en.wikipedia.org/w/index.php?title=Category:*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=wikipedia.org
 // @grant        none
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/more-category-pages.user.js
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/74b45baefede276f61fb0a84dd621772/raw/more-category-pages.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/74b45baefede276f61fb0a84dd621772/raw/more-category-pages.meta.js
 // ==/UserScript==
 
 (function moreCategoryPages() {
