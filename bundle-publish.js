@@ -2,9 +2,12 @@ const { glob } = require('glob');
 const { readFile } = require('node:fs/promises');
 
 const auth = process.env.PERSONAL_ACCESS_TOKEN;
+// eslint-disable-next-line import/no-extraneous-dependencies, no-shadow
+const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+
 // eslint-disable-next-line import/no-unresolved
 import('@octokit/core').then(({ Octokit }) => {
- const octokit = new Octokit({ auth });
+ const octokit = new Octokit({ auth, request: fetch });
 
  (async () => {
   const files = await glob('./@(dist)/**/*.@(user|meta).js');

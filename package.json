@@ -27,6 +27,7 @@
   "dependencies": {
     "@octokit/auth-action": "^5.1.1",
     "@octokit/core": "^6.1.2",
-    "glob": "^10.3.12"
+    "glob": "^10.3.12",
+    "node-fetch": "^3.3.2"
   }
 }
