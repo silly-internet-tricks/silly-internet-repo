@@ -39,7 +39,7 @@ import insertCSS from './insert-css';
 }`);
 
  generalEffectifier((text) => {
-  const letters = [...text.replace(/\s+/g, ' ')];
+  const letters = [...text.trim().replace(/\s+/g, ' ')];
   return letters.map((letter) => {
    const span = document.createElement('span');
    span.classList.add('jumping-bean');
