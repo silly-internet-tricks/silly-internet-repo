@@ -44,6 +44,13 @@ const breatheAnimationClass = 'breathe-animation';
   if (target) {
    if (target.classList.contains(breatheAnimationClass)) {
     target.classList.remove(breatheAnimationClass);
+    if (target.originalDisplay) {
+     delete target.originalDisplay;
+     target.style.removeProperty('display');
+     if (target.originalDisplay === 'element-style-inline') {
+      target.style.setProperty('display', 'inline');
+     }
+    }
    } else {
     undoHandler(target.parentNode);
    }
@@ -51,7 +58,13 @@ const breatheAnimationClass = 'breathe-animation';
  };
 
  holdKeyAndClick({
-  do: ({ target }) => target.classList.add(breatheAnimationClass),
+  do: ({ target }) => {
+   target.classList.add(breatheAnimationClass);
+   if (target.computedStyleMap().get('display').value === 'inline') {
+    target.originalDisplay = target.style.getPropertyValue('display') === 'inline' ? 'element-style-inline' : 'inline';
+    target.style.setProperty('display', 'inline-block');
+   }
+  },
   undo: undoHandler,
  }, 'breatheify');
 }());
