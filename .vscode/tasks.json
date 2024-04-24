@@ -1,0 +1,13 @@
+{
+  "command": "npm",
+  "isShellCommand": true,
+  "showOutput": "never",
+  "suppressTaskName": true,
+  "tasks": [
+      {
+          "taskName": "lint",
+          "args": ["run", "lint"],
+          "showOutput": "never"
+      }
+  ]
+}

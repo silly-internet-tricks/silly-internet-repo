@@ -1,0 +1,6 @@
+[
+  {
+      "key" : "ctrl+alt+shift+i",
+      "command" : "workbench.action.tasks.lint"
+  }
+]
