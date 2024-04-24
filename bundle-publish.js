@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 const { Octokit } = require('@octokit/core');
 const { glob } = require('glob');
 const { readFile } = require('node:fs/promises');
