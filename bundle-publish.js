@@ -23,7 +23,7 @@ import('@octokit/core').then(({ Octokit }) => {
      ? fileContentString.match(/updateURL.*raw\/([^/]*)/)[1]
      : fileContentString.match(/downloadURL.*raw\/([^/]*)/)[1];
 
-    octokit.request(`PATCH /gists/${gistId}`, {
+    const octokitRequestOptions = {
      gist_id: gistId,
      description,
      files: {
@@ -32,7 +32,11 @@ import('@octokit/core').then(({ Octokit }) => {
        fileContentString,
       },
      },
-    });
+    };
+
+    console.log(JSON.stringify(octokitRequestOptions));
+
+    octokit.request(`PATCH /gists/${gistId}`, octokitRequestOptions);
    }
   });
  })();
