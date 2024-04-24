@@ -39,7 +39,23 @@ import('@octokit/core').then(({ Octokit }) => {
   })).then(() => {
    console.log(JSON.stringify(octokitRequestsOptions));
 
-   octokitRequestsOptions.forEach((requestOptions) => {
+   octokitRequestsOptions.forEach(async (requestOptions) => {
+    const oldGist = await octokit.request(`GET /gists/${requestOptions.gist_id}`, {
+     gist_id: requestOptions.gist_id,
+     headers: {
+      'X-GitHub-Api-Version': '2022-11-28',
+     },
+    });
+
+    const delimiter = '==/UserScript==\n';
+    const oldUserscriptCode = Object.entries(oldGist.files).find(([fileName]) => fileName.endsWith('user.js')).content.split(delimiter)[1];
+    const newUserscriptCode = Object.entries(requestOptions.files).find(([fileName]) => fileName.endsWith('user.js')).content.split(delimiter)[1];
+    if (oldUserscriptCode !== newUserscriptCode) {
+     Object.values(requestOptions.files).forEach((file) => {
+      file.content = file.content.replace(/\/\/ @version {6}.*/, `// @version      ${new Date().toISOString()}`);
+     });
+    }
+
     octokit.request(`PATCH /gists/${requestOptions.gist_id}`, requestOptions);
    });
   });
