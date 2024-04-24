@@ -47,11 +47,13 @@ import('@octokit/core').then(({ Octokit }) => {
      },
     });
 
-    console.log(oldGist);
+    console.log(oldGist.data.files);
+    const oldFile = Object.entries(oldGist.data.files).find(([fileName]) => fileName.endsWith('user.js'))[1];
+    console.log(oldFile);
 
     const delimiter = '==/UserScript==\n';
     try {
-     const oldUserscriptCode = Object.entries(oldGist.files).find(([fileName]) => fileName.endsWith('user.js')).content.split(delimiter)[1];
+     const oldUserscriptCode = oldFile.content.split(delimiter)[1];
      const newUserscriptCode = Object.entries(requestOptions.files).find(([fileName]) => fileName.endsWith('user.js')).content.split(delimiter)[1];
 
      if (oldUserscriptCode !== newUserscriptCode) {
