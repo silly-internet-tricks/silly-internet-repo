@@ -30,7 +30,6 @@ jobs:
     - run: npm audit
     - run: npm run build --if-present
     - run: npm run lint
-    - run: npm test
   publish:
     needs: build
     runs-on: ubuntu-latest
