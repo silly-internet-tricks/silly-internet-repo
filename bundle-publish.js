@@ -7,7 +7,7 @@ const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fet
 
 // eslint-disable-next-line import/no-unresolved
 import('@octokit/core').then(({ Octokit }) => {
- const octokit = new Octokit({ auth, request: fetch });
+ const octokit = new Octokit({ auth, request: { fetch } });
 
  (async () => {
   const files = await glob('./@(dist)/**/*.@(user|meta).js');
