@@ -2,7 +2,7 @@
 // @name         binarizer
 // @namespace    http://tampermonkey.net/
 // @version      2024-04-22
-// @description  quickly turn to binary
+// @description  quickly turn normal text to binary (appropriate for robo role play)
 // @author       Josh Parker
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=stackoverflow.com
