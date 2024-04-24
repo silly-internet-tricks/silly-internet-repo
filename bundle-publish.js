@@ -2,7 +2,7 @@ const { glob } = require('glob');
 const { readFile } = require('node:fs/promises');
 
 const auth = process.env.PERSONAL_ACCESS_TOKEN;
-console.log('access token length', auth.length);
+// console.log('access token length', auth.length);
 // eslint-disable-next-line import/no-extraneous-dependencies, no-shadow
 const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
@@ -13,22 +13,25 @@ import('@octokit/core').then(({ Octokit }) => {
  (async () => {
   const files = await glob('./@(dist)/**/*.@(user|meta).js');
   const octokitRequestOptions = { files: {} };
-  files.forEach(async (file) => {
+  Promise.all(files.map(async (file) => {
    const fileContent = await readFile(file);
    const fileContentString = fileContent.toString();
    const gistIdMatch = fileContentString.match(/downloadURL.*silly-internet-tricks\/(?<gistId>[^/]*)/);
-   if (gistIdMatch) {
-    octokitRequestOptions.gist_id = gistIdMatch.groups.gistId;
+   const gistId = gistIdMatch?.groups?.gistId;
+   if (gistIdMatch && gistId) {
+    console.log(fileContentString);
+    console.log(gistId);
+    octokitRequestOptions.gist_id = gistId;
     octokitRequestOptions.description = fileContentString.match(/description\s+(?<description>.*)/).groups.description;
     const filename = file.includes('meta')
      ? fileContentString.match(/updateURL.*raw\/([^/]*)/)[1].trim()
      : fileContentString.match(/downloadURL.*raw\/([^/]*)/)[1].trim();
     octokitRequestOptions[filename] = { filename, content: fileContentString };
    }
+  })).then(() => {
+   console.log(JSON.stringify(octokitRequestOptions));
+
+   octokit.request(`PATCH /gists/${octokitRequestOptions.gist_id}`, octokitRequestOptions);
   });
-
-  console.log(JSON.stringify(octokitRequestOptions));
-
-  octokit.request(`PATCH /gists/${octokitRequestOptions.gist_id}`, octokitRequestOptions);
  })();
 });
