@@ -28,7 +28,7 @@ import('@octokit/core').then(({ Octokit }) => {
     // find the requestOptions in the array if they're there.
     const requestOptions = octokitRequestsOptions.find((e) => e.gist_id === gistId)
     || (
-     octokitRequestsOptions.push({})
+     octokitRequestsOptions.push({ files: {} })
       && octokitRequestsOptions[octokitRequestsOptions.length - 1]
     );
 
