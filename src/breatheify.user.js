@@ -40,7 +40,7 @@ const breatheAnimationClass = 'breathe-animation';
 }
   `);
 
- const undoHandler = ({ target }) => {
+ const undoHandler = (target) => {
   if (target) {
    if (target.classList.contains(breatheAnimationClass)) {
     target.classList.remove(breatheAnimationClass);
@@ -57,6 +57,8 @@ const breatheAnimationClass = 'breathe-animation';
   }
  };
 
+ const undoEventHandler = ({ target }) => undoHandler(target);
+
  holdKeyAndClick({
   do: ({ target }) => {
    target.classList.add(breatheAnimationClass);
@@ -65,6 +67,6 @@ const breatheAnimationClass = 'breathe-animation';
     target.style.setProperty('display', 'inline-block');
    }
   },
-  undo: undoHandler,
+  undo: undoEventHandler,
  }, 'breatheify');
 }());
