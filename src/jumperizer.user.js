@@ -51,5 +51,5 @@ import insertCSS from './insert-css';
    span.appendChild(new Text(letter));
    return span;
   });
- });
+ }, 'jumperizer');
 }());

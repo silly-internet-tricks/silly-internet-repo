@@ -1,6 +1,6 @@
 import holdKeyAndClick from './hold-key-and-click';
 
-export default function generalEffectifier(affectText) {
+export default function generalEffectifier(affectText, scriptName) {
  const effectifierHandler = function effectifierHandler(event) {
   const COMMENT_NODE_TYPE = 8;
 
@@ -73,5 +73,5 @@ export default function generalEffectifier(affectText) {
   revertChildNodes(target);
  };
 
- holdKeyAndClick({ B: effectifierHandler, Z: undoHandler });
+ holdKeyAndClick({ do: effectifierHandler, undo: undoHandler }, scriptName);
 }

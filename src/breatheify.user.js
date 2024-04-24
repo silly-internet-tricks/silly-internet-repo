@@ -12,6 +12,8 @@
 import insertCSS from './insert-css';
 import holdKeyAndClick from './hold-key-and-click';
 
+const breatheAnimationClass = 'breathe-animation';
+
 (function breatheify() {
  insertCSS(`
 .breathe-animation {
@@ -35,8 +37,18 @@ import holdKeyAndClick from './hold-key-and-click';
 }
   `);
 
+ const undoHandler = ({ target }) => {
+  if (target) {
+   if (target.classList.contains(breatheAnimationClass)) {
+    target.classList.remove(breatheAnimationClass);
+   } else {
+    undoHandler(target.parentNode);
+   }
+  }
+ };
+
  holdKeyAndClick({
-  B: ({ target }) => target.classList.add('breathe-animation'),
-  Z: ({ target }) => target.classList.remove('breathe-animation'),
- });
+  do: ({ target }) => target.classList.add(breatheAnimationClass),
+  undo: undoHandler,
+ }, 'breatheify');
 }());
