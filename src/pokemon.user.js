@@ -27,7 +27,7 @@ let showCards = true;
    )];
    console.log(pokemonNames);
    if (pokemonNames) {
-    const urls = selected.match(pokemonMegaRegExp).map((e) => `https://pokeapi.co/api/v2/pokemon-species/${e}`);
+    const urls = pokemonNames.map((pokemonName) => `https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`);
     pokemonCardContainer.id = 'pokemon-card-container';
 
     pokemonNames.forEach((pokemonName) => {
@@ -52,6 +52,11 @@ let showCards = true;
      pokemonCardContainer.innerHTML += `
 <div id="pokemon-image-${pokemonName}">
 <h3>${pokemonName.replace(/^(.)/, (_, p1) => p1.toLocaleUpperCase())}</h3>
+<div class="flavor-text-container" id="flavor-text-container-${pokemonName}"><style title="flavor-text-${pokemonName}">
+#pokemon-image-${pokemonName} div.flavor-text-container > p {
+     transform: translateX(0px);
+}
+</style></div>
 <div style="background-image: url('https://www.smogon.com/dex/media/sprites/xy/${pokemonName}.gif');"></div>
 </div>
 `;
@@ -68,6 +73,8 @@ let showCards = true;
      left: 0;
      bottom: 0;
      z-index: 9001;
+     max-height: 100dvh;
+     overflow: auto;
     }
 
     #pokemon-card-container > div[id^='pokemon-image'] {
@@ -76,6 +83,7 @@ let showCards = true;
      margin: 5px;
      border-radius: 12px;
      background-color: rgba(255,255,255,0.6);
+     overflow: hidden;
     }
 
     #pokemon-card-container > div[id^='pokemon-image'] > h3 {
@@ -84,17 +92,45 @@ let showCards = true;
 
     #pokemon-card-container > div[id^='pokemon-image'] > div {
      background-repeat: no-repeat;
-     height: 100px;
-     width: 100px;
+     height: 207px;
+     width: 184px;
      background-position: center;
     }
-    `);
+
+#pokemon-card-container div.flavor-text-container {
+     display: flex;
+ }
+ 
+ #pokemon-card-container div.flavor-text-container > p {
+     margin: 0 50px;
+     transition: transform 1s;
+ }
+    `, 'pokemon-card');
+
+    const flavorTextContainer = pokemonCardContainer.querySelector('.flavor-text-container');
+    flavorTextContainer.addEventListener('click', () => {
+     console.log(flavorTextContainer);
+     console.log(flavorTextContainer.outerHTML);
+     const pokemonName = flavorTextContainer.id.match(/[^-]+$/)[0];
+     const styleSheet = [...document.styleSheets].find((e) => e.title === `flavor-text-${pokemonName}`);
+     console.log(styleSheet);
+     const transformNumber = Number(styleSheet.cssRules[0].cssText.match(/\((\d+)px\)/)[1]);
+     console.log('trying to replace a rule');
+     console.log(styleSheet.cssRules[0]);
+     styleSheet.deleteRule(0);
+     console.log(styleSheet.cssRules[0]);
+     const newRule = `#pokemon-image-${pokemonName} div.flavor-text-container > p { transform: translateX(${180 + transformNumber}px); }`;
+     console.log(newRule);
+     const newRuleIndex = styleSheet.insertRule(newRule);
+     console.log(newRuleIndex);
+    });
 
     document.body.appendChild(pokemonCardContainer);
 
     try {
      const pokeResponseGenerator = (async function* pokeResponseGenerator() {
       for (let i = 0; i < urls.length; i++) {
+       console.log(urls[i]);
        yield GM.xmlHttpRequest({ url: urls[i], responseType: 'json' });
       }
      }());
@@ -102,9 +138,15 @@ let showCards = true;
      // ignoring the advice that generators are bad...
      // JUST THIS ONCE FOR LEARNING/INFORMATIONAL PURPOSES!
      // eslint-disable-next-line no-restricted-syntax
-     for await (const pokeResponse of pokeResponseGenerator) {
+     for await (const { response } of pokeResponseGenerator) {
       console.log('response');
-      console.log(pokeResponse.response);
+      console.log(response);
+      response.flavor_text_entries.filter((e) => e.language.name === 'en')
+       .forEach(({ flavor_text: flavorText }) => {
+        const p = document.createElement('p');
+        p.appendChild(new Text(flavorText));
+        document.querySelector(`#flavor-text-container-${response.name}`).appendChild(p);
+       });
      }
     } catch (e) {
      console.error('caught an error trying to make gm xml http request! 🧟');
