@@ -20,6 +20,53 @@ const pokeResponses = new Set();
 let showCards = true;
 
 (function pokemon() {
+ insertCSS(`
+#pokemon-card-container {
+ position: fixed;
+ display: flex;
+ flex-wrap: wrap;
+ flex-direction: row;
+ left: 0;
+ bottom: 0;
+ z-index: 9001;
+ max-height: 100dvh;
+ overflow: auto;
+}
+
+#pokemon-card-container > div[id^='pokemon-image'] {
+ padding: 10px;
+ border: solid blue;
+ margin: 5px;
+ border-radius: 12px;
+ background-color: rgba(255,255,255,0.6);
+ overflow: hidden;
+}
+
+#pokemon-card-container > div[id^='pokemon-image'] > h3 {
+ text-align: center;
+}
+
+#pokemon-card-container > div[id^='pokemon-image'] > div {
+  width: 207px;
+  height: 184px;
+}
+
+#pokemon-card-container > div[id^='pokemon-image'] > div.image {
+ background-repeat: no-repeat;
+ background-position: center;
+}
+
+#pokemon-card-container div.flavor-text-container {
+ display: flex;
+ min-width: 2400px;
+}
+
+#pokemon-card-container div.flavor-text-container > p {
+ margin: 0;
+ margin-right: 10px;
+ width: 207px;
+}
+`, 'pokemon-card');
  const pokemonCardContainer = document.createElement('div');
  document.addEventListener('keydown', async ({ code }) => {
   if (code === 'KeyP') {
@@ -55,55 +102,13 @@ let showCards = true;
      const pokemonImageDiv = document.createElement('div');
      pokemonImageDiv.id = `pokemon-image-${pokemonName}`;
      pokemonImageDiv.innerHTML = `<h3>${pokemonName.replace(/^(.)/, (_, p1) => p1.toLocaleUpperCase())}</h3>
-<div class="flavor-text-container" id="flavor-text-container-${pokemonName}"></div>
-<div style="background-image: url('https://www.smogon.com/dex/media/sprites/xy/${pokemonName}.gif');"></div>`;
+<div><div class="flavor-text-container" id="flavor-text-container-${pokemonName}"></div></div>
+<div class="image" style="background-image: url('https://www.smogon.com/dex/media/sprites/xy/${pokemonName}.gif');"></div>`;
 
      pokemonCardContainer.appendChild(pokemonImageDiv);
 
      pokemonCards.add(pokemonName);
     });
-
-    insertCSS(`
-    #pokemon-card-container {
-     position: fixed;
-     display: flex;
-     flex-wrap: wrap;
-     flex-direction: row;
-     left: 0;
-     bottom: 0;
-     z-index: 9001;
-     max-height: 100dvh;
-     overflow: auto;
-    }
-
-    #pokemon-card-container > div[id^='pokemon-image'] {
-     padding: 10px;
-     border: solid blue;
-     margin: 5px;
-     border-radius: 12px;
-     background-color: rgba(255,255,255,0.6);
-     overflow: hidden;
-    }
-
-    #pokemon-card-container > div[id^='pokemon-image'] > h3 {
-     text-align: center;
-    }
-
-    #pokemon-card-container > div[id^='pokemon-image'] > div {
-     background-repeat: no-repeat;
-     height: 207px;
-     width: 184px;
-     background-position: center;
-    }
-
-#pokemon-card-container div.flavor-text-container {
-     display: flex;
- }
- 
- #pokemon-card-container div.flavor-text-container > p {
-     margin: 0 50px;
- }
-    `, 'pokemon-card');
 
     document.body.appendChild(pokemonCardContainer);
 
@@ -133,7 +138,7 @@ let showCards = true;
         const p = document.createElement('p');
         p.appendChild(new Text(flavorText));
         return p;
-       }));
+       }), 207);
      }
     } catch (e) {
      console.error('caught an error trying to make gm xml http request! 🧟');

@@ -1,6 +1,6 @@
 import insertCSS from './insert-css';
 
-export default function makeCarousel(parent, children) {
+export default function makeCarousel(parent, children, pxChildWidth) {
  children.forEach((child) => {
   child.classList.add('carousel-0');
   parent.appendChild(child);
@@ -11,7 +11,7 @@ export default function makeCarousel(parent, children) {
  // TODO: find the right calculation for the transform amount.
  insertCSS(`${children.map((_, i) => `
   #${parent.id} > *.carousel-${i} {
-       transform: translateX(-${180 * i}px);
+       transform: translateX(-${pxChildWidth * i}px);
   }
          `).join('\n\n')}
 
