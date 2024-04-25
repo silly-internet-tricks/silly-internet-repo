@@ -21,6 +21,7 @@ export default function makeCarousel(parent, children) {
          `);
 
  parent.addEventListener('click', () => {
+  console.log(parent.id);
   const carouselNumber = Number(children[0].classList[0].match(/(\d+)$/)[1]);
   children.forEach((child) => {
    child.classList.replace(child.classList[0], `carousel-${(1 + carouselNumber) % children.length}`);
