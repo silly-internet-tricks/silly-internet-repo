@@ -17,6 +17,7 @@ import generalElementEffectifier from './general-element-effectifier';
 import elementEffectHandler from './element-effect-handler';
 
 (function marqueeifier() {
+ let serialNumber = 0;
  // 1 add the element to be animated, as the only child of the element being marqueeified
  // 2 add the content to the element from 1
  // 3 flatten the content from 2 to one line of text
@@ -66,13 +67,13 @@ import elementEffectHandler from './element-effect-handler';
   
   .marquee-container {
     width: fit-content;
-    animation-name: marquee;
+    animation-name: marquee-${serialNumber};
     animation-duration: 20s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
   }
   
-  @keyframes marquee {
+  @keyframes marquee-${serialNumber} {
    from {
     transform: translateX(${mcpWidth}px);
    }
@@ -82,6 +83,8 @@ import elementEffectHandler from './element-effect-handler';
    }
   }
     `);
+
+  serialNumber += 1;
  };
 
  generalElementEffectifier(generalElementEffectifierCallback, 'marqueeifier', 'marquee-container-parent');
