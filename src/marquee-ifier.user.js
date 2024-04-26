@@ -27,9 +27,7 @@ import elementEffectHandler from './element-effect-handler';
   return freshNode;
  };
 
- const marqueeContainer = document.createElement('div');
-
- const affectTarget = (target) => {
+ const affectTarget = (target, marqueeContainer) => {
   marqueeContainer.classList.add('marquee-container');
   target.appendChild(marqueeContainer);
   return marqueeContainer;
@@ -40,7 +38,8 @@ import elementEffectHandler from './element-effect-handler';
  );
 
  const generalElementEffectifierCallback = (target, targetChildNodes) => {
-  const affectedElementParent = affectTarget(target);
+  const marqueeContainer = document.createElement('div');
+  const affectedElementParent = affectTarget(target, marqueeContainer);
   affectTargetChildNodes(targetChildNodes)
    .forEach((node) => affectedElementParent.appendChild(node));
 
