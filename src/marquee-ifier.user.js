@@ -7,6 +7,9 @@
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
 // @grant        none
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/marquee-ifier.user.js
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/c9f4aa467ba3f24d1332f720f4f7c113/raw/marquee-ifier.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/c9f4aa467ba3f24d1332f720f4f7c113/raw/marquee-ifier.meta.js
 // ==/UserScript==
 
 import insertCSS from './insert-css';
@@ -34,7 +37,13 @@ import elementEffectHandler from './element-effect-handler';
  };
 
  const affectTargetChildNodes = (childNodes) => (
-  elementEffectHandler(childNodes, (node) => [node], affectElement)
+  elementEffectHandler(childNodes, (node) => {
+   const span = document.createElement('span');
+   span.style.setProperty('text-wrap', 'nowrap');
+   span.style.setProperty('width', 'fit-content');
+   span.appendChild(new Text(node.textContent));
+   return [span];
+  }, affectElement)
  );
 
  const generalElementEffectifierCallback = (target, targetChildNodes) => {
