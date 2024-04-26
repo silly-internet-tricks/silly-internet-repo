@@ -33,6 +33,7 @@ import elementEffectHandler from './element-effect-handler';
 
  const affectTarget = (target, marqueeContainer) => {
   marqueeContainer.classList.add('marquee-container');
+  marqueeContainer.style.setProperty('animation-name', `marquee-${serialNumber}`);
   target.appendChild(marqueeContainer);
   return marqueeContainer;
  };
@@ -60,7 +61,6 @@ import elementEffectHandler from './element-effect-handler';
   
   .marquee-container {
     width: fit-content;
-    animation-name: marquee-${serialNumber};
     animation-duration: 20s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
