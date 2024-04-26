@@ -69,6 +69,7 @@ import elementEffectHandler from './element-effect-handler';
 
   const mcpWidth = target.getBoundingClientRect().width;
   console.log(mcpWidth);
+  console.log(marqueeContainer.computedStyleMap().get('animation-duration'));
   const mcWidth = marqueeContainer.getBoundingClientRect().width;
   console.log(mcWidth);
 
