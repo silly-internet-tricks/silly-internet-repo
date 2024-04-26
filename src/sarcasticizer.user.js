@@ -12,10 +12,10 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/52edbd6efc1d3ea14d201e3ab26e8f9f/raw/sarcasticizer.meta.js
 // ==/UserScript==
 
-import generalEffectifier from './general-effectifier';
+import generalTextEffectifier from './general-text-effectifier';
 
 (function sarcasticizer() {
- generalEffectifier((text) => (
+ generalTextEffectifier((text) => (
   [new Text([...text].map((c, i) => (
    i % 2 ? c.toLocaleLowerCase() : c.toLocaleUpperCase()
   )).join(''))]

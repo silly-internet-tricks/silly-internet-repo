@@ -12,10 +12,10 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/2b11595cc21440fbf74b7e0a3b9e22e0/raw/binarizer.meta.js
 // ==/UserScript==
 
-import generalEffectifier from './general-effectifier';
+import generalTextEffectifier from './general-text-effectifier';
 
 (function binarizer() {
- generalEffectifier((text) => (
+ generalTextEffectifier((text) => (
   [new Text([...text].map((c) => (
    c.charCodeAt(0).toString(2).padStart(8, '0')
   )).join(' '))]

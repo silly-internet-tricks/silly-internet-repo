@@ -12,7 +12,7 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/cfa5a159cf422ba3ee4b0823e8b9ef54/raw/jumperizer.meta.js
 // ==/UserScript==
 
-import generalEffectifier from './general-effectifier';
+import generalTextEffectifier from './general-text-effectifier';
 import insertCSS from './insert-css';
 
 (function jumperizer() {
@@ -41,7 +41,7 @@ import insertCSS from './insert-css';
     }
 }`);
 
- generalEffectifier((text) => {
+ generalTextEffectifier((text) => {
   const letters = [...text.trim().replace(/\s+/g, ' ')];
   return letters.map((letter) => {
    const span = document.createElement('span');
