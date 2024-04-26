@@ -4,13 +4,14 @@
 // @version      2024-04-26
 // @description  Make the element you select act like an animated marquee element
 // @author       Josh Parker
-// @match        https://www.google.com/search?q=flexbox+exactly+the+same+width&oq=flexbox+exactly+the+same+width&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIHCAEQIRigATIHCAIQIRigATIHCAMQIRigATIHCAQQIRifBTIHCAUQIRifBTIHCAYQIRifBTIHCAcQIRifBTIHCAgQIRifBTIHCAkQIRifBdIBCDU5NDRqMGo3qAIAsAIA&sourceid=chrome&ie=UTF-8
+// @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
 // @grant        none
 // ==/UserScript==
 
 import insertCSS from './insert-css';
-import generalTextEffectifier from './general-text-effectifier';
+import generalElementEffectifier from './general-element-effectifier';
+import elementEffectHandler from './element-effect-handler';
 
 (function marqueeifier() {
  // 1 add the element to be animated, as the only child of the element being marqueeified
@@ -20,37 +21,60 @@ import generalTextEffectifier from './general-text-effectifier';
  // 5 use the width from 4 to define the animation keyframes
  // 6 add the animation styling to the element from 1
 
- insertCSS(`
-
-.marquee-container-parent {
-  overflow: hidden;
-}
-
-.marquee-container {
-  width: 200dvw;
-}
-
-.marquee-element {
-  animation-name: marquee;
-  animation-duration: 20s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-
-@keyframes marquee {
- from {
-  transform: translateX(20%);
- }
-
- to {
-  transform: translateX(-70%);
- }
-}
-  `);
-
- const affectText = () => {
-
+ const affectElement = function affectElement(freshNode) {
+  freshNode.style.setProperty('text-wrap', 'nowrap');
+  freshNode.style.setProperty('width', 'fit-content');
+  return freshNode;
  };
 
- generalTextEffectifier(affectText, 'marqueeifier', 'marquee-container-parent');
+ const marqueeContainer = document.createElement('div');
+
+ const affectTarget = (target) => {
+  marqueeContainer.classList.add('marquee-container');
+  target.appendChild(marqueeContainer);
+  return marqueeContainer;
+ };
+
+ const affectTargetChildNodes = (childNodes) => (
+  elementEffectHandler(childNodes, (node) => [node], affectElement)
+ );
+
+ const generalElementEffectifierCallback = (target, targetChildNodes) => {
+  const affectedElementParent = affectTarget(target);
+  affectTargetChildNodes(targetChildNodes)
+   .forEach((node) => affectedElementParent.appendChild(node));
+
+  console.log(target);
+
+  const mcpWidth = target.getBoundingClientRect().width;
+  console.log(mcpWidth);
+  const mcWidth = marqueeContainer.getBoundingClientRect().width;
+  console.log(mcWidth);
+
+  insertCSS(`
+  .marquee-container-parent {
+    overflow: hidden;
+  }
+  
+  .marquee-container {
+    width: fit-content;
+    animation-name: marquee;
+    animation-duration: 20s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+  
+  @keyframes marquee {
+   from {
+    transform: translateX(${mcpWidth}px);
+   }
+  
+   to {
+    transform: translateX(-${mcWidth}px);
+   }
+  }
+    `);
+ };
+
+ generalElementEffectifier(generalElementEffectifierCallback, 'marqueeifier', 'marquee-container-parent');
 }());

@@ -1,6 +1,10 @@
 import holdKeyAndClick from './hold-key-and-click';
 
-export default function generalElementEffectifier(affectElement, scriptName, targetClassName) {
+export default function generalElementEffectifier(
+ callback,
+ scriptName,
+ targetClassName,
+) {
  const effectifierHandler = function effectifierHandler(event) {
   event.preventDefault();
   const { target } = event;
@@ -14,7 +18,7 @@ export default function generalElementEffectifier(affectElement, scriptName, tar
    target.targetChildNodes = targetChildNodes;
 
    target.innerHTML = '';
-   affectElement(targetChildNodes).forEach((node) => target.appendChild(node));
+   callback(target, targetChildNodes);
 
    document.removeEventListener('click', effectifierHandler);
   }
