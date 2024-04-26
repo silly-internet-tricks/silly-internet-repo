@@ -53,13 +53,6 @@ import elementEffectHandler from './element-effect-handler';
   affectTargetChildNodes(targetChildNodes)
    .forEach((node) => affectedElementParent.appendChild(node));
 
-  console.log(target);
-
-  const mcpWidth = target.getBoundingClientRect().width;
-  console.log(mcpWidth);
-  const mcWidth = marqueeContainer.getBoundingClientRect().width;
-  console.log(mcWidth);
-
   insertCSS(`
   .marquee-container-parent {
     overflow: hidden;
@@ -72,7 +65,14 @@ import elementEffectHandler from './element-effect-handler';
     animation-iteration-count: infinite;
     animation-timing-function: linear;
   }
-  
+    `);
+
+  const mcpWidth = target.getBoundingClientRect().width;
+  console.log(mcpWidth);
+  const mcWidth = marqueeContainer.getBoundingClientRect().width;
+  console.log(mcWidth);
+
+  insertCSS(`
   @keyframes marquee-${serialNumber} {
    from {
     transform: translateX(${mcpWidth}px);
@@ -82,7 +82,7 @@ import elementEffectHandler from './element-effect-handler';
     transform: translateX(-${mcWidth}px);
    }
   }
-    `);
+  `);
 
   serialNumber += 1;
  };
