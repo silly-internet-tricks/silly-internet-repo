@@ -16,7 +16,12 @@ export default function elementEffectHandler(childNodes, textNodeHandler, elemen
     freshNode.setAttribute(nodeName, nodeValue);
    });
 
-   const freshChildNodes = elementEffectHandler([...node.childNodes], textNodeHandler);
+   const freshChildNodes = elementEffectHandler(
+    [...node.childNodes],
+    textNodeHandler,
+    elementNodeHandler,
+   );
+
    freshChildNodes.forEach((freshChildNode) => {
     freshNode.appendChild(freshChildNode);
    });
