@@ -55,17 +55,6 @@ let showCards = true;
  background-repeat: no-repeat;
  background-position: center;
 }
-
-#pokemon-card-container div.flavor-text-container {
- display: flex;
- min-width: 2400px;
-}
-
-#pokemon-card-container div.flavor-text-container > p {
- margin: 0;
- margin-right: 10px;
- width: 207px;
-}
 `, 'pokemon-card');
  const pokemonCardContainer = document.createElement('div');
  document.addEventListener('keydown', async ({ code }) => {
@@ -102,7 +91,7 @@ let showCards = true;
      const pokemonImageDiv = document.createElement('div');
      pokemonImageDiv.id = `pokemon-image-${pokemonName}`;
      pokemonImageDiv.innerHTML = `<h3>${pokemonName.replace(/^(.)/, (_, p1) => p1.toLocaleUpperCase())}</h3>
-<div><div class="flavor-text-container" id="flavor-text-container-${pokemonName}"></div></div>
+<div class="flavor-text-container" id="flavor-text-container-${pokemonName}"></div>
 <div class="image" style="background-image: url('https://www.smogon.com/dex/media/sprites/xy/${pokemonName}.gif');"></div>`;
 
      pokemonCardContainer.appendChild(pokemonImageDiv);
@@ -136,9 +125,9 @@ let showCards = true;
       makeCarousel(flavorTextContainer, englishFlavorText
        .map(({ flavor_text: flavorText }) => {
         const p = document.createElement('p');
-        p.appendChild(new Text(flavorText));
+        p.appendChild(new Text(flavorText.replace(/[\n\f]/g, ' ')));
         return p;
-       }), 207);
+       }));
      }
     } catch (e) {
      console.error('caught an error trying to make gm xml http request! 🧟');
