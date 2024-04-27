@@ -28,6 +28,11 @@ import elementEffectHandler from './element-effect-handler';
  const affectElement = function affectElement(freshNode) {
   freshNode.style.setProperty('text-wrap', 'nowrap');
   freshNode.style.setProperty('width', 'fit-content');
+
+  if (freshNode.tagName === 'br') {
+   freshNode.style.setProperty('display', 'none');
+  }
+
   return freshNode;
  };
 
@@ -38,14 +43,16 @@ import elementEffectHandler from './element-effect-handler';
   return marqueeContainer;
  };
 
+ const textNodeHandler = function textNodeHandler(node) {
+  const span = document.createElement('span');
+  span.style.setProperty('text-wrap', 'nowrap');
+  span.style.setProperty('width', 'fit-content');
+  span.appendChild(new Text(node.textContent));
+  return [span];
+ };
+
  const affectTargetChildNodes = (childNodes) => (
-  elementEffectHandler(childNodes, (node) => {
-   const span = document.createElement('span');
-   span.style.setProperty('text-wrap', 'nowrap');
-   span.style.setProperty('width', 'fit-content');
-   span.appendChild(new Text(node.textContent));
-   return [span];
-  }, affectElement)
+  elementEffectHandler(childNodes, textNodeHandler, affectElement)
  );
 
  const generalElementEffectifierCallback = (target, targetChildNodes) => {
