@@ -4,11 +4,13 @@
 // @version      2024-04-27
 // @description  ask the ollama model to identify the image
 // @author       Josh Parker
-// @match        *://*/*
+// @match        https://en.wikipedia.org/wiki/*
+// @match        https://tvtropes.org/pmwiki/pmwiki.php/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=wikipedia.org
 // @grant        GM_xmlhttpRequest
 // @connect      localhost
 // @connect      static.tvtropes.org
+// @connect      upload.wikimedia.org
 // ==/UserScript==
 
 import insertCSS from './insert-css';
@@ -43,6 +45,7 @@ import insertCSS from './insert-css';
  const clickEventListener = function clickEventListener(event) {
   console.log(event);
   event.preventDefault();
+  event.stopPropagation();
   const { target } = event;
   console.log(target);
   console.log(target.tagName);
@@ -80,7 +83,10 @@ import insertCSS from './insert-css';
 
  document.addEventListener('keydown', ({ code }) => {
   if (code === 'KeyL') {
-   document.addEventListener('click', clickEventListener);
+   // document.addEventListener('click', clickEventListener);
+   document.querySelectorAll('img').forEach((img) => {
+    img.addEventListener('click', clickEventListener);
+   });
   } else if (code === 'KeyH') {
    if (displayOllamaDiv) {
     ollamaDiv.style.setProperty('display', 'none');
@@ -94,7 +100,10 @@ import insertCSS from './insert-css';
 
  document.addEventListener('keyup', ({ code }) => {
   if (code === 'KeyL') {
-   document.removeEventListener('click', clickEventListener);
+   // document.removeEventListener('click', clickEventListener);
+   document.querySelectorAll('img').forEach((img) => {
+    img.removeEventListener('click', clickEventListener);
+   });
   }
  });
 }());
