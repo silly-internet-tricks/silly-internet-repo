@@ -7,7 +7,6 @@
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tampermonkey.net
 // @grant        GM_xmlhttpRequest
-// @connect      localhost:11435
 // @connect      localhost
 // ==/UserScript==
 
@@ -21,7 +20,7 @@ import insertCSS from './insert-css';
     color: chartreuse;
     background-color: black;
     height: fit-content;
-    z-index: 3;
+    z-index: 70;
     padding: 1%;
     font-family: monospace;
     max-height: 30dvh;
@@ -40,9 +39,6 @@ import insertCSS from './insert-css';
   if (code === 'KeyL') {
    const selectedText = window.getSelection().toString();
    console.log(selectedText);
-   // get a message from the language model
-   GM.xmlHttpRequest({ url: ollamaAddress })
-    .then((r) => { console.log(r.response); });
    GM.xmlHttpRequest({
     url: `${ollamaAddress}api/generate`,
     method: 'POST',
