@@ -5,8 +5,12 @@
   },
   "extends": [
     "airbnb-base",
-    "plugin:jest/recommended"
+    "plugin:jest/recommended",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/stylistic"
   ],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2021
   },
@@ -27,12 +31,16 @@
     ],
     "max-statements-per-line": "error",
     "indent": ["error", 1],
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "@typescript-eslint/no-inferrable-types": 0,
+    "@typescript-eslint/typedef": "off"
   },
   "plugins": [
+    "@typescript-eslint",
     "jest"
   ],
   "overrides": [
+    { "files": ["*.ts", "*.mts", "*.cts", "*.mjs", "*.cjs"] },
     {
       "files": ["**/*.user.js"],
       "env": {

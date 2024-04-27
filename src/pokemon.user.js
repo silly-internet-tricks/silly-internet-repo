@@ -103,15 +103,16 @@ let showCards = true;
 
     try {
      const pokeResponseGenerator = (async function* pokeResponseGenerator() {
-      for (let i = 0; i < urls.length; i++) {
-       console.log(urls[i]);
+     // eslint-disable-next-line no-restricted-syntax
+      for (const url of urls) {
+       console.log(url);
 
        // if we have previously yielded a response for this pokemon (urls[i])
        // then we expect to not yield another response
        // for the same pokemon ever again
-       if (!pokeResponses.has(urls[i])) {
-        pokeResponses.add(urls[i]);
-        yield GM.xmlHttpRequest({ url: urls[i], responseType: 'json' });
+       if (!pokeResponses.has(url)) {
+        pokeResponses.add(url);
+        yield GM.xmlHttpRequest({ url, responseType: 'json' });
        }
       }
      }());

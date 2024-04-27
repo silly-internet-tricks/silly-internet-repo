@@ -29,7 +29,8 @@ import elementEffectHandler from './element-effect-handler';
   freshNode.style.setProperty('text-wrap', 'nowrap');
   freshNode.style.setProperty('width', 'fit-content');
 
-  if (freshNode.tagName === 'br') {
+  // NOTE: check the capitalization on tagNames.
+  if (freshNode.tagName.toLocaleLowerCase() === 'br') {
    freshNode.style.setProperty('display', 'none');
   }
 
