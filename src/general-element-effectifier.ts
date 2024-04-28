@@ -22,7 +22,12 @@ export default function generalElementEffectifier(
    element['target-child-nodes'] = targetChildNodes;
 
    element.innerHTML = '';
+   console.log('now at the general element effectifier callback');
+   console.log(element);
+   console.log(targetChildNodes);
    callback(element, targetChildNodes);
+   console.log(element);
+   console.log(targetChildNodes);
 
    document.removeEventListener('click', effectifierHandler);
   }

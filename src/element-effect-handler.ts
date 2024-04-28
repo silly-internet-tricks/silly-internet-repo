@@ -11,6 +11,7 @@ export default function elementEffectHandler(
    const textNode: Text = node as Text;
    textNodeHandler(textNode, newChildNodes, prevNodeWasText).forEach((affectedNode: Text) => {
     newChildNodes.push(affectedNode);
+    console.log(newChildNodes);
    });
 
    prevNodeWasText = true;
