@@ -57,7 +57,9 @@ export default function generalElementEffectifier(
    throw new Error(`expected the element ${element} to be an element and have classList`);
   }
 
-  undoCallback(element);
+  if (undoCallback) {
+   undoCallback(element);
+  }
 
   element.classList.remove(targetClassName);
 
