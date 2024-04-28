@@ -1,6 +1,6 @@
 const { globSync } = require('glob');
 
-const userscriptGlob = globSync('./src/*.user.js');
+const userscriptGlob = globSync('./ts-compiled/*.user.js');
 const entryObj = {};
 
 userscriptGlob.forEach((file) => {
@@ -12,4 +12,13 @@ console.log(entryObj);
 module.exports = {
  mode: 'production',
  entry: entryObj,
+ module: {
+  rules: [
+   {
+    test: /\.tsx?$/,
+    use: 'ts-loader',
+    exclude: /(node_modules|dist)/,
+   },
+  ],
+ },
 };

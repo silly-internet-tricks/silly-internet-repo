@@ -33,7 +33,12 @@
     "indent": ["error", 1],
     "no-param-reassign": "off",
     "@typescript-eslint/no-inferrable-types": 0,
-    "@typescript-eslint/typedef": "off"
+    "@typescript-eslint/typedef":  [
+      "error",
+      {
+          "variableDeclaration": true
+      }
+  ]
   },
   "plugins": [
     "@typescript-eslint",

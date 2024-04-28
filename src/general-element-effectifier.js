@@ -12,10 +12,10 @@ export default function generalElementEffectifier(
    target.classList.add(targetClassName);
   }
 
-  if (!target.targetChildNodes) {
+  if (!target['target-child-nodes']) {
    const targetChildNodes = [...target.childNodes];
 
-   target.targetChildNodes = targetChildNodes;
+   target['target-child-nodes'] = targetChildNodes;
 
    target.innerHTML = '';
    callback(target, targetChildNodes);
@@ -26,13 +26,13 @@ export default function generalElementEffectifier(
 
  const revertChildNodes = function revertChildNodes(element) {
   if (!element) return;
-  if (element.targetChildNodes) {
+  if (element['target-child-nodes']) {
    element.innerHTML = '';
-   element.targetChildNodes.forEach((node) => {
+   element['target-child-nodes'].forEach((node) => {
     element.appendChild(node);
    });
 
-   delete element.targetChildNodes;
+   delete element['target-child-nodes'];
   } else {
    revertChildNodes(element.parentNode);
   }

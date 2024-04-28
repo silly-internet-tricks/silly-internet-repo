@@ -6,12 +6,12 @@ const { glob } = require('glob');
 const delimiter = '==/UserScript==\n';
 
 const processBundles = async function processBundles() {
- const userscriptGlob = await glob('./src/*.user.js');
+ const userscriptGlob = await glob('./ts-compiled/*.user.js');
  const bundledUserscriptGlob = await glob('./dist/*.user.js');
  userscriptGlob.forEach(async (file) => {
   const fileContents = await readFile(file);
 
-  const name = file.match(/^src\/([^.]+).user.js$/)[1];
+  const name = file.match(/^ts-compiled\/([^.]+).user.js$/)[1];
 
   const userscriptHeader = fileContents.toString().split(delimiter)[0] + delimiter;
   const distFile = bundledUserscriptGlob.find((e) => e.includes(name));
