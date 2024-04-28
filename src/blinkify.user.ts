@@ -7,7 +7,7 @@
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=stackexchange.com
 // @grant        none
-// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/blinkify.user.js
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/blinkify.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/9f27b1916073ffa74260116aa9dc9a03/raw/blinkify.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/9f27b1916073ffa74260116aa9dc9a03/raw/blinkify.meta.js
 // ==/UserScript==

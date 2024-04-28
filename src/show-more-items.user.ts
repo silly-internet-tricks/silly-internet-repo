@@ -7,7 +7,7 @@
 // @match        https://neal.fun/infinite-craft/
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=neal.fun
 // @grant        none
-// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/show-more-items.user.js
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/show-more-items.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/55ceac302028890f2fecd2a1f401b616/raw/show-more-items.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/55ceac302028890f2fecd2a1f401b616/raw/show-more-items.meta.js
 // ==/UserScript==
