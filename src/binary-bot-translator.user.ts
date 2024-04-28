@@ -15,7 +15,7 @@
 
 (function binaryBotTranslator() {
  type EventListener = (e: Event) => void;
- const clickEventListener: EventListener = function clickEventListener(event : Event) {
+ const clickEventListener: EventListener = function clickEventListener(event: Event) {
   const target: Element = event.target as Element;
   if (!target) throw new Error(`${target} is expected to be truthy`);
   if (!target.nodeType) throw new Error(`${target} is expected to be a Node`);
@@ -28,25 +28,48 @@
 
   targetChildNodes.forEach((node, i) => {
    if (node.nodeName === '#text') {
-    if (node.textContent === null) throw new Error(`text node ${node} was expected to have text content!`);
+    if (node.textContent === null) {
+     throw new Error(`text node ${node} was expected to have text content!`);
+    }
+
     const nodeText: string = node.textContent;
-    if (
-     nodeText === ' '
-                    && targetChildNodes[i - 1]?.nodeName === '#text'
-                    && targetChildNodes[i + 1]?.nodeName === '#text'
-                    && targetChildNodes[i - 1]?.textContent?.match(/[01]{8}/)
-                    && targetChildNodes[i + 1]?.textContent?.match(/[01]{8}/)
-    ) return;
+
+    // this seems to me like exactly the kind of anti-pattern they tell you to steer far clear from
+    // because it looks like the kind of thing that will thwart javascript engine optimizations
+    // so, why is it like this?
+    // to try to satisfy my config for both prettier and eslint
+    // 🧟 🧟 🧟 🧟
+    // 🧟 🧟 🧟 🧟
+    const skipSingleSpaceConditions: boolean[] = [
+     nodeText === ' ',
+     targetChildNodes[i - 1]?.nodeName === '#text',
+     targetChildNodes[i + 1]?.nodeName === '#text',
+     !!targetChildNodes[i - 1]?.textContent?.match(/[01]{8}/),
+     !!targetChildNodes[i + 1]?.textContent?.match(/[01]{8}/),
+    ];
+
+    if (skipSingleSpaceConditions.every((e) => e)) {
+     return;
+    }
+
     console.log(nodeText);
-    const binaryRegExpPattern : RegExp = /[01]{8}( ?[01]{8})*/;
-    const translatedBinary : RegExpMatchArray | null = nodeText.match(binaryRegExpPattern);
+    const binaryRegExpPattern: RegExp = /[01]{8}( ?[01]{8})*/;
+    const translatedBinary: RegExpMatchArray | null = nodeText.match(binaryRegExpPattern);
     if (translatedBinary === null) {
      target.appendChild(new Text(nodeText));
     } else {
      // TODO: check for the case where there is more than one run of bytes in a single text node
-     target.appendChild(new Text(nodeText.replace(binaryRegExpPattern, translatedBinary[0].split(' ').map((e) => (
-      String.fromCharCode(Number.parseInt(e, 2))
-     ))?.join(''))));
+     target.appendChild(
+      new Text(
+       nodeText.replace(
+        binaryRegExpPattern,
+        translatedBinary[0]
+         .split(' ')
+         .map((e) => String.fromCharCode(Number.parseInt(e, 2)))
+         ?.join(''),
+       ),
+      ),
+     );
     }
    } else {
     target.appendChild(node);
@@ -88,4 +111,4 @@
    document.body.removeEventListener('click', undoListener);
   }
  });
-}());
+})();

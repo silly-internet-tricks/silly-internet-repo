@@ -3,7 +3,9 @@ import insertCSS from './insert-css';
 // type MakeCarousel = (p: HTMLElement, c: ChildNode[]) => void;
 export default function makeCarousel(parent: HTMLElement, children: Element[]) {
  if (!parent.id) throw new Error('parent id is required');
- if (children.find((child) => child.classList.length > 0)) throw new Error('the children are required to be passed in with no classes (classes can be added after)');
+ if (children.find((child) => child.classList.length > 0)) {
+  throw new Error('the children are required to be passed in with no classes (classes can be added after)');
+ }
 
  const carouselContainer: Element = document.createElement('div');
  carouselContainer.id = `${parent.id}-carousel-container`;
@@ -22,11 +24,15 @@ export default function makeCarousel(parent: HTMLElement, children: Element[]) {
 
  // TODO: note that the parent should have overflow hidden
  // TODO: find the right calculation for the transform amount.
- insertCSS(`${children.map((_, i) => `
+ insertCSS(`${children
+  .map(
+   (_, i) => `
   #${carouselContainer.id} > *.carousel-${i} {
        transform: translateX(-${pxChildWidth * i}px);
   }
-         `).join('\n\n')}
+         `,
+  )
+  .join('\n\n')}
 
 #${carouselContainer.id} > * {
      transition: transform 0.5s;

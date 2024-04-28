@@ -51,7 +51,9 @@ import insertCSS from './insert-css';
      // Next time I'll try it a different way, but I'm ignoring the linter this time
      // eslint-disable-next-line no-restricted-syntax
      for await (const chunk of response) {
-      const responseJSON: {response: string} = JSON.parse([...chunk].map((b) => String.fromCharCode(b)).join(''));
+      const responseJSON: { response: string } = JSON.parse(
+       [...chunk].map((b) => String.fromCharCode(b)).join(''),
+      );
       console.log(responseJSON);
       const span: Element = document.createElement('span');
       span.appendChild(new Text(responseJSON.response));
@@ -75,4 +77,4 @@ import insertCSS from './insert-css';
    }
   }
  });
-}());
+})();

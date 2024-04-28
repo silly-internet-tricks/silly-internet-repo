@@ -15,9 +15,8 @@
 import generalTextEffectifier from './general-text-effectifier';
 
 (function binarizer() {
- generalTextEffectifier((text: string) => (
-  [new Text([...text].map((c) => (
-   c.charCodeAt(0).toString(2).padStart(8, '0')
-  )).join(' '))]
- ), 'binarizer');
-}());
+ generalTextEffectifier(
+  (text: string) => [new Text([...text].map((c) => c.charCodeAt(0).toString(2).padStart(8, '0')).join(' '))],
+  'binarizer',
+ );
+})();

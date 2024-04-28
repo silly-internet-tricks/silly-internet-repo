@@ -30,4 +30,4 @@ canvas + .sidebar .items {
  const style: Element = document.createElement('style');
  style.appendChild(new Text(css));
  document.body.appendChild(style);
-}());
+})();

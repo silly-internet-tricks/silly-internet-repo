@@ -15,9 +15,10 @@
 import generalTextEffectifier from './general-text-effectifier';
 
 (function sarcasticizer() {
- generalTextEffectifier((text) => (
-  [new Text([...text].map((c, i) => (
-   i % 2 ? c.toLocaleLowerCase() : c.toLocaleUpperCase()
-  )).join(''))]
- ), 'sarcasticizer');
-}());
+ generalTextEffectifier(
+  (text) => [
+   new Text([...text].map((c, i) => (i % 2 ? c.toLocaleLowerCase() : c.toLocaleUpperCase())).join('')),
+  ],
+  'sarcasticizer',
+ );
+})();

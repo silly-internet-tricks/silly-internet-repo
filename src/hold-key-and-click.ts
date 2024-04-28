@@ -79,7 +79,10 @@ const preventDefaultHandler: (event: Event) => void = (event) => {
  event.preventDefault();
 };
 
-interface Handlers { do: (event: Event) => void, undo: (event: Event) => void }
+interface Handlers {
+ do: (event: Event) => void;
+ undo: (event: Event) => void;
+}
 export default function holdKeyAndClick(handlers: Handlers, scriptName: string) {
  // @ts-expect-error I add the getEffectKey function to the window because it's meant to be accessible to any script that uses the hold key and click function
  const keys: string[] = [window.getEffectKey(), window.getEffectKey()];

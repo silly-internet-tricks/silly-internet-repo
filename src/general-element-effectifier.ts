@@ -53,7 +53,9 @@ export default function generalElementEffectifier(
   const { target } = event;
 
   const element: Element = target as Element;
-  if (!element.classList) throw new Error(`expected the element ${element} to be an element and have classList`);
+  if (!element.classList) {
+   throw new Error(`expected the element ${element} to be an element and have classList`);
+  }
 
   undoCallback(element);
 

@@ -1,4 +1,4 @@
 eslint-config
 node_modules/
 dist/
-ts-compile/
+ts-compiled/

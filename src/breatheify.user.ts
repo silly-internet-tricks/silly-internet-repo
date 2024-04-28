@@ -17,7 +17,9 @@ import generalAnimationifier from './general-animation-ifier';
 const breatheAnimationClass: string = 'breathe-animation';
 
 (function breatheify() {
- generalAnimationifier(breatheAnimationClass, `
+ generalAnimationifier(
+  breatheAnimationClass,
+  `
  .${breatheAnimationClass} {
      animation-duration: 3s;
      animation-name: breathe;
@@ -37,5 +39,7 @@ const breatheAnimationClass: string = 'breathe-animation';
          transform: scale(1.0);
      }
  }
-   `, 'breatheify');
-}());
+   `,
+  'breatheify',
+ );
+})();

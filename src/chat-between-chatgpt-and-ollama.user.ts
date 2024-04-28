@@ -55,18 +55,20 @@ import insertCSS from './insert-css';
     ollamaText.appendChild(responseParagraph);
     // eslint-disable-next-line no-restricted-syntax
     for await (const chunk of response) {
-      interface OllamaChatApiResponseJson {
-       message: {
-         content: string
-       }
-      }
+     interface OllamaChatApiResponseJson {
+      message: {
+       content: string;
+      };
+     }
 
-      const responseJSON: OllamaChatApiResponseJson = JSON.parse([...chunk].map((b) => String.fromCharCode(b)).join(''));
+     const responseJSON: OllamaChatApiResponseJson = JSON.parse(
+      [...chunk].map((b) => String.fromCharCode(b)).join(''),
+     );
 
-      const span: Element = document.createElement('span');
+     const span: Element = document.createElement('span');
 
-      span.appendChild(new Text(responseJSON.message.content));
-      responseParagraph.appendChild(span);
+     span.appendChild(new Text(responseJSON.message.content));
+     responseParagraph.appendChild(span);
     }
    },
   };
@@ -76,4 +78,4 @@ import insertCSS from './insert-css';
   // @ts-expect-error GM is defined as part of the API for the tampermonkey chrome extension
   GM.xmlHttpRequest(requestOptions);
  });
-}());
+})();

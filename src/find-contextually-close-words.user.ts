@@ -21,7 +21,12 @@
   document.body.appendChild(style);
  };
 
- const insertContentElement: (tagName: string, classes: string[], text?: string, parentNode?: Element) => Element = function insertContentElement(tagName, classes, text = '', parentNode = document.body) {
+ const insertContentElement: (
+  tagName: string,
+  classes: string[],
+  text?: string,
+  parentNode?: Element,
+ ) => Element = function insertContentElement(tagName, classes, text = '', parentNode = document.body) {
   const element: Element = document.createElement(tagName);
   classes.forEach((c) => element.classList.add(c));
   element.appendChild(new Text(text));
@@ -29,41 +34,42 @@
   return element;
  };
 
- const fetchThatRejectsWhenNotOkay:
- (url: string) => Promise<Response> = function fetchThatRejectsWhenNotOkay(url) {
+ type FetchThatRejectsWhenNotOkay = (url: string) => Promise<Response>;
+ const fetchThatRejectsWhenNotOkay: FetchThatRejectsWhenNotOkay = function fetchThatRejectsWhenNotOkay(url) {
   return new Promise((resolve, reject) => {
-   fetch(url)
-    .then((r) => {
-     if (r.ok) resolve(r);
-     else reject(r);
-    });
+   fetch(url).then((r) => {
+    if (r.ok) resolve(r);
+    else reject(r);
+   });
   });
  };
 
+ type Guess = (gameNumber: number, word: string) => Promise<{ distance: number }>;
  // TODO: maybe define the object that comes back from contexto api ????
- const guess:
- (gameNumber: number, word: string) => Promise<{ distance: number }> = (gameNumber, word) => (
-  fetchThatRejectsWhenNotOkay(`https://api.contexto.me/machado/en/game/${gameNumber}/${word}`)
- ).then((r) => r.json());
+ const guess: Guess = function guess(gameNumber, word) {
+  const url: string = `https://api.contexto.me/machado/en/game/${gameNumber}/${word}`;
+  return fetchThatRejectsWhenNotOkay(url).then((r) => r.json());
+ };
 
- const seeContextuallyCloseWords:
- (word: string) => Promise<unknown[]> = function seeContextuallyCloseWords(word) {
-  return Promise.all(new Array(500).fill(undefined).map((_, i) => guess(i, word)))
-   .then((guesses) => {
-    const sortedGuesses: { distance: number, gameNumber: number }[] = guesses.map((e, i) => (
-     { ...e, gameNumber: i }
-    )).sort((b, a) => b.distance - a.distance);
+ type FetchTips = (word: string) => Promise<unknown[]>;
+ const fetchTips: FetchTips = function fetchTips(word) {
+  return Promise.all(new Array(500).fill(undefined).map((_, i) => guess(i, word))).then((guesses) => {
+   const sortedGuesses: { distance: number; gameNumber: number }[] = guesses
+    .map((e, i) => ({ ...e, gameNumber: i }))
+    .sort((b, a) => b.distance - a.distance);
 
-    const { gameNumber, distance } = sortedGuesses[0];
+   const { gameNumber, distance } = sortedGuesses[0];
 
-    div.innerHTML = '';
-    insertContentElement('p', ['josh'], `distance: ${distance} game number: ${gameNumber}`, div);
+   div.innerHTML = '';
+   insertContentElement('p', ['josh'], `distance: ${distance} game number: ${gameNumber}`, div);
 
-    return Promise.all(new Array(30).fill(undefined).map((_, i) => (
-     fetch(`https://api.contexto.me/machado/en/tip/${gameNumber}/${i}`)
-      .then((r) => r.json())
-    )));
-   });
+   type FetchTip = (_: unknown, i: number) => Promise<unknown>;
+   const fetchTip: FetchTip = function fetchTip(_, i) {
+    return fetch(`https://api.contexto.me/machado/en/tip/${gameNumber}/${i}`).then((r) => r.json());
+   };
+
+   return Promise.all(new Array(30).fill(undefined).map(fetchTip));
+  });
  };
 
  insertCSS(`
@@ -83,10 +89,18 @@
  insertContentElement('button', ['josh'], 'click me').addEventListener('click', ({ target }) => {
   const button: HTMLButtonElement = target as HTMLButtonElement;
   button.disabled = true;
-  seeContextuallyCloseWords(input.value)
-   .then((contextuallyCloseWords) => contextuallyCloseWords.forEach(({ word }) => {
+
+  interface Word {
+   word: string;
+  }
+  const insertWords: (words: Word[]) => void = function insertWords(words) {
+   words.forEach(({ word }) => {
     insertContentElement('p', ['josh'], word, div);
-   }))
+   });
+  };
+
+  fetchTips(input.value)
+   .then(insertWords)
    .then(() => {
     // TODO: should we consider doing something else?
     button.disabled = false;
@@ -99,4 +113,4 @@
  });
 
  document.body.appendChild(div);
-}());
+})();

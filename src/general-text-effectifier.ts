@@ -6,27 +6,20 @@ export default function generalTextEffectifier(
  scriptName?: string,
  targetClassName?: string,
 ) {
- const textNodeHandler:
-  (
-   target: Text,
-   targetChildNodes: Node[],
-   prevNodeWasText: boolean
-  ) => Node[] = (
-   textNode: Text,
-   newChildNodes: ChildNode[],
-   prevNodeWasText: boolean,
-  ) => {
-   if (prevNodeWasText) newChildNodes.push(new Text(' '));
-   return affectText(textNode.textContent);
-  };
+ const textNodeHandler: (target: Text, targetChildNodes: Node[], prevNodeWasText: boolean) => Node[] = (
+  textNode: Text,
+  newChildNodes: ChildNode[],
+  prevNodeWasText: boolean,
+ ) => {
+  if (prevNodeWasText) newChildNodes.push(new Text(' '));
+  return affectText(textNode.textContent);
+ };
 
- const childNodeEffectifier:
-  (
-    target: EventTarget,
-    childNodes: ChildNode[]
-  ) => Node[] = function childNodeEffectifier(target, childNodes) {
-   return elementEffectHandler(childNodes, textNodeHandler, (e) => e);
-  };
+ type ChildNodeEffectifier = (target: EventTarget, childNodes: ChildNode[]) => Node[];
+
+ const childNodeEffectifier: ChildNodeEffectifier = function childNodeEffectifier(target, childNodes) {
+  return elementEffectHandler(childNodes, textNodeHandler, (e) => e);
+ };
 
  generalElementEffectifier(
   childNodeEffectifier,

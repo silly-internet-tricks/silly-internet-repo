@@ -49,46 +49,59 @@ import insertCSS from './insert-css';
   const { target } = event;
   console.log(target);
   const element: Element = target as Element;
-  if (!element.tagName) throw new Error(`expected the event target ${element} to be an Element with a tagName`);
+  if (!element.tagName) {
+   throw new Error(`expected the event target ${element} to be an Element with a tagName`);
+  }
+
   console.log(element.tagName);
   // note: be cautious with the capitalization on tagName
   if (element.tagName.toLocaleLowerCase() === 'img') {
    const imgElement: HTMLImageElement = element as HTMLImageElement;
    console.log(imgElement.src);
 
-   const imageRequestOptions: GmXmlHttpRequestRequestOptions = { url: imgElement.src, responseType: 'arraybuffer' };
+   const imageRequestOptions: GmXmlHttpRequestRequestOptions = {
+    url: imgElement.src,
+    responseType: 'arraybuffer',
+   };
 
    // @ts-expect-error GM is defined as part of the API for the tampermonkey chrome extension
-   GM.xmlHttpRequest(imageRequestOptions)
-    .then((r: GmXmlHttpRequestResponse) => {
-     const base64Image: string = btoa([...(new Uint8Array(r.response))].map((b) => String.fromCharCode(b)).join(''));
+   GM.xmlHttpRequest(imageRequestOptions).then((r: GmXmlHttpRequestResponse) => {
+    const base64Image: string = btoa(
+     [...new Uint8Array(r.response)].map((b) => String.fromCharCode(b)).join(''),
+    );
 
-     const requestOptions: GmXmlHttpRequestRequestOptions = {
-      url: `${ollamaAddress}api/generate`,
-      method: 'POST',
-      responseType: 'stream',
-      data: JSON.stringify({ model: ollamaModel, prompt: '"What is in this picture?"', images: [base64Image] }),
-      fetch: true,
-      onloadstart: async ({ response }) => {
-       // I think this is the idiomatic way to usually handle streams.
-       // Next time I'll try it a different way, but I'm ignoring the linter this time
-       // eslint-disable-next-line no-restricted-syntax
-       for await (const chunk of response) {
-        const responseJSON: { response: string } = JSON.parse([...chunk].map((b) => String.fromCharCode(b)).join(''));
-        console.log(responseJSON);
-        const span: Element = document.createElement('span');
-        span.appendChild(new Text(responseJSON.response));
-        ollamaDiv.appendChild(span);
-       }
+    const requestOptions: GmXmlHttpRequestRequestOptions = {
+     url: `${ollamaAddress}api/generate`,
+     method: 'POST',
+     responseType: 'stream',
+     data: JSON.stringify({
+      model: ollamaModel,
+      prompt: '"What is in this picture?"',
+      images: [base64Image],
+     }),
+     fetch: true,
+     onloadstart: async ({ response }) => {
+      // I think this is the idiomatic way to usually handle streams.
+      // Next time I'll try it a different way, but I'm ignoring the linter this time
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const chunk of response) {
+       const responseJSON: { response: string } = JSON.parse(
+        [...chunk].map((b) => String.fromCharCode(b)).join(''),
+       );
+       console.log(responseJSON);
+       const span: Element = document.createElement('span');
+       span.appendChild(new Text(responseJSON.response));
+       ollamaDiv.appendChild(span);
+      }
 
-       const hr: Element = document.createElement('hr');
-       ollamaDiv.appendChild(hr);
-      },
-     };
+      const hr: Element = document.createElement('hr');
+      ollamaDiv.appendChild(hr);
+     },
+    };
 
-     // @ts-expect-error GM is defined as part of the API for the tampermonkey chrome extension
-     GM.xmlHttpRequest(requestOptions);
-    });
+    // @ts-expect-error GM is defined as part of the API for the tampermonkey chrome extension
+    GM.xmlHttpRequest(requestOptions);
+   });
   }
  };
 
@@ -117,4 +130,4 @@ import insertCSS from './insert-css';
    });
   }
  });
-}());
+})();

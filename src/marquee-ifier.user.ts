@@ -58,9 +58,7 @@ import getCssKeywordValue from './getCssKeywordValue';
  };
 
  type AffectTargetChildNodes = (childNodes: Node[]) => Node[];
- const affectTargetChildNodes: AffectTargetChildNodes = function affectTargetChildNodes(
-  childNodes,
- ) {
+ const affectTargetChildNodes: AffectTargetChildNodes = function affectTargetChildNodes(childNodes) {
   return elementEffectHandler(childNodes as ChildNode[], textNodeHandler, affectElement);
  };
 

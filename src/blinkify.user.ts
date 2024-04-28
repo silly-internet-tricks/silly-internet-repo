@@ -17,7 +17,9 @@ import generalAnimationifier from './general-animation-ifier';
 const blinkAnimationClass: string = 'blink-animation';
 
 (function blinkify() {
- generalAnimationifier(blinkAnimationClass, `
+ generalAnimationifier(
+  blinkAnimationClass,
+  `
  .${blinkAnimationClass} {
      animation-duration: 1s;
      animation-name: blink;
@@ -41,5 +43,7 @@ const blinkAnimationClass: string = 'blink-animation';
          opacity: 0.0;
      }
  }
-   `, 'blinkify');
-}());
+   `,
+  'blinkify',
+ );
+})();

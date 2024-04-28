@@ -21,4 +21,4 @@ div#hot-network-questions {
     display: none;
 }
     `);
-}());
+})();

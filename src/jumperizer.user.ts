@@ -55,4 +55,4 @@ import insertCSS from './insert-css';
    return span;
   });
  }, 'jumperizer');
-}());
+})();
