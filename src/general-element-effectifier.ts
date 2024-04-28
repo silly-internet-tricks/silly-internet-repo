@@ -14,23 +14,22 @@ export default function generalElementEffectifier(
    element.classList.add(targetClassName);
   }
 
+  // if (!element['target-child-nodes']) {
+  const targetChildNodes: ChildNode[] = [...element.childNodes];
+
   // @ts-expect-error: this is a property I dynamically add to the element in order to access it later
-  if (!element['target-child-nodes']) {
-   const targetChildNodes: ChildNode[] = [...element.childNodes];
+  element['target-child-nodes'] = targetChildNodes;
 
-   // @ts-expect-error: this is a property I dynamically add to the element in order to access it later
-   element['target-child-nodes'] = targetChildNodes;
+  element.innerHTML = '';
+  console.log('now at the general element effectifier callback');
+  console.log(element);
+  console.log(targetChildNodes);
+  callback(element, targetChildNodes);
+  console.log(element);
+  console.log(targetChildNodes);
 
-   element.innerHTML = '';
-   console.log('now at the general element effectifier callback');
-   console.log(element);
-   console.log(targetChildNodes);
-   callback(element, targetChildNodes);
-   console.log(element);
-   console.log(targetChildNodes);
-
-   document.removeEventListener('click', effectifierHandler);
-  }
+  document.removeEventListener('click', effectifierHandler);
+  // }
  };
 
  const revertChildNodes: (node: Node) => void = function revertChildNodes(node) {
