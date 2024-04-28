@@ -19,8 +19,12 @@ export default function elementEffectHandler(
    newChildNodes.push(new Comment(node.textContent));
   } else {
    const elementNode: Element = node as Element;
-   if (!elementNode.tagName) throw new Error(`expected the node ${elementNode} to be an Element`);
+   if (!elementNode.tagName) {
+    throw new Error(`expected the node ${elementNode} to be an Element`);
+   }
+
    const freshNode: Element = document.createElement(elementNode.tagName);
+
    Object.values(elementNode.attributes).forEach(({ nodeName, nodeValue }) => {
     freshNode.setAttribute(nodeName, nodeValue);
    });
@@ -34,7 +38,7 @@ export default function elementEffectHandler(
    freshChildNodes.forEach((freshChildNode) => {
     console.log('now placing the fresh child node on the fresh node');
     console.log(freshNode);
-    console.log('freshChildNode');
+    console.log(freshChildNode);
     freshNode.appendChild(freshChildNode);
    });
 

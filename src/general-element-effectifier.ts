@@ -26,7 +26,9 @@ export default function generalElementEffectifier(
   console.log('now at the general element effectifier callback');
   console.log(element);
   console.log(targetChildNodes);
-  callback(element, targetChildNodes);
+  const callbackReturnValue: unknown = callback(element, targetChildNodes);
+  console.log(callbackReturnValue);
+  // callbackReturnValue.forEach();
   console.log(element);
   console.log(targetChildNodes);
 

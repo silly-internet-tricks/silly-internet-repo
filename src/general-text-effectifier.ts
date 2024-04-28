@@ -24,9 +24,13 @@ export default function generalTextEffectifier(
   return affectedNodes;
  };
 
- type ChildNodeEffectifier = (target: EventTarget, childNodes: ChildNode[]) => Node[];
+ type ChildNodeEffectifier = (target: Node, childNodes: ChildNode[]) => Node[];
 
  const childNodeEffectifier: ChildNodeEffectifier = function childNodeEffectifier(target, childNodes) {
+  // we probably have to append the childNodes to the target here.
+  childNodes.forEach((childNode) => {
+   target.appendChild(childNode);
+  });
   return elementEffectHandler(childNodes, textNodeHandler, (e) => e);
  };
 
