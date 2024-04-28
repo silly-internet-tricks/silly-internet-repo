@@ -15,6 +15,8 @@
 import insertCSS from './insert-css';
 import generalElementEffectifier from './general-element-effectifier';
 import elementEffectHandler from './element-effect-handler';
+import { makeInlineInlineBlock, undoInlineInlineBlock } from './make-inline-inline-block';
+import getCssKeywordValue from './getCssKeywordValue';
 
 (function marqueeifier() {
  let serialNumber: number = 0;
@@ -55,24 +57,37 @@ import elementEffectHandler from './element-effect-handler';
   return [span];
  };
 
- type AffectTargetChildNodes = (n: Node[]) => Node[];
- const affectTargetChildNodes: AffectTargetChildNodes = (childNodes) => (
-  elementEffectHandler(childNodes as ChildNode[], textNodeHandler, affectElement)
- );
+ type AffectTargetChildNodes = (childNodes: Node[]) => Node[];
+ const affectTargetChildNodes: AffectTargetChildNodes = function affectTargetChildNodes(
+  childNodes,
+ ) {
+  return elementEffectHandler(childNodes as ChildNode[], textNodeHandler, affectElement);
+ };
 
  type GeneralElementEffectifierCallback = (target: HTMLElement, targetChildNodes: Node[]) => void;
  const generalElementEffectifierCallback: GeneralElementEffectifierCallback = (
-  target,
+  marqueeContainerParent,
   targetChildNodes,
  ) => {
-  const mcpWidth: number = target.getBoundingClientRect().width;
+  const mcpWidth: number = Math.round(marqueeContainerParent.getBoundingClientRect().width);
   console.log(mcpWidth);
   // set an element style on the marquee container parent to prevent it from getting wider than it was.
-  target.style.setProperty('width', `${mcpWidth}px`);
+  marqueeContainerParent.style.setProperty('width', `${mcpWidth}px`);
+
+  const mcpDisplay: string = getCssKeywordValue(marqueeContainerParent, 'display');
+  if (mcpDisplay === 'inline') {
+   makeInlineInlineBlock(marqueeContainerParent);
+  }
+
   const marqueeContainer: HTMLElement = document.createElement('div');
-  const affectedElementParent: HTMLElement = affectTarget(target, marqueeContainer);
-  affectTargetChildNodes(targetChildNodes)
-   .forEach((node) => affectedElementParent.appendChild(node));
+  const affectedElementParent: HTMLElement = affectTarget(marqueeContainerParent, marqueeContainer);
+
+  type AppendChildToNode = (parentNode: Node) => (childNode: Node) => void;
+  const appendChildToNode: AppendChildToNode = function appendChildToNode(parentNode) {
+   return (childNode) => parentNode.appendChild(childNode);
+  };
+
+  affectTargetChildNodes(targetChildNodes).forEach(appendChildToNode(affectedElementParent));
 
   insertCSS(`
   .marquee-container-parent {
@@ -88,7 +103,7 @@ import elementEffectHandler from './element-effect-handler';
     `);
 
   console.log(marqueeContainer.computedStyleMap().get('animation-duration'));
-  const mcWidth: number = marqueeContainer.getBoundingClientRect().width;
+  const mcWidth: number = Math.round(marqueeContainer.getBoundingClientRect().width);
   console.log(mcWidth);
 
   insertCSS(`
@@ -106,5 +121,14 @@ import elementEffectHandler from './element-effect-handler';
   serialNumber += 1;
  };
 
- generalElementEffectifier(generalElementEffectifierCallback, 'marqueeifier', 'marquee-container-parent');
-}());
+ generalElementEffectifier(
+  generalElementEffectifierCallback,
+  'marqueeifier',
+  'marquee-container-parent',
+  (element) => {
+   // @ts-expect-error original display is an attribute that I add to the element specifically to use when I undo the animation
+   const originalDisplay: string = element['original-display'];
+   undoInlineInlineBlock(element as HTMLElement, originalDisplay);
+  },
+ );
+})();

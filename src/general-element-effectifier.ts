@@ -4,6 +4,7 @@ export default function generalElementEffectifier(
  callback: (target: EventTarget, targetChildNodes: ChildNode[]) => void,
  scriptName: string,
  targetClassName: string,
+ undoCallback?: (element: Element) => void,
 ) {
  const effectifierHandler: (event: Event) => void = function effectifierHandler(event: Event) {
   event.preventDefault();
@@ -53,6 +54,8 @@ export default function generalElementEffectifier(
 
   const element: Element = target as Element;
   if (!element.classList) throw new Error(`expected the element ${element} to be an element and have classList`);
+
+  undoCallback(element);
 
   element.classList.remove(targetClassName);
 

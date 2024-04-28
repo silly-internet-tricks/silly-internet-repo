@@ -1,0 +1,6 @@
+{
+  "typescript.preferences.quoteStyle": "single",
+  "[typescript]": {
+    "editor.tabSize": 1
+  }
+}

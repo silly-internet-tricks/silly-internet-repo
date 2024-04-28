@@ -37,6 +37,7 @@
     "tsx": "never"
    }
   ],
+  "wrap-iife": "off",
   "no-plusplus": [
    "error",
    {
