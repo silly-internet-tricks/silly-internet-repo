@@ -21,6 +21,10 @@
 .sidebar .item {
   margin: 0;
 }
+
+canvas + .sidebar .items {
+  max-width: none;
+}
 `;
 
  const style: Element = document.createElement('style');
