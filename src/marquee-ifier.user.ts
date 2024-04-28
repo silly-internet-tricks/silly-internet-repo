@@ -65,15 +65,14 @@ import elementEffectHandler from './element-effect-handler';
   target,
   targetChildNodes,
  ) => {
-  const marqueeContainer: HTMLElement = document.createElement('div');
-  const affectedElementParent: HTMLElement = affectTarget(target, marqueeContainer);
-  affectTargetChildNodes(targetChildNodes)
-   .forEach((node) => affectedElementParent.appendChild(node));
-
   const mcpWidth: number = target.getBoundingClientRect().width;
   console.log(mcpWidth);
   // set an element style on the marquee container parent to prevent it from getting wider than it was.
   target.style.setProperty('width', `${mcpWidth}px`);
+  const marqueeContainer: HTMLElement = document.createElement('div');
+  const affectedElementParent: HTMLElement = affectTarget(target, marqueeContainer);
+  affectTargetChildNodes(targetChildNodes)
+   .forEach((node) => affectedElementParent.appendChild(node));
 
   insertCSS(`
   .marquee-container-parent {
@@ -93,8 +92,6 @@ import elementEffectHandler from './element-effect-handler';
   console.log(mcWidth);
 
   insertCSS(`
-  
-
   @keyframes marquee-${serialNumber} {
    from {
     transform: translateX(${mcpWidth}px);
