@@ -60,7 +60,7 @@ import elementEffectHandler from './element-effect-handler';
   elementEffectHandler(childNodes as ChildNode[], textNodeHandler, affectElement)
  );
 
- type GeneralElementEffectifierCallback = (t: HTMLElement, n: Node[]) => void;
+ type GeneralElementEffectifierCallback = (target: HTMLElement, targetChildNodes: Node[]) => void;
  const generalElementEffectifierCallback: GeneralElementEffectifierCallback = (
   target,
   targetChildNodes,
@@ -73,7 +73,7 @@ import elementEffectHandler from './element-effect-handler';
   const mcpWidth: number = target.getBoundingClientRect().width;
   console.log(mcpWidth);
   // set an element style on the marquee container parent to prevent it from getting wider than it was.
-  affectedElementParent.style.setProperty('width', `${mcpWidth}px`);
+  target.style.setProperty('width', `${mcpWidth}px`);
 
   insertCSS(`
   .marquee-container-parent {
