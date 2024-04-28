@@ -94,6 +94,9 @@ export default function holdKeyAndClick(handlers: Handlers, scriptName: string) 
    if (code === `Key${keys[i].toLocaleUpperCase()}`) {
     document.addEventListener('click', handler);
     document.addEventListener('click', preventDefaultHandler);
+    console.log('just added event listner', handler);
+    console.log('just added event listener', preventDefaultHandler);
+
     if (!holding) {
      addBorder({ target: hoverTarget });
     }
