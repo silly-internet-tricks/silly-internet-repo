@@ -19,7 +19,9 @@ export default function generalTextEffectifier(
    newChildNodes.push(new Text(' '));
   }
 
-  return affectText(textNode.textContent);
+  const affectedNodes: Node[] = affectText(textNode.textContent);
+  console.log(affectedNodes);
+  return affectedNodes;
  };
 
  type ChildNodeEffectifier = (target: EventTarget, childNodes: ChildNode[]) => Node[];
