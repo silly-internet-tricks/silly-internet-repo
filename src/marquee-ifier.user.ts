@@ -70,6 +70,11 @@ import elementEffectHandler from './element-effect-handler';
   affectTargetChildNodes(targetChildNodes)
    .forEach((node) => affectedElementParent.appendChild(node));
 
+  const mcpWidth: number = target.getBoundingClientRect().width;
+  console.log(mcpWidth);
+  // set an element style on the marquee container parent to prevent it from getting wider than it was.
+  affectedElementParent.style.setProperty('width', `${mcpWidth}px`);
+
   insertCSS(`
   .marquee-container-parent {
     overflow: hidden;
@@ -83,13 +88,13 @@ import elementEffectHandler from './element-effect-handler';
   }
     `);
 
-  const mcpWidth: number = target.getBoundingClientRect().width;
-  console.log(mcpWidth);
   console.log(marqueeContainer.computedStyleMap().get('animation-duration'));
   const mcWidth: number = marqueeContainer.getBoundingClientRect().width;
   console.log(mcWidth);
 
   insertCSS(`
+  
+
   @keyframes marquee-${serialNumber} {
    from {
     transform: translateX(${mcpWidth}px);
