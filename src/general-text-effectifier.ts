@@ -11,7 +11,14 @@ export default function generalTextEffectifier(
   newChildNodes: ChildNode[],
   prevNodeWasText: boolean,
  ) => {
-  if (prevNodeWasText) newChildNodes.push(new Text(' '));
+  console.log(textNode);
+  console.log(newChildNodes);
+  console.log(prevNodeWasText);
+  console.log(textNode.textContent);
+  if (prevNodeWasText) {
+   newChildNodes.push(new Text(' '));
+  }
+
   return affectText(textNode.textContent);
  };
 
