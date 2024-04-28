@@ -54,9 +54,9 @@ import('@octokit/core').then(({ Octokit }) => {
       Object.values(requestOptions.files).forEach((file) => {
        file.content = file.content.replace(/\/\/ @version {6}.*/, `// @version      ${new Date().toISOString()}`);
       });
-     }
 
-     octokit.request(`PATCH /gists/${requestOptions.gist_id}`, requestOptions);
+      octokit.request(`PATCH /gists/${requestOptions.gist_id}`, requestOptions);
+     }
     } catch (e) {
      console.error(e);
     }
