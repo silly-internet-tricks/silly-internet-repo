@@ -1,63 +1,103 @@
 {
-  "env": {
-    "browser": true,
-    "es2021": true
-  },
-  "extends": [
-    "airbnb-base",
-    "plugin:jest/recommended",
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/stylistic"
+ "settings": {
+  "import/resolver": {
+   "node": {
+    "extensions": [
+     ".js",
+     ".jsx",
+     ".ts",
+     ".tsx"
+    ]
+   }
+  }
+ },
+ "env": {
+  "browser": true,
+  "es2021": true
+ },
+ "extends": [
+  "airbnb-base",
+  "plugin:jest/recommended",
+  "eslint:recommended",
+  "plugin:@typescript-eslint/recommended",
+  "plugin:@typescript-eslint/stylistic"
+ ],
+ "parser": "@typescript-eslint/parser",
+ "parserOptions": {
+  "ecmaVersion": 2021
+ },
+ "rules": {
+  "import/extensions": [
+   "error",
+   "ignorePackages",
+   {
+    "js": "never",
+    "jsx": "never",
+    "ts": "never",
+    "tsx": "never"
+   }
   ],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaVersion": 2021
-  },
-  "rules": {
-    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
-    "no-console": 0,
-    "max-len": [
-      "error",
-      100,
-      2,
-      {
-        "ignoreUrls": true,
-        "ignoreComments": true,
-        "ignoreRegExpLiterals": true,
-        "ignoreStrings": true,
-        "ignoreTemplateLiterals": true
-      }
-    ],
-    "max-statements-per-line": "error",
-    "indent": ["error", 1],
-    "no-param-reassign": "off",
-    "@typescript-eslint/no-inferrable-types": 0,
-    "@typescript-eslint/typedef":  [
-      "error",
-      {
-          "variableDeclaration": true
-      }
+  "no-plusplus": [
+   "error",
+   {
+    "allowForLoopAfterthoughts": true
+   }
+  ],
+  "no-console": 0,
+  "max-len": [
+   "error",
+   100,
+   2,
+   {
+    "ignoreUrls": true,
+    "ignoreComments": true,
+    "ignoreRegExpLiterals": true,
+    "ignoreStrings": true,
+    "ignoreTemplateLiterals": true
+   }
+  ],
+  "max-statements-per-line": "error",
+  "indent": [
+   "error",
+   1
+  ],
+  "no-param-reassign": "off",
+  "@typescript-eslint/no-inferrable-types": 0,
+  "@typescript-eslint/typedef": [
+   "error",
+   {
+    "variableDeclaration": true
+   }
   ]
+ },
+ "plugins": [
+  "@typescript-eslint",
+  "jest"
+ ],
+ "overrides": [
+  {
+   "files": [
+    "*.ts",
+    "*.mts",
+    "*.cts",
+    "*.mjs",
+    "*.cjs"
+   ]
   },
-  "plugins": [
-    "@typescript-eslint",
-    "jest"
-  ],
-  "overrides": [
-    { "files": ["*.ts", "*.mts", "*.cts", "*.mjs", "*.cjs"] },
-    {
-      "files": ["**/*.user.js"],
-      "env": {
-        "greasemonkey": true
-      }
-    }
-  ],
-  "ignorePatterns": [
-    "**/dist/**/*",
-    "**/node_modules/**/*",
-    "**/lc/**/*",
-    "**/leetcode/**/*",
-    "**/worldometer/example-chart-options.js"
-  ]
+  {
+   "files": [
+    "**/*.user.js"
+   ],
+   "env": {
+    "greasemonkey": true
+   }
+  }
+ ],
+ "ignorePatterns": [
+  "**/dist/**/*",
+  "**/node_modules/**/*",
+  "**/lc/**/*",
+  "**/leetcode/**/*",
+  "**/worldometer/example-chart-options.js"
+ ]
 }

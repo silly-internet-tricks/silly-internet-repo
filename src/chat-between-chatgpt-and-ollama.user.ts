@@ -27,18 +27,18 @@ import insertCSS from './insert-css';
 }
 `);
 
- const desiredOllamaModel = 'llama3:latest';
- const ollamaAddress = 'http://localhost:11434/';
- const ollamaText = document.createElement('div');
+ const desiredOllamaModel: string = 'llama3:latest';
+ const ollamaAddress: string = 'http://localhost:11434/';
+ const ollamaText: Element = document.createElement('div');
  ollamaText.id = 'ollama-text';
- const ollamaButton = document.createElement('button');
+ const ollamaButton: Element = document.createElement('button');
  ollamaButton.appendChild(new Text('ask ollama'));
  ollamaText.appendChild(ollamaButton);
  document.body.appendChild(ollamaText);
  ollamaButton.addEventListener('click', () => {
-  const chatMessages = [...document.querySelectorAll('[data-message-author-role]')];
+  const chatMessages: Element[] = [...document.querySelectorAll('[data-message-author-role]')];
 
-  const requestOptions = {
+  const requestOptions: GmXmlHttpRequestRequestOptions = {
    url: `${ollamaAddress}api/chat`,
    method: 'POST',
    responseType: 'stream',
@@ -51,21 +51,29 @@ import insertCSS from './insert-css';
    }),
    fetch: true,
    onloadstart: async ({ response }) => {
-    const responseParagraph = document.createElement('p');
+    const responseParagraph: Element = document.createElement('p');
     ollamaText.appendChild(responseParagraph);
     // eslint-disable-next-line no-restricted-syntax
     for await (const chunk of response) {
-     const responseJSON = JSON.parse([...chunk].map((b) => String.fromCharCode(b)).join(''));
+      interface OllamaChatApiResponseJson {
+       message: {
+         content: string
+       }
+      }
 
-     const span = document.createElement('span');
-     span.appendChild(new Text(responseJSON.message.content));
-     responseParagraph.appendChild(span);
+      const responseJSON: OllamaChatApiResponseJson = JSON.parse([...chunk].map((b) => String.fromCharCode(b)).join(''));
+
+      const span: Element = document.createElement('span');
+
+      span.appendChild(new Text(responseJSON.message.content));
+      responseParagraph.appendChild(span);
     }
    },
   };
 
   console.log(requestOptions);
 
+  // @ts-expect-error GM is defined as part of the API for the tampermonkey chrome extension
   GM.xmlHttpRequest(requestOptions);
  });
 }());

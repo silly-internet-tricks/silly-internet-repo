@@ -13,23 +13,24 @@
 // ==/UserScript==
 
 (function findContextuallyCloseWords() {
- const div = document.createElement('div');
+ const div: Element = document.createElement('div');
 
- const insertCSS = function insertCSS(css) {
-  const style = document.createElement('style');
+ const insertCSS: (css: string) => void = function insertCSS(css) {
+  const style: Element = document.createElement('style');
   style.appendChild(new Text(css));
   document.body.appendChild(style);
  };
 
- const insertContentElement = function insertContentElement(tagName, classes, text = '', parentNode = document.body) {
-  const element = document.createElement(tagName);
+ const insertContentElement: (tagName: string, classes: string[], text?: string, parentNode?: Element) => Element = function insertContentElement(tagName, classes, text = '', parentNode = document.body) {
+  const element: Element = document.createElement(tagName);
   classes.forEach((c) => element.classList.add(c));
   element.appendChild(new Text(text));
   parentNode.appendChild(element);
   return element;
  };
 
- const fetchThatRejectsWhenNotOkay = function fetchThatRejectsWhenNotOkay(url) {
+ const fetchThatRejectsWhenNotOkay:
+ (url: string) => Promise<Response> = function fetchThatRejectsWhenNotOkay(url) {
   return new Promise((resolve, reject) => {
    fetch(url)
     .then((r) => {
@@ -39,14 +40,17 @@
   });
  };
 
- const guess = (gameNumber, word) => (
+ // TODO: maybe define the object that comes back from contexto api ????
+ const guess:
+ (gameNumber: number, word: string) => Promise<{ distance: number }> = (gameNumber, word) => (
   fetchThatRejectsWhenNotOkay(`https://api.contexto.me/machado/en/game/${gameNumber}/${word}`)
  ).then((r) => r.json());
 
- const seeContextuallyCloseWords = function seeContextuallyCloseWords(word) {
-  return Promise.all(new Array(500).fill().map((_, i) => guess(i, word)))
+ const seeContextuallyCloseWords:
+ (word: string) => Promise<unknown[]> = function seeContextuallyCloseWords(word) {
+  return Promise.all(new Array(500).fill(undefined).map((_, i) => guess(i, word)))
    .then((guesses) => {
-    const sortedGuesses = guesses.map((e, i) => (
+    const sortedGuesses: { distance: number, gameNumber: number }[] = guesses.map((e, i) => (
      { ...e, gameNumber: i }
     )).sort((b, a) => b.distance - a.distance);
 
@@ -55,7 +59,7 @@
     div.innerHTML = '';
     insertContentElement('p', ['josh'], `distance: ${distance} game number: ${gameNumber}`, div);
 
-    return Promise.all(new Array(30).fill().map((_, i) => (
+    return Promise.all(new Array(30).fill(undefined).map((_, i) => (
      fetch(`https://api.contexto.me/machado/en/tip/${gameNumber}/${i}`)
       .then((r) => r.json())
     )));
@@ -74,22 +78,23 @@
   }
   `);
 
- const input = insertContentElement('input', ['josh']);
+ const input: HTMLInputElement = insertContentElement('input', ['josh']) as HTMLInputElement;
 
  insertContentElement('button', ['josh'], 'click me').addEventListener('click', ({ target }) => {
-  target.disabled = true;
+  const button: HTMLButtonElement = target as HTMLButtonElement;
+  button.disabled = true;
   seeContextuallyCloseWords(input.value)
    .then((contextuallyCloseWords) => contextuallyCloseWords.forEach(({ word }) => {
     insertContentElement('p', ['josh'], word, div);
    }))
    .then(() => {
     // TODO: should we consider doing something else?
-    target.disabled = false;
+    button.disabled = false;
    })
    .catch((r) => {
     div.innerHTML = '';
     insertContentElement('p', ['josh', 'josh-error'], `error: ${r.status} (on word ${input.value})`, div);
-    target.disabled = false;
+    button.disabled = false;
    });
  });
 

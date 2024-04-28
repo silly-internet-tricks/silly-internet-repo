@@ -17,7 +17,7 @@ import generalElementEffectifier from './general-element-effectifier';
 import elementEffectHandler from './element-effect-handler';
 
 (function marqueeifier() {
- let serialNumber = 0;
+ let serialNumber: number = 0;
  // 1 add the element to be animated, as the only child of the element being marqueeified
  // 2 add the content to the element from 1
  // 3 flatten the content from 2 to one line of text
@@ -25,40 +25,48 @@ import elementEffectHandler from './element-effect-handler';
  // 5 use the width from 4 to define the animation keyframes
  // 6 add the animation styling to the element from 1
 
- const affectElement = function affectElement(freshNode) {
-  freshNode.style.setProperty('text-wrap', 'nowrap');
-  freshNode.style.setProperty('width', 'fit-content');
+ type AffectElement = (n: HTMLElement) => HTMLElement;
+ const affectElement: AffectElement = function affectElement(freshElement: HTMLElement) {
+  freshElement.style.setProperty('text-wrap', 'nowrap');
+  freshElement.style.setProperty('width', 'fit-content');
 
   // NOTE: check the capitalization on tagNames.
-  if (freshNode.tagName.toLocaleLowerCase() === 'br') {
-   freshNode.style.setProperty('display', 'none');
+  if (freshElement.tagName.toLocaleLowerCase() === 'br') {
+   freshElement.style.setProperty('display', 'none');
   }
 
-  return freshNode;
+  return freshElement;
  };
 
- const affectTarget = (target, marqueeContainer) => {
+ type AffectTarget = (t: HTMLElement, m: HTMLElement) => HTMLElement;
+ const affectTarget: AffectTarget = (target, marqueeContainer) => {
   marqueeContainer.classList.add('marquee-container');
   marqueeContainer.style.setProperty('animation-name', `marquee-${serialNumber}`);
   target.appendChild(marqueeContainer);
   return marqueeContainer;
  };
 
- const textNodeHandler = function textNodeHandler(node) {
-  const span = document.createElement('span');
+ type TextNodeHandler = (n: Node) => HTMLElement[];
+ const textNodeHandler: TextNodeHandler = function textNodeHandler(node) {
+  const span: HTMLElement = document.createElement('span');
   span.style.setProperty('text-wrap', 'nowrap');
   span.style.setProperty('width', 'fit-content');
   span.appendChild(new Text(node.textContent));
   return [span];
  };
 
- const affectTargetChildNodes = (childNodes) => (
-  elementEffectHandler(childNodes, textNodeHandler, affectElement)
+ type AffectTargetChildNodes = (n: Node[]) => Node[];
+ const affectTargetChildNodes: AffectTargetChildNodes = (childNodes) => (
+  elementEffectHandler(childNodes as ChildNode[], textNodeHandler, affectElement)
  );
 
- const generalElementEffectifierCallback = (target, targetChildNodes) => {
-  const marqueeContainer = document.createElement('div');
-  const affectedElementParent = affectTarget(target, marqueeContainer);
+ type GeneralElementEffectifierCallback = (t: HTMLElement, n: Node[]) => void;
+ const generalElementEffectifierCallback: GeneralElementEffectifierCallback = (
+  target,
+  targetChildNodes,
+ ) => {
+  const marqueeContainer: HTMLElement = document.createElement('div');
+  const affectedElementParent: HTMLElement = affectTarget(target, marqueeContainer);
   affectTargetChildNodes(targetChildNodes)
    .forEach((node) => affectedElementParent.appendChild(node));
 
@@ -75,10 +83,10 @@ import elementEffectHandler from './element-effect-handler';
   }
     `);
 
-  const mcpWidth = target.getBoundingClientRect().width;
+  const mcpWidth: number = target.getBoundingClientRect().width;
   console.log(mcpWidth);
   console.log(marqueeContainer.computedStyleMap().get('animation-duration'));
-  const mcWidth = marqueeContainer.getBoundingClientRect().width;
+  const mcWidth: number = marqueeContainer.getBoundingClientRect().width;
   console.log(mcWidth);
 
   insertCSS(`

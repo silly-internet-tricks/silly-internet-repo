@@ -14,7 +14,7 @@
 
 import generalAnimationifier from './general-animation-ifier';
 
-const blinkAnimationClass = 'blink-animation';
+const blinkAnimationClass: string = 'blink-animation';
 
 (function blinkify() {
  generalAnimationifier(blinkAnimationClass, `

@@ -13,7 +13,7 @@
 // ==/UserScript==
 
 (function showMoreItems() {
- const css = `
+ const css: string = `
 #__layout canvas ~ .sidebar {
   width: 100%;
 }
@@ -23,7 +23,7 @@
 }
 `;
 
- const style = document.createElement('style');
+ const style: Element = document.createElement('style');
  style.appendChild(new Text(css));
  document.body.appendChild(style);
 }());

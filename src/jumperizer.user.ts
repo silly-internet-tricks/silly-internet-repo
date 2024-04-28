@@ -42,9 +42,9 @@ import insertCSS from './insert-css';
 }`);
 
  generalTextEffectifier((text) => {
-  const letters = [...text.trim().replace(/\s+/g, ' ')];
+  const letters: string[] = [...text.trim().replace(/\s+/g, ' ')];
   return letters.map((letter) => {
-   const span = document.createElement('span');
+   const span: HTMLElement = document.createElement('span');
    span.classList.add('jumping-bean');
    span.style.setProperty('animation-delay', `${Math.floor(Math.random() * 10000)}ms`);
    if (letter === ' ') {

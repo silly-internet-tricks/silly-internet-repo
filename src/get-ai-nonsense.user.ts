@@ -28,18 +28,19 @@ import insertCSS from './insert-css';
 }
   `);
 
- const ollamaAddress = 'http://localhost:11434/';
- const ollamaDiv = document.createElement('div');
+ const ollamaAddress: string = 'http://localhost:11434/';
+ const ollamaDiv: HTMLElement = document.createElement('div');
  ollamaDiv.id = 'ollama';
  document.body.appendChild(ollamaDiv);
 
- let displayOllamaDiv = true;
+ let displayOllamaDiv: boolean = true;
 
  document.addEventListener('keydown', ({ code }) => {
   if (code === 'KeyL') {
-   const selectedText = window.getSelection().toString();
+   const selectedText: string = window.getSelection().toString();
    console.log(selectedText);
-   GM.xmlHttpRequest({
+
+   const requestOptions: GmXmlHttpRequestRequestOptions = {
     url: `${ollamaAddress}api/generate`,
     method: 'POST',
     responseType: 'stream',
@@ -50,17 +51,20 @@ import insertCSS from './insert-css';
      // Next time I'll try it a different way, but I'm ignoring the linter this time
      // eslint-disable-next-line no-restricted-syntax
      for await (const chunk of response) {
-      const responseJSON = JSON.parse([...chunk].map((b) => String.fromCharCode(b)).join(''));
+      const responseJSON: {response: string} = JSON.parse([...chunk].map((b) => String.fromCharCode(b)).join(''));
       console.log(responseJSON);
-      const span = document.createElement('span');
+      const span: Element = document.createElement('span');
       span.appendChild(new Text(responseJSON.response));
       ollamaDiv.appendChild(span);
      }
 
-     const hr = document.createElement('hr');
+     const hr: Element = document.createElement('hr');
      ollamaDiv.appendChild(hr);
     },
-   });
+   };
+
+   // @ts-expect-error GM is defined as part of the API for the tampermonkey chrome extension
+   GM.xmlHttpRequest(requestOptions);
   } else if (code === 'KeyH') {
    if (displayOllamaDiv) {
     ollamaDiv.style.setProperty('display', 'none');

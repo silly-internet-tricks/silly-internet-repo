@@ -14,7 +14,7 @@
 
 import generalAnimationifier from './general-animation-ifier';
 
-const breatheAnimationClass = 'breathe-animation';
+const breatheAnimationClass: string = 'breathe-animation';
 
 (function breatheify() {
  generalAnimationifier(breatheAnimationClass, `
