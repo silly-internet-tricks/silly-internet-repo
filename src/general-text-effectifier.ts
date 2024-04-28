@@ -28,10 +28,13 @@ export default function generalTextEffectifier(
 
  const childNodeEffectifier: ChildNodeEffectifier = function childNodeEffectifier(target, childNodes) {
   // we probably have to append the childNodes to the target here.
-  childNodes.forEach((childNode) => {
+  const newChildNodes: Node[] = elementEffectHandler(childNodes, textNodeHandler, (e) => e);
+  console.log(newChildNodes);
+  newChildNodes.forEach((childNode) => {
    target.appendChild(childNode);
   });
-  return elementEffectHandler(childNodes, textNodeHandler, (e) => e);
+
+  return newChildNodes;
  };
 
  generalElementEffectifier(
