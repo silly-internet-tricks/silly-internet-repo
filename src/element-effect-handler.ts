@@ -32,6 +32,9 @@ export default function elementEffectHandler(
    );
 
    freshChildNodes.forEach((freshChildNode) => {
+    console.log('now placing the fresh child node on the fresh node');
+    console.log(freshNode);
+    console.log('freshChildNode');
     freshNode.appendChild(freshChildNode);
    });
 
