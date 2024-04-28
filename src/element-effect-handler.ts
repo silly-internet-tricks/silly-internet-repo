@@ -11,7 +11,6 @@ export default function elementEffectHandler(
    const textNode: Text = node as Text;
    textNodeHandler(textNode, newChildNodes, prevNodeWasText).forEach((affectedNode: Text) => {
     newChildNodes.push(affectedNode);
-    console.log(newChildNodes);
    });
 
    prevNodeWasText = true;
@@ -36,9 +35,6 @@ export default function elementEffectHandler(
    );
 
    freshChildNodes.forEach((freshChildNode) => {
-    console.log('now placing the fresh child node on the fresh node');
-    console.log(freshNode);
-    console.log(freshChildNode);
     freshNode.appendChild(freshChildNode);
    });
 

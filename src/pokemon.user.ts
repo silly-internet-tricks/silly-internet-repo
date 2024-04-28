@@ -68,7 +68,6 @@ let showCards: boolean = true;
     ...new Set(selected.match(pokemonMegaRegExp).map((e) => e.toLocaleLowerCase())),
    ];
 
-   console.log(pokemonNames);
    if (pokemonNames) {
     const urls: string[] = pokemonNames.map(
      (pokemonName) => `https://pokeapi.co/api/v2/pokemon-species/${pokemonName}`,
@@ -125,8 +124,6 @@ let showCards: boolean = true;
      const pokeResponseGenerator: PokeResponseGenerator = (async function* pokeResponseGenerator() {
       // eslint-disable-next-line no-restricted-syntax
       for (const url of urls) {
-       console.log(url);
-
        // if we have previously yielded a response for this pokemon (urls[i])
        // then we expect to not yield another response
        // for the same pokemon ever again
@@ -162,8 +159,6 @@ let showCards: boolean = true;
      console.error('caught an error trying to make gm xml http request! 🧟');
      console.error(e);
     }
-   } else {
-    console.log(`${selected} is not a pokemon name from the pokemon mega regexp 😡`);
    }
   } else if (code === 'KeyH') {
    if (showCards) {

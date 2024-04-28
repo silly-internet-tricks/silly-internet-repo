@@ -38,7 +38,6 @@ import insertCSS from './insert-css';
  document.addEventListener('keydown', ({ code }) => {
   if (code === 'KeyL') {
    const selectedText: string = window.getSelection().toString();
-   console.log(selectedText);
 
    const requestOptions: GmXmlHttpRequestRequestOptions = {
     url: `${ollamaAddress}api/generate`,
@@ -54,7 +53,7 @@ import insertCSS from './insert-css';
       const responseJSON: { response: string } = JSON.parse(
        [...chunk].map((b) => String.fromCharCode(b)).join(''),
       );
-      console.log(responseJSON);
+
       const span: Element = document.createElement('span');
       span.appendChild(new Text(responseJSON.response));
       ollamaDiv.appendChild(span);

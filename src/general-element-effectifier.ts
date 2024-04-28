@@ -7,7 +7,6 @@ export default function generalElementEffectifier(
  undoCallback?: (element: Element) => void,
 ) {
  const effectifierHandler: (event: Event) => void = function effectifierHandler(event: Event) {
-  console.log('this is the top of the effectifier handler');
   event.preventDefault();
   const { target } = event;
   const element: Element = target as Element;
@@ -15,7 +14,6 @@ export default function generalElementEffectifier(
    element.classList.add(targetClassName);
   }
 
-  console.log(element);
   // if (!element['target-child-nodes']) {
   const targetChildNodes: ChildNode[] = [...element.childNodes];
 
@@ -23,14 +21,6 @@ export default function generalElementEffectifier(
   element['target-child-nodes'] = targetChildNodes;
 
   element.innerHTML = '';
-  console.log('now at the general element effectifier callback');
-  console.log(element);
-  console.log(targetChildNodes);
-  const callbackReturnValue: unknown = callback(element, targetChildNodes);
-  console.log(callbackReturnValue);
-  // callbackReturnValue.forEach();
-  console.log(element);
-  console.log(targetChildNodes);
 
   document.removeEventListener('click', effectifierHandler);
   // }

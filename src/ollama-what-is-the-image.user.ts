@@ -43,21 +43,17 @@ import insertCSS from './insert-css';
  let displayOllamaDiv: boolean = true;
 
  const clickEventListener: (event: Event) => void = function clickEventListener(event) {
-  console.log(event);
   event.preventDefault();
   event.stopPropagation();
   const { target } = event;
-  console.log(target);
   const element: Element = target as Element;
   if (!element.tagName) {
    throw new Error(`expected the event target ${element} to be an Element with a tagName`);
   }
 
-  console.log(element.tagName);
   // note: be cautious with the capitalization on tagName
   if (element.tagName.toLocaleLowerCase() === 'img') {
    const imgElement: HTMLImageElement = element as HTMLImageElement;
-   console.log(imgElement.src);
 
    const imageRequestOptions: GmXmlHttpRequestRequestOptions = {
     url: imgElement.src,
@@ -88,7 +84,7 @@ import insertCSS from './insert-css';
        const responseJSON: { response: string } = JSON.parse(
         [...chunk].map((b) => String.fromCharCode(b)).join(''),
        );
-       console.log(responseJSON);
+
        const span: Element = document.createElement('span');
        span.appendChild(new Text(responseJSON.response));
        ollamaDiv.appendChild(span);

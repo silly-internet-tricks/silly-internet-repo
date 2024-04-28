@@ -68,7 +68,6 @@ import getCssKeywordValue from './getCssKeywordValue';
   targetChildNodes,
  ) => {
   const mcpWidth: number = Math.round(marqueeContainerParent.getBoundingClientRect().width);
-  console.log(mcpWidth);
   // set an element style on the marquee container parent to prevent it from getting wider than it was.
   marqueeContainerParent.style.setProperty('width', `${mcpWidth}px`);
 
@@ -100,9 +99,7 @@ import getCssKeywordValue from './getCssKeywordValue';
   }
     `);
 
-  console.log(marqueeContainer.computedStyleMap().get('animation-duration'));
   const mcWidth: number = Math.round(marqueeContainer.getBoundingClientRect().width);
-  console.log(mcWidth);
 
   insertCSS(`
   @keyframes marquee-${serialNumber} {

@@ -52,7 +52,6 @@
      return;
     }
 
-    console.log(nodeText);
     const binaryRegExpPattern: RegExp = /[01]{8}( ?[01]{8})*/;
     const translatedBinary: RegExpMatchArray | null = nodeText.match(binaryRegExpPattern);
     if (translatedBinary === null) {
@@ -85,7 +84,6 @@
 
   // @ts-expect-error: this is a property I dynamically add to the element in order to access it later
   const targetChildNodes: Node[] = target['target-child-nodes'];
-  console.log(targetChildNodes);
   if (targetChildNodes) {
    target.innerHTML = '';
    targetChildNodes.forEach((node) => target.appendChild(node));
