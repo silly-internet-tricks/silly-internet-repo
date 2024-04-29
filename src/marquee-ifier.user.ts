@@ -16,7 +16,7 @@ import insertCSS from './insert-css';
 import generalElementEffectifier from './general-element-effectifier';
 import elementEffectHandler from './element-effect-handler';
 import { makeInlineInlineBlock, undoInlineInlineBlock } from './make-inline-inline-block';
-import getCssKeywordValue from './getCssKeywordValue';
+import getCssKeywordValue from './get-css-keyword-value';
 
 (function marqueeifier() {
  let serialNumber: number = 0;
