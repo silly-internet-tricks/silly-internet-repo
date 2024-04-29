@@ -4,7 +4,7 @@
   "description": "",
   "private": true,
   "scripts": {
-    "test": "",
+    "test": "jest",
     "lint": "./node_modules/.bin/eslint --fix src/*.ts src/**/*.ts",
     "bundle": "node bundle-build.js",
     "build": "tsc && npx webpack && node bundle-postprocessor.js",
