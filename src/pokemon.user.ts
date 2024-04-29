@@ -9,6 +9,9 @@
 // @require      https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js
 // @grant        GM_xmlhttpRequest
 // @connect      pokeapi.co
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/pokemon.user.ts
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/8425fd5111b59067d0a6acd4c0ffe318/raw/pokemon.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/8425fd5111b59067d0a6acd4c0ffe318/raw/pokemon.meta.js
 // ==/UserScript==
 
 import insertCSS from './insert-css';

@@ -11,6 +11,9 @@
 // @connect      localhost
 // @connect      static.tvtropes.org
 // @connect      upload.wikimedia.org
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/ollama-what-is-the-image.user.ts
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/959735549921e3bfe249c19f58900e82/raw/ollama-what-is-the-image.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/959735549921e3bfe249c19f58900e82/raw/ollama-what-is-the-image.meta.js
 // ==/UserScript==
 
 import insertCSS from './insert-css';
