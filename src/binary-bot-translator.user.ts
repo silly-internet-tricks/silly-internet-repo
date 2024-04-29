@@ -20,7 +20,9 @@
   if (!target) throw new Error(`${target} is expected to be truthy`);
   if (!target.nodeType) throw new Error(`${target} is expected to be a Node`);
   if (!target.tagName) throw new Error(`${target} is expected to be an Element`);
-  const targetChildNodes: NodeListOf<ChildNode> = target.childNodes;
+
+  // the reason this has to be spread is so that we get the original, unmutated, array of child nodes
+  const targetChildNodes: ChildNode[] = [...target.childNodes];
   target.innerHTML = '';
 
   // @ts-expect-error: this is a property I dynamically add to the element in order to access it later
