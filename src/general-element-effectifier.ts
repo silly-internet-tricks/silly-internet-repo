@@ -21,7 +21,7 @@ export default function generalElementEffectifier(
   element['target-child-nodes'] = targetChildNodes;
 
   element.innerHTML = '';
-
+  callback(element, targetChildNodes);
   document.removeEventListener('click', effectifierHandler);
   // }
  };
