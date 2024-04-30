@@ -2,3 +2,4 @@ eslint-config
 node_modules/
 dist/
 ts-compiled/
+src/example.html
