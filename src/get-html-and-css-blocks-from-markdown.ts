@@ -8,7 +8,7 @@ export default function getHtmlAndCssBlocksFromMarkdown(markdown: string) {
  while (remainingHtml.match(/```html/)) {
   const startDelimiter: string = '```html';
   const endDelimiter: string = '```';
-  const startSubstringIndex: number = remainingHtml.indexOf(startDelimiter + startDelimiter.length);
+  const startSubstringIndex: number = remainingHtml.indexOf(startDelimiter) + startDelimiter.length;
   if (startSubstringIndex !== -1) {
    const startSubstring: string = remainingHtml.substring(startSubstringIndex);
    const subString: string = startSubstring.substring(0, startSubstring.indexOf(endDelimiter));
@@ -23,7 +23,7 @@ export default function getHtmlAndCssBlocksFromMarkdown(markdown: string) {
  while (remainingCss.match(/```css/)) {
   const startDelimiter: string = '```css';
   const endDelimiter: string = '```';
-  const startSubstringIndex: number = remainingCss.indexOf(startDelimiter + startDelimiter.length);
+  const startSubstringIndex: number = remainingCss.indexOf(startDelimiter) + startDelimiter.length;
   if (startSubstringIndex !== -1) {
    const startSubstring: string = remainingCss.substring(startSubstringIndex);
    const subString: string = startSubstring.substring(0, startSubstring.indexOf(endDelimiter));
