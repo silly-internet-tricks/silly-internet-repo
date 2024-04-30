@@ -14,6 +14,7 @@
 // ==/UserScript==
 
 import insertCSS from './insert-css';
+import getOllamaGeneratedResponse from './get-ollama-generated-response';
 
 (function getAINonsense() {
  insertCSS(`
@@ -32,43 +33,25 @@ import insertCSS from './insert-css';
   `);
 
  const ollamaAddress: string = 'http://localhost:11434/';
+ const model: string = 'llama3:latest';
  const ollamaDiv: HTMLElement = document.createElement('div');
  ollamaDiv.id = 'ollama';
  document.body.appendChild(ollamaDiv);
 
  let displayOllamaDiv: boolean = true;
 
- document.addEventListener('keydown', ({ code }) => {
+ document.addEventListener('keydown', async ({ code }) => {
   if (code === 'KeyL') {
    const selectedText: string = window.getSelection().toString();
 
-   const requestOptions: GmXmlHttpRequestRequestOptions = {
-    url: `${ollamaAddress}api/generate`,
-    method: 'POST',
-    responseType: 'stream',
-    data: JSON.stringify({ model: 'llama3:latest', prompt: selectedText }),
-    fetch: true,
-    onloadstart: async ({ response }) => {
-     // I think this is the idiomatic way to usually handle streams.
-     // Next time I'll try it a different way, but I'm ignoring the linter this time
-     // eslint-disable-next-line no-restricted-syntax
-     for await (const chunk of response) {
-      const responseJSON: { response: string } = JSON.parse(
-       [...chunk].map((b) => String.fromCharCode(b)).join(''),
-      );
+   await getOllamaGeneratedResponse(ollamaAddress, model, selectedText, (response) => {
+    const span: Element = document.createElement('span');
+    span.appendChild(new Text(response));
+    ollamaDiv.appendChild(span);
+   });
 
-      const span: Element = document.createElement('span');
-      span.appendChild(new Text(responseJSON.response));
-      ollamaDiv.appendChild(span);
-     }
-
-     const hr: Element = document.createElement('hr');
-     ollamaDiv.appendChild(hr);
-    },
-   };
-
-   // @ts-expect-error GM is defined as part of the API for the tampermonkey chrome extension
-   GM.xmlHttpRequest(requestOptions);
+   const hr: Element = document.createElement('hr');
+   ollamaDiv.appendChild(hr);
   } else if (code === 'KeyH') {
    if (displayOllamaDiv) {
     ollamaDiv.style.setProperty('display', 'none');

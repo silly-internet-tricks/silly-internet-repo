@@ -15,6 +15,7 @@
 // ==/UserScript==
 
 import getHtmlAndCssBlocksFromMarkdown from './get-html-and-css-blocks-from-markdown';
+import getOllamaGeneratedResponse from './get-ollama-generated-response';
 
 (function getAINonsense() {
  // prettier-ignore
@@ -37,50 +38,33 @@ import getHtmlAndCssBlocksFromMarkdown from './get-html-and-css-blocks-from-mark
   document.body.appendChild(style);
 
   undoStack.push({ htmlElement, prevInnerHTML: htmlElement.innerHTML });
+  let responseSoFar: string = '';
 
-  const requestOptions: GmXmlHttpRequestRequestOptions = {
-   url: `${ollamaAddress}api/generate`,
-   method: 'POST',
-   responseType: 'stream',
-   data: JSON.stringify({ model, prompt: prompt + htmlElement.outerHTML.replace(/<\/[^>]*>$/, '') }),
-   fetch: true,
-   onloadstart: async ({ response }) => {
-    let responseSoFar: string = '';
+  getOllamaGeneratedResponse(
+   ollamaAddress,
+   model,
+   prompt + htmlElement.outerHTML.replace(/<\/[^>]*>$/, ''),
+   (response) => {
+    responseSoFar += response;
 
-    // I think this is the idiomatic way to usually handle streams.
-    // Next time I'll try it a different way, but I'm ignoring the linter this time
-    // eslint-disable-next-line no-restricted-syntax
-    for await (const chunk of response) {
-     const responseJSON: { response: string } = JSON.parse(
-      [...chunk].map((b) => String.fromCharCode(b)).join(''),
-     );
+    const htmlAndCss: { html: string[]; css: string[] } = getHtmlAndCssBlocksFromMarkdown(responseSoFar);
 
-     responseSoFar += responseJSON.response;
+    if (htmlAndCss.html.length > 0) {
+     htmlElement.innerHTML = htmlAndCss.html.join('');
+    } else {
+     // in this case I don't think the assignment can be replaced with operator assignment
+     // because it won't correctly interpret the markup as it's added one token at a time
+     // eslint-disable-next-line operator-assignment
+     const responseSoFarNoCss: string = htmlAndCss.css
+      .reduce((acc, e) => acc.replace(e, ''), responseSoFar)
+      .replace(/```css```/g, '');
 
-     console.log(responseSoFar);
-
-     const htmlAndCss: { html: string[]; css: string[] } = getHtmlAndCssBlocksFromMarkdown(responseSoFar);
-
-     if (htmlAndCss.html.length > 0) {
-      htmlElement.innerHTML = htmlAndCss.html.join('');
-     } else {
-      // in this case I don't think the assignment can be replaced with operator assignment
-      // because it won't correctly interpret the markup as it's added one token at a time
-      // eslint-disable-next-line operator-assignment
-      const responseSoFarNoCss: string = htmlAndCss.css
-       .reduce((acc, e) => acc.replace(e, ''), responseSoFar)
-       .replace(/```css```/g, '');
-
-      htmlElement.innerHTML = originalInnerHTML + responseSoFarNoCss;
-     }
-
-     style.innerHTML = htmlAndCss.css.join('');
+     htmlElement.innerHTML = originalInnerHTML + responseSoFarNoCss;
     }
-   },
-  };
 
-  // @ts-expect-error GM is defined as part of the API for the tampermonkey chrome extension
-  GM.xmlHttpRequest(requestOptions);
+    style.innerHTML = htmlAndCss.css.join('');
+   },
+  );
  };
 
  document.addEventListener('keydown', ({ code }) => {

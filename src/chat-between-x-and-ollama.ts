@@ -86,10 +86,8 @@ export default function chatBetweenXAndOllama(
      if (sendMessageSelectors) {
       fillInputElement(document.querySelector(sendMessageSelectors.textAreaSelector), content);
       if (done) {
-       console.log('done');
        const { sendButtonSelector } = sendMessageSelectors;
        const button: HTMLElement = document.querySelector(sendButtonSelector) as HTMLElement;
-       console.log(button);
        button.click();
       }
      }
