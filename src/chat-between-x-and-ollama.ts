@@ -66,6 +66,7 @@ export default function chatBetweenXAndOllama(
      const span: Element = document.createElement('span');
 
      const { content, done } = responseJSON.message;
+     console.log(content);
 
      span.appendChild(new Text(content));
      responseParagraph.appendChild(span);
