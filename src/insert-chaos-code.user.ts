@@ -9,8 +9,8 @@
 // @grant        GM_xmlhttpRequest
 // @connect      localhost
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/insert-chaos-code.user.ts
-// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/00426b084f8089a2cc1c4289e930cede/raw/insert-chaos-code.user.js
-// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/00426b084f8089a2cc1c4289e930cede/raw/insert-chaos-code.meta.js
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/3c1ced5be548f02383a1ed3e21480a81/raw/insert-chaos-code.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/3c1ced5be548f02383a1ed3e21480a81/raw/insert-chaos-code.meta.js
 // ==/UserScript==
 
 (function getAINonsense() {
