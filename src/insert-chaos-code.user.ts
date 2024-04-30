@@ -70,21 +70,21 @@ import makeAvailableKeys from './make-available-keys';
  };
 
  const getAvailableKey: (requestedKeys: string[], label: string) => string = makeAvailableKeys();
- const insertKey: string = getAvailableKey(['l', 'k'], 'insert chaos code');
- const undoKey: string = getAvailableKey(['z', 't'], 'chaos code undo');
- const redoKey: string = getAvailableKey(['y', 'u'], 'chaos code redo');
+ const insertKey: string = `Key${getAvailableKey(['l', 'k'], 'insert chaos code').toLocaleUpperCase()}`;
+ const undoKey: string = `Key${getAvailableKey(['z', 't'], 'chaos code undo').toLocaleUpperCase()}`;
+ const redoKey: string = `Key${getAvailableKey(['y', 'u'], 'chaos code redo').toLocaleUpperCase()}`;
 
  const { startHighlighting, stopHighlighting } = highlightElement();
 
  document.addEventListener('keydown', ({ code }) => {
-  if (code === `Key${insertKey.toLocaleUpperCase()}}`) {
+  if (code === insertKey) {
    startHighlighting();
    document.addEventListener('click', clickEventListener);
-  } else if (code === `Key${undoKey.toLocaleUpperCase()}`) {
+  } else if (code === undoKey) {
    const { htmlElement, prevInnerHTML } = undoStack.pop();
    redoStack.push({ htmlElement, prevInnerHTML: htmlElement.innerHTML });
    htmlElement.innerHTML = prevInnerHTML;
-  } else if (code === `Key${redoKey.toLocaleUpperCase()}`) {
+  } else if (code === redoKey) {
    const { htmlElement, prevInnerHTML } = redoStack.pop();
    undoStack.push({ htmlElement, prevInnerHTML: htmlElement.innerHTML });
    htmlElement.innerHTML = prevInnerHTML;
@@ -92,7 +92,7 @@ import makeAvailableKeys from './make-available-keys';
  });
 
  document.addEventListener('keyup', ({ code }) => {
-  if (code === `Key${insertKey.toLocaleUpperCase()}`) {
+  if (code === insertKey) {
    stopHighlighting();
    document.removeEventListener('click', clickEventListener);
   }
