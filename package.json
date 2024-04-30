@@ -8,7 +8,8 @@
     "lint": "./node_modules/.bin/eslint --fix src/*.ts src/**/*.ts",
     "bundle": "node bundle-build.js",
     "build": "tsc && npx webpack && node bundle-postprocessor.js",
-    "publish": "node bundle-publish.js"
+    "publish": "node bundle-publish.js",
+    "blt": "npm run build && npm run lint && npm run test"
   },
   "author": "",
   "license": "ISC",
