@@ -1,41 +1,36 @@
-import makeAvailableKeys from './make-available-keys';
 import highlightElement from './highlight-element';
+import makeAvailableKeys from './make-available-keys';
 
-const preventDefaultHandler: (event: Event) => void = (event) => {
- event.preventDefault();
-};
+export default function holdKeyAndClick(
+ requestedKeys: string[],
+ clickCallback: (e: Event) => void,
+ scriptName: string,
+) {
+ type ClickEventListener = (stopHighlighting: () => void) => (e: Event) => void;
+ const clickEventListener: ClickEventListener = function clickEventListener(stopHighlighting) {
+  return async (event) => {
+   stopHighlighting();
+   clickCallback(event);
+  };
+ };
 
-interface Handlers {
- do: (event: Event) => void;
- undo: (event: Event) => void;
-}
-export default function holdKeyAndClick(handlers: Handlers, scriptName: string) {
- const getEffectKey: (requestedKeys: string[], label: string) => string = makeAvailableKeys();
- const keys: string[] = [
-  getEffectKey([], `${scriptName} do key`),
-  getEffectKey([], `${scriptName} undo key`),
- ];
+ const getAvailableKey: (r: string[], label: string) => string = makeAvailableKeys();
+ const insertKey: string = `Key${getAvailableKey(requestedKeys, `insert ${scriptName}`).toLocaleUpperCase()}`;
 
  const { startHighlighting, stopHighlighting } = highlightElement();
+ const eventListener: (e: Event) => void = clickEventListener(stopHighlighting);
 
  document.addEventListener('keydown', ({ code }) => {
-  Object.values(handlers).forEach((handler, i) => {
-   if (code === `Key${keys[i].toLocaleUpperCase()}`) {
-    document.addEventListener('click', handler);
-    document.addEventListener('click', preventDefaultHandler);
-
-    startHighlighting();
-   }
-  });
+  if (code === insertKey) {
+   startHighlighting();
+   document.addEventListener('click', eventListener);
+  }
  });
 
  document.addEventListener('keyup', ({ code }) => {
-  Object.values(handlers).forEach((handler, i) => {
-   if (code === `Key${keys[i].toLocaleUpperCase()}`) {
-    document.removeEventListener('click', handler);
-    document.removeEventListener('click', preventDefaultHandler);
-    stopHighlighting();
-   }
-  });
+  if (code === insertKey) {
+   stopHighlighting();
+   document.removeEventListener('click', eventListener);
+  }
  });
 }

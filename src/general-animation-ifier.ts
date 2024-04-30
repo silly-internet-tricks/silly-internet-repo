@@ -1,5 +1,5 @@
 import insertCSS from './insert-css';
-import holdKeyAndClick from './hold-key-and-click';
+import holdKeyAndClickWithUndo from './hold-key-and-click-with-undo';
 import { makeInlineInlineBlock, undoInlineInlineBlock } from './make-inline-inline-block';
 
 export default function generalAnimationifier(animationClassName: string, CSS: string, scriptName: string) {
@@ -30,7 +30,7 @@ export default function generalAnimationifier(animationClassName: string, CSS: s
   return undoHandler(target as Node);
  };
 
- holdKeyAndClick(
+ holdKeyAndClickWithUndo(
   {
    do: ({ target }) => {
     const htmlElement: HTMLElement = target as HTMLElement;

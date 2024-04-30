@@ -1,4 +1,4 @@
-import holdKeyAndClick from './hold-key-and-click';
+import holdKeyAndClickWithUndo from './hold-key-and-click-with-undo';
 
 export default function generalElementEffectifier(
  callback: (target: EventTarget, targetChildNodes: ChildNode[]) => void,
@@ -64,5 +64,5 @@ export default function generalElementEffectifier(
   revertChildNodes(element);
  };
 
- holdKeyAndClick({ do: effectifierHandler, undo: undoHandler }, scriptName);
+ holdKeyAndClickWithUndo({ do: effectifierHandler, undo: undoHandler }, scriptName);
 }
