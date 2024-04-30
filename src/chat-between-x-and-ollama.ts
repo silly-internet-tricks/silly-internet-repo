@@ -44,7 +44,19 @@ export default function chatBetweenXAndOllama(
     messages: chatMessages.map((e) => ({
      role: roleCallback(e),
      content: e.textContent,
-    })),
+    })).reduce((acc, e) => {
+     const last: { role: string, content: string } = acc.pop();
+
+     if (e.role === last.role) {
+      last.content += e.content;
+      acc.push(last);
+     } else {
+      acc.push(last);
+      acc.push(e);
+     }
+
+     return acc;
+    }, []),
    }),
    fetch: true,
    onloadstart: async ({ response }) => {
