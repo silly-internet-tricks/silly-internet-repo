@@ -74,11 +74,11 @@ import makeAvailableKeys from './make-available-keys';
  const undoKey: string = getAvailableKey(['z', 't'], 'chaos code undo');
  const redoKey: string = getAvailableKey(['y', 'u'], 'chaos code redo');
 
- const { addBorder, resetBorder } = highlightElement();
+ const { startHighlighting, stopHighlighting } = highlightElement();
 
  document.addEventListener('keydown', ({ code }) => {
   if (code === `Key${insertKey.toLocaleUpperCase()}}`) {
-   addBorder();
+   startHighlighting();
    document.addEventListener('click', clickEventListener);
   } else if (code === `Key${undoKey.toLocaleUpperCase()}`) {
    const { htmlElement, prevInnerHTML } = undoStack.pop();
@@ -93,7 +93,7 @@ import makeAvailableKeys from './make-available-keys';
 
  document.addEventListener('keyup', ({ code }) => {
   if (code === `Key${insertKey.toLocaleUpperCase()}`) {
-   resetBorder();
+   stopHighlighting();
    document.removeEventListener('click', clickEventListener);
   }
  });

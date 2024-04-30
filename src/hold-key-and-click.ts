@@ -16,7 +16,7 @@ export default function holdKeyAndClick(handlers: Handlers, scriptName: string) 
   getEffectKey([], `${scriptName} undo key`),
  ];
 
- const { addBorder, resetBorder } = highlightElement();
+ const { startHighlighting, stopHighlighting } = highlightElement();
 
  document.addEventListener('keydown', ({ code }) => {
   Object.values(handlers).forEach((handler, i) => {
@@ -24,7 +24,7 @@ export default function holdKeyAndClick(handlers: Handlers, scriptName: string) 
     document.addEventListener('click', handler);
     document.addEventListener('click', preventDefaultHandler);
 
-    addBorder();
+    startHighlighting();
    }
   });
  });
@@ -34,7 +34,7 @@ export default function holdKeyAndClick(handlers: Handlers, scriptName: string) 
    if (code === `Key${keys[i].toLocaleUpperCase()}`) {
     document.removeEventListener('click', handler);
     document.removeEventListener('click', preventDefaultHandler);
-    resetBorder();
+    stopHighlighting();
    }
   });
  });

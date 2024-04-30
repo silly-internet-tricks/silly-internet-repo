@@ -31,5 +31,15 @@ export default function highlightElement() {
   resetBorder({ htmlElement: hoverTarget, boxShadow });
  };
 
- return { resetBorder, addBorder };
+ const startHighlighting: () => void = () => {
+  addBorder();
+  document.addEventListener('mouseover', addBorder);
+ };
+
+ const stopHighlighting: () => void = () => {
+  resetBorder();
+  document.removeEventListener('mouseover', addBorder);
+ };
+
+ return { startHighlighting, stopHighlighting };
 }
