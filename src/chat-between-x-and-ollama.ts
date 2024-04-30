@@ -1,10 +1,12 @@
 import insertCSS from './insert-css';
+import fillInputElement from './fill-input-element';
 
 export default function chatBetweenXAndOllama(
  desiredOllamaModel: string,
  ollamaAddress: string,
  chatMessageSelector: string,
  roleCallback: (e: Element) => string,
+ sendMessageSelectors?: { textAreaSelector: string, sendButtonSelector: string },
 ) {
  // TODO: this css is pretty ugly and could use an update
  insertCSS(`
@@ -18,6 +20,8 @@ export default function chatBetweenXAndOllama(
  background-color: rgba(255,0,127,0.2);
  max-width: 30dvw;
  overflow-y: auto;
+ z-index: 10;
+ max-height: 98dvh;
 }
 `);
 
@@ -27,6 +31,7 @@ export default function chatBetweenXAndOllama(
  ollamaButton.appendChild(new Text('ask ollama'));
  ollamaText.appendChild(ollamaButton);
  document.body.appendChild(ollamaText);
+
  ollamaButton.addEventListener('click', () => {
   const chatMessages: Element[] = [...document.querySelectorAll(chatMessageSelector)];
 
@@ -49,7 +54,8 @@ export default function chatBetweenXAndOllama(
     for await (const chunk of response) {
      interface OllamaChatApiResponseJson {
       message: {
-       content: string;
+       content: string,
+       done: boolean
       };
      }
 
@@ -59,8 +65,18 @@ export default function chatBetweenXAndOllama(
 
      const span: Element = document.createElement('span');
 
-     span.appendChild(new Text(responseJSON.message.content));
+     const { content, done } = responseJSON.message;
+
+     span.appendChild(new Text(content));
      responseParagraph.appendChild(span);
+     if (sendMessageSelectors) {
+      fillInputElement(document.querySelector(sendMessageSelectors.textAreaSelector), content);
+      if (done) {
+       const { sendButtonSelector } = sendMessageSelectors;
+       const button: HTMLElement = document.querySelector(sendButtonSelector) as HTMLElement;
+       button.click();
+      }
+     }
     }
    },
   };

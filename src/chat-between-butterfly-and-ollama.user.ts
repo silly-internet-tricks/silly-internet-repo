@@ -19,6 +19,10 @@ import chatBetweenXAndOllama from './chat-between-x-and-ollama';
  const desiredOllamaModel: string = 'llama3:latest';
  const ollamaAddress: string = 'http://localhost:11434/';
  const chatMessageSelector: string = '[id^="context-menu"]';
+
+ const textAreaSelector: string = '[data-onboarding="send-message"] textarea';
+ const sendButtonSelector: string = '[data-onboarding="send-message"] .flex-grow ~ button';
+
  type RoleCallback = (e: Element) => string;
  const roleCallback: RoleCallback = (e) => {
   if (e.parentElement.parentElement.classList.contains('flex-row-reverse')) {
@@ -28,5 +32,8 @@ import chatBetweenXAndOllama from './chat-between-x-and-ollama';
   return 'user';
  };
 
- chatBetweenXAndOllama(desiredOllamaModel, ollamaAddress, chatMessageSelector, roleCallback);
+ chatBetweenXAndOllama(desiredOllamaModel, ollamaAddress, chatMessageSelector, roleCallback, {
+  textAreaSelector,
+  sendButtonSelector,
+ });
 })();
