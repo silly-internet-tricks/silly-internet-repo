@@ -46,7 +46,10 @@
       [...chunk].map((b) => String.fromCharCode(b)).join(''),
      );
 
-     htmlElement.innerHTML += responseJSON.response;
+     // in this case I don't think the assignment can be replaced with operator assignment
+     // because it won't correctly interpret the markup as it's added one token at a time
+     // eslint-disable-next-line operator-assignment
+     htmlElement.innerHTML = htmlElement.innerHTML + responseJSON.response;
     }
    },
   };
