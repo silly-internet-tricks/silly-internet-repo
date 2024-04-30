@@ -16,8 +16,10 @@
 
 import getHtmlAndCssBlocksFromMarkdown from './get-html-and-css-blocks-from-markdown';
 import getOllamaGeneratedResponse from './get-ollama-generated-response';
+import highlightElement from './highlight-element';
+import makeAvailableKeys from './make-available-keys';
 
-(function getAINonsense() {
+(function insertChaosCode() {
  // prettier-ignore
  const prompt: string = 'Please add an HTML element to complete the following incomplete snippet of markup. Use syntactically correct HTML to be viewed in a standards-compliant web browser. We need to impress the client, so use visually appealing CSS styling with liberal ornamentation and ostentatious flair. Make your code as flashy as you like. This is a playful project; chaos is welcome! Here is the code we have so far: ';
  const ollamaAddress: string = 'http://localhost:11434/';
@@ -67,14 +69,22 @@ import getOllamaGeneratedResponse from './get-ollama-generated-response';
   );
  };
 
+ const getAvailableKey: (requestedKeys: string[], label: string) => string = makeAvailableKeys();
+ const insertKey: string = getAvailableKey(['l', 'k'], 'insert chaos code');
+ const undoKey: string = getAvailableKey(['z', 't'], 'chaos code undo');
+ const redoKey: string = getAvailableKey(['y', 'u'], 'chaos code redo');
+
+ const { addBorder, resetBorder } = highlightElement();
+
  document.addEventListener('keydown', ({ code }) => {
-  if (code === 'KeyL') {
+  if (code === `Key${insertKey.toLocaleUpperCase()}}`) {
+   addBorder();
    document.addEventListener('click', clickEventListener);
-  } else if (code === 'KeyZ') {
+  } else if (code === `Key${undoKey.toLocaleUpperCase()}`) {
    const { htmlElement, prevInnerHTML } = undoStack.pop();
    redoStack.push({ htmlElement, prevInnerHTML: htmlElement.innerHTML });
    htmlElement.innerHTML = prevInnerHTML;
-  } else if (code === 'KeyY') {
+  } else if (code === `Key${redoKey.toLocaleUpperCase()}`) {
    const { htmlElement, prevInnerHTML } = redoStack.pop();
    undoStack.push({ htmlElement, prevInnerHTML: htmlElement.innerHTML });
    htmlElement.innerHTML = prevInnerHTML;
@@ -82,7 +92,8 @@ import getOllamaGeneratedResponse from './get-ollama-generated-response';
  });
 
  document.addEventListener('keyup', ({ code }) => {
-  if (code === 'KeyL') {
+  if (code === `Key${insertKey.toLocaleUpperCase()}`) {
+   resetBorder();
    document.removeEventListener('click', clickEventListener);
   }
  });
