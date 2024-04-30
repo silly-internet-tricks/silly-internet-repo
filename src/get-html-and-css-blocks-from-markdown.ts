@@ -1,38 +1,42 @@
+const getSubstrings: (markdown: string, startDelimiter: string) => string[] = function getSubstrings(
+ markdown,
+ startDelimiter,
+) {
+ const substrings: string[] = [];
+ let remaining: string = markdown;
+ const re: RegExp = new RegExp(startDelimiter);
+
+ while (remaining.match(re)) {
+  const endDelimiter: string = '```';
+  const startSubstringIndex: number = remaining.indexOf(startDelimiter);
+  const startSubstring: string = remaining.substring(startSubstringIndex + startDelimiter.length);
+  const endIndex: number = startSubstring.indexOf(endDelimiter);
+  if (endIndex !== -1) {
+   const substring: string = startSubstring.substring(0, endIndex);
+   substrings.push(substring);
+   remaining = startSubstring.substring(endIndex + endDelimiter.length);
+  } else {
+   substrings.push(startSubstring);
+   remaining = startSubstring;
+  }
+ }
+
+ return substrings;
+};
+
 export default function getHtmlAndCssBlocksFromMarkdown(markdown: string) {
  const htmlAndCss: { html: string[]; css: string[] } = {
   html: [],
   css: [],
  };
 
- let remainingHtml: string = markdown;
- while (remainingHtml.match(/```html/)) {
-  const startDelimiter: string = '```html';
-  const endDelimiter: string = '```';
-  const startSubstringIndex: number = remainingHtml.indexOf(startDelimiter) + startDelimiter.length;
-  if (startSubstringIndex !== -1) {
-   const startSubstring: string = remainingHtml.substring(startSubstringIndex);
-   const subString: string = startSubstring.substring(0, startSubstring.indexOf(endDelimiter));
+ getSubstrings(markdown, '```html').forEach((substring) => {
+  htmlAndCss.html.push(substring);
+ });
 
-   htmlAndCss.html.push(subString);
-
-   remainingHtml = startSubstring.substring(startSubstring.indexOf(endDelimiter) + endDelimiter.length);
-  }
- }
-
- let remainingCss: string = markdown;
- while (remainingCss.match(/```css/)) {
-  const startDelimiter: string = '```css';
-  const endDelimiter: string = '```';
-  const startSubstringIndex: number = remainingCss.indexOf(startDelimiter) + startDelimiter.length;
-  if (startSubstringIndex !== -1) {
-   const startSubstring: string = remainingCss.substring(startSubstringIndex);
-   const subString: string = startSubstring.substring(0, startSubstring.indexOf(endDelimiter));
-
-   htmlAndCss.css.push(subString);
-
-   remainingCss = startSubstring.substring(startSubstring.indexOf(endDelimiter) + endDelimiter.length);
-  }
- }
+ getSubstrings(markdown, '```css').forEach((substring) => {
+  htmlAndCss.css.push(substring);
+ });
 
  return htmlAndCss;
 }
