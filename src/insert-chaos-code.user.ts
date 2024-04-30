@@ -5,6 +5,7 @@
 // @description  Make the local llm (using ollama) insert code into the webpage
 // @author       Josh Parker
 // @match        https://en.wikipedia.org/wiki/*
+// @match        https://developer.mozilla.org/en-US/docs/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tampermonkey.net
 // @grant        GM_xmlhttpRequest
 // @connect      localhost
