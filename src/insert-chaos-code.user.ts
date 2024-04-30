@@ -59,7 +59,7 @@ import getHtmlAndCssBlocksFromMarkdown from './get-html-and-css-blocks-from-mark
 
      console.log(responseSoFar);
 
-     const htmlAndCss: { html: string[], css: string[] } = getHtmlAndCssBlocksFromMarkdown(responseSoFar);
+     const htmlAndCss: { html: string[]; css: string[] } = getHtmlAndCssBlocksFromMarkdown(responseSoFar);
 
      if (htmlAndCss.html.length > 0) {
       htmlElement.innerHTML = htmlAndCss.html.join('');
@@ -67,7 +67,11 @@ import getHtmlAndCssBlocksFromMarkdown from './get-html-and-css-blocks-from-mark
       // in this case I don't think the assignment can be replaced with operator assignment
       // because it won't correctly interpret the markup as it's added one token at a time
       // eslint-disable-next-line operator-assignment
-      htmlElement.innerHTML = originalInnerHTML + responseSoFar;
+      const responseSoFarNoCss: string = htmlAndCss.css
+       .reduce((acc, e) => acc.replace(e, ''), responseSoFar)
+       .replace(/```css```/g, '');
+
+      htmlElement.innerHTML = originalInnerHTML + responseSoFarNoCss;
      }
 
      style.innerHTML = htmlAndCss.css.join('');
