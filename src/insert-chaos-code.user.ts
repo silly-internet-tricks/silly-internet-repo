@@ -29,6 +29,8 @@
  const clickEventListener: (e: Event) => void = ({ target }) => {
   const htmlElement: HTMLElement = target as HTMLElement;
 
+  const originalInnerHTML: string = htmlElement.innerHTML;
+
   undoStack.push({ htmlElement, prevInnerHTML: htmlElement.innerHTML });
 
   const requestOptions: GmXmlHttpRequestRequestOptions = {
@@ -38,6 +40,8 @@
    data: JSON.stringify({ model, prompt: prompt + htmlElement.outerHTML.replace(/<\/[^>]*>$/, '') }),
    fetch: true,
    onloadstart: async ({ response }) => {
+    let responseSoFar: string = '';
+
     // I think this is the idiomatic way to usually handle streams.
     // Next time I'll try it a different way, but I'm ignoring the linter this time
     // eslint-disable-next-line no-restricted-syntax
@@ -46,10 +50,14 @@
       [...chunk].map((b) => String.fromCharCode(b)).join(''),
      );
 
+     responseSoFar += responseJSON.response;
+
+     console.log(responseSoFar);
+
      // in this case I don't think the assignment can be replaced with operator assignment
      // because it won't correctly interpret the markup as it's added one token at a time
      // eslint-disable-next-line operator-assignment
-     htmlElement.innerHTML = htmlElement.innerHTML + responseJSON.response;
+     htmlElement.innerHTML = originalInnerHTML + responseSoFar;
     }
    },
   };
