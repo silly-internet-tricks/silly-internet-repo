@@ -15,7 +15,7 @@ export default function getHtmlAndCssBlocksFromMarkdown(markdown: string) {
 
    htmlAndCss.html.push(subString);
 
-   remainingHtml = remainingHtml.substring(remainingHtml.indexOf(endDelimiter + endDelimiter.length));
+   remainingHtml = startSubstring.substring(startSubstring.indexOf(endDelimiter + endDelimiter.length));
   }
  }
 
@@ -30,7 +30,7 @@ export default function getHtmlAndCssBlocksFromMarkdown(markdown: string) {
 
    htmlAndCss.css.push(subString);
 
-   remainingCss = remainingCss.substring(remainingCss.indexOf(endDelimiter + endDelimiter.length));
+   remainingCss = startSubstring.substring(startSubstring.indexOf(endDelimiter + endDelimiter.length));
   }
  }
 
