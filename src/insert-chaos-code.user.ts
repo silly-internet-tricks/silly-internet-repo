@@ -32,41 +32,46 @@ import makeAvailableKeys from './make-available-keys';
  const undoStack: UndoStackElement[] = [];
  const redoStack: UndoStackElement[] = [];
 
- const clickEventListener: (e: Event) => void = ({ target }) => {
-  const htmlElement: HTMLElement = target as HTMLElement;
+ type ClickEventListener = (stopHighlighting: () => void) => (e: Event) => void;
+ const clickEventListener: ClickEventListener = function clickEventListener(stopHighlighting) {
+  return ({ target }) => {
+   stopHighlighting();
 
-  const originalInnerHTML: string = htmlElement.innerHTML;
-  const style: HTMLStyleElement = document.createElement('style');
-  document.body.appendChild(style);
+   const htmlElement: HTMLElement = target as HTMLElement;
 
-  undoStack.push({ htmlElement, prevInnerHTML: htmlElement.innerHTML });
-  let responseSoFar: string = '';
+   const originalInnerHTML: string = htmlElement.innerHTML;
+   const style: HTMLStyleElement = document.createElement('style');
+   document.body.appendChild(style);
 
-  getOllamaGeneratedResponse(
-   ollamaAddress,
-   model,
-   prompt + htmlElement.outerHTML.replace(/<\/[^>]*>$/, ''),
-   (response) => {
-    responseSoFar += response;
+   undoStack.push({ htmlElement, prevInnerHTML: htmlElement.innerHTML });
+   let responseSoFar: string = '';
 
-    const htmlAndCss: { html: string[]; css: string[] } = getHtmlAndCssBlocksFromMarkdown(responseSoFar);
+   getOllamaGeneratedResponse(
+    ollamaAddress,
+    model,
+    prompt + htmlElement.outerHTML.replace(/<\/[^>]*>$/, ''),
+    (response) => {
+     responseSoFar += response;
 
-    if (htmlAndCss.html.length > 0) {
-     htmlElement.innerHTML = htmlAndCss.html.join('');
-    } else {
-     // in this case I don't think the assignment can be replaced with operator assignment
-     // because it won't correctly interpret the markup as it's added one token at a time
-     // eslint-disable-next-line operator-assignment
-     const responseSoFarNoCss: string = htmlAndCss.css
-      .reduce((acc, e) => acc.replace(e, ''), responseSoFar)
-      .replace(/```css```/g, '');
+     const htmlAndCss: { html: string[]; css: string[] } = getHtmlAndCssBlocksFromMarkdown(responseSoFar);
 
-     htmlElement.innerHTML = originalInnerHTML + responseSoFarNoCss;
-    }
+     if (htmlAndCss.html.length > 0) {
+      htmlElement.innerHTML = htmlAndCss.html.join('');
+     } else {
+      // in this case I don't think the assignment can be replaced with operator assignment
+      // because it won't correctly interpret the markup as it's added one token at a time
+      // eslint-disable-next-line operator-assignment
+      const responseSoFarNoCss: string = htmlAndCss.css
+       .reduce((acc, e) => acc.replace(e, ''), responseSoFar)
+       .replace(/```css```/g, '');
 
-    style.innerHTML = htmlAndCss.css.join('');
-   },
-  );
+      htmlElement.innerHTML = originalInnerHTML + responseSoFarNoCss;
+     }
+
+     style.innerHTML = htmlAndCss.css.join('');
+    },
+   );
+  };
  };
 
  const getAvailableKey: (requestedKeys: string[], label: string) => string = makeAvailableKeys();
@@ -75,11 +80,12 @@ import makeAvailableKeys from './make-available-keys';
  const redoKey: string = `Key${getAvailableKey(['y', 'u'], 'chaos code redo').toLocaleUpperCase()}`;
 
  const { startHighlighting, stopHighlighting } = highlightElement();
+ const eventListener: (e: Event) => void = clickEventListener(stopHighlighting);
 
  document.addEventListener('keydown', ({ code }) => {
   if (code === insertKey) {
    startHighlighting();
-   document.addEventListener('click', clickEventListener);
+   document.addEventListener('click', eventListener);
   } else if (code === undoKey) {
    const { htmlElement, prevInnerHTML } = undoStack.pop();
    redoStack.push({ htmlElement, prevInnerHTML: htmlElement.innerHTML });
@@ -94,7 +100,7 @@ import makeAvailableKeys from './make-available-keys';
  document.addEventListener('keyup', ({ code }) => {
   if (code === insertKey) {
    stopHighlighting();
-   document.removeEventListener('click', clickEventListener);
+   document.removeEventListener('click', eventListener);
   }
  });
 })();
