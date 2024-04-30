@@ -26,7 +26,7 @@ export default function highlightElement() {
 
  const addBorder: () => void = () => {
   resetBorder();
-  const boxShadow: string = hoverTarget.style.getPropertyValue('box-shadow');
+  const boxShadow: string = hoverTarget?.style.getPropertyValue('box-shadow');
   hoverTarget.style.setProperty('box-shadow', '0 0 4px chartreuse');
   resetBorder({ htmlElement: hoverTarget, boxShadow });
  };
