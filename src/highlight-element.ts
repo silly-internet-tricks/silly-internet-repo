@@ -14,9 +14,9 @@ export default function highlightElement() {
     last = e;
    } else if (last) {
     const { htmlElement, boxShadow } = last;
-    htmlElement.style.removeProperty('box-shadow');
+    htmlElement?.style.removeProperty('box-shadow');
     if (boxShadow) {
-     htmlElement.style.setProperty('box-shadow', boxShadow);
+     htmlElement?.style.setProperty('box-shadow', boxShadow);
     }
 
     last = null;
