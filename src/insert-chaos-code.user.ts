@@ -34,7 +34,7 @@ import makeAvailableKeys from './make-available-keys';
 
  type ClickEventListener = (stopHighlighting: () => void) => (e: Event) => void;
  const clickEventListener: ClickEventListener = function clickEventListener(stopHighlighting) {
-  return ({ target }) => {
+  return async ({ target }) => {
    stopHighlighting();
 
    const htmlElement: HTMLElement = target as HTMLElement;
@@ -46,7 +46,7 @@ import makeAvailableKeys from './make-available-keys';
    undoStack.push({ htmlElement, prevInnerHTML: htmlElement.innerHTML });
    let responseSoFar: string = '';
 
-   getOllamaGeneratedResponse(
+   await getOllamaGeneratedResponse(
     ollamaAddress,
     model,
     prompt + htmlElement.outerHTML.replace(/<\/[^>]*>$/, ''),
@@ -71,6 +71,8 @@ import makeAvailableKeys from './make-available-keys';
      style.innerHTML = htmlAndCss.css.join('');
     },
    );
+
+   console.log(responseSoFar);
   };
  };
 
