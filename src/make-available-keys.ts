@@ -5,15 +5,17 @@ export default function makeAvailableKeys() {
  let div: HTMLElement;
  // @ts-expect-error I add the getEffectKey function to the window because it's meant to be accessible to any script that uses the hold key and click function
  if (!window.getEffectKey) {
-  // @ts-expect-error I add the getEffectKey function to the window because it's meant to be accessible to any script that uses the hold key and click function
-  window.getEffectKey = ((requestedKeys: string[]) => {
+  const getEffectKey: (requestedKeys: string[]) => string = (() => {
    const availableKeys: Set<string> = new Set<string>('abcdefghijklmnopqrstuvwxyz1234567890');
-   return () => {
+   return (requestedKeys: string[]) => {
     const availableKey: string = requestedKeys.find((key) => availableKeys.has(key)) || pick(availableKeys);
     availableKeys.delete(availableKey);
     return availableKey;
    };
   })();
+
+  // @ts-expect-error I add the getEffectKey function to the window because it's meant to be accessible to any script that uses the hold key and click function
+  window.getEffectKey = getEffectKey;
 
   insertCSS(`
 #effect-keys-menu {
