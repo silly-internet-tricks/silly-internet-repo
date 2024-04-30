@@ -8,7 +8,6 @@ export default function chatBetweenXAndOllama(
  roleCallback: (e: Element) => string,
  sendMessageSelectors?: { textAreaSelector: string, sendButtonSelector: string },
 ) {
- // TODO: this css is pretty ugly and could use an update
  insertCSS(`
 #ollama-text {
  position: fixed;
@@ -40,6 +39,7 @@ export default function chatBetweenXAndOllama(
    method: 'POST',
    responseType: 'stream',
    data: JSON.stringify({
+    // TODO: let's add a dropdown to select from the available models
     model: desiredOllamaModel,
     messages: chatMessages.map((e) => ({
      role: roleCallback(e),
