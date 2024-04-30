@@ -53,9 +53,9 @@ export default function chatBetweenXAndOllama(
     // eslint-disable-next-line no-restricted-syntax
     for await (const chunk of response) {
      interface OllamaChatApiResponseJson {
+      done: boolean,
       message: {
-       content: string,
-       done: boolean
+       content: string
       };
      }
 
@@ -65,16 +65,17 @@ export default function chatBetweenXAndOllama(
 
      const span: Element = document.createElement('span');
 
-     const { content, done } = responseJSON.message;
-     console.log(content);
+     const { message: { content }, done } = responseJSON;
 
      span.appendChild(new Text(content));
      responseParagraph.appendChild(span);
      if (sendMessageSelectors) {
       fillInputElement(document.querySelector(sendMessageSelectors.textAreaSelector), content);
       if (done) {
+       console.log('done');
        const { sendButtonSelector } = sendMessageSelectors;
        const button: HTMLElement = document.querySelector(sendButtonSelector) as HTMLElement;
+       console.log(button);
        button.click();
       }
      }
