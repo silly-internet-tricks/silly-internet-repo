@@ -47,11 +47,13 @@ export default function chatBetweenXAndOllama(
     })).reduce((acc, e) => {
      const last: { role: string, content: string } = acc.pop();
 
-     if (e.role === last.role) {
+     if (last && e.role === last.role) {
       last.content += e.content;
       acc.push(last);
-     } else {
+     } else if (last) {
       acc.push(last);
+      acc.push(e);
+     } else {
       acc.push(e);
      }
 
