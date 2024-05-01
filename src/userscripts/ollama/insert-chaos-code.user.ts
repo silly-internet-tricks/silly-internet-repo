@@ -17,10 +17,10 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/3c1ced5be548f02383a1ed3e21480a81/raw/insert-chaos-code.meta.js
 // ==/UserScript==
 
-import getHtmlAndCssBlocksFromMarkdown from './get-html-and-css-blocks-from-markdown';
-import getOllamaGeneratedResponse from './get-ollama-generated-response';
-import makeAvailableKeys from './make-available-keys';
-import holdKeyAndClick from './hold-key-and-click';
+import getHtmlAndCssBlocksFromMarkdown from '../../lib/ollama/get-html-and-css-blocks-from-markdown';
+import getOllamaGeneratedResponse from '../../lib/ollama/get-ollama-generated-response';
+import makeAvailableKeys from '../../lib/util/make-available-keys';
+import holdKeyAndClick from '../../lib/util/hold-key-and-click';
 
 (function insertChaosCode() {
  // prettier-ignore

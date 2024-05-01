@@ -13,7 +13,7 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/25a8aa0997fe06984d5a9947c18583b1/raw/chat-between-chatgpt-and-ollama.meta.js
 // ==/UserScript==
 
-import chatBetweenXAndOllama from './chat-between-x-and-ollama';
+import chatBetweenXAndOllama from '../../lib/ollama/chat-between-x-and-ollama';
 
 (function chatBetweenChatGptAndOllama() {
  const desiredOllamaModel: string = 'llama3:latest';

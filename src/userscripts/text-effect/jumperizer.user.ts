@@ -12,8 +12,8 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/cfa5a159cf422ba3ee4b0823e8b9ef54/raw/jumperizer.meta.js
 // ==/UserScript==
 
-import generalTextEffectifier from './general-text-effectifier';
-import insertCSS from './insert-css';
+import generalTextEffectifier from '../../lib/effects/general-text-effectifier';
+import insertCSS from '../../lib/util/insert-css';
 
 (function jumperizer() {
  insertCSS(`span.jumping-bean {

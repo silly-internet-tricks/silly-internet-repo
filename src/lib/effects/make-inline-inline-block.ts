@@ -1,4 +1,4 @@
-import getCssKeywordValue from './get-css-keyword-value';
+import getCssKeywordValue from '../util/get-css-keyword-value';
 
 type MakeInlineInlineBlock = (htmlElement: HTMLElement) => void;
 const makeInlineInlineBlock: MakeInlineInlineBlock = function makeInlineInlineBlock(htmlElement) {

@@ -16,7 +16,7 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/959735549921e3bfe249c19f58900e82/raw/ollama-what-is-the-image.meta.js
 // ==/UserScript==
 
-import insertCSS from './insert-css';
+import insertCSS from '../../lib/util/insert-css';
 
 (function ollamaWhatIsTheImage() {
  // TODO: This is copy-pasted from get ai nonsense, so consider moving to its own file

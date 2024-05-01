@@ -12,7 +12,7 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/2b11595cc21440fbf74b7e0a3b9e22e0/raw/binarizer.meta.js
 // ==/UserScript==
 
-import generalTextEffectifier from './general-text-effectifier';
+import generalTextEffectifier from '../../lib/effects/general-text-effectifier';
 
 (function binarizer() {
  generalTextEffectifier(

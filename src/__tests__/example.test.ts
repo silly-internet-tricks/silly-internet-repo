@@ -5,7 +5,7 @@ import { getByLabelText,
  // Tip: all queries are also exposed on an object
  // called "queries" which you could import here as well
  waitFor } from '@testing-library/dom';
-import getExampleDOM from '../get-example-dom';
+import getExampleDOM from '../lib/test/get-example-dom';
 // query utilities:
 // adds special assertions like toHaveTextContent
 import '@testing-library/jest-dom';

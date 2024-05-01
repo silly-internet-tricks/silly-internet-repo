@@ -1,5 +1,5 @@
-import insertCSS from '../insert-css';
-import getExampleDOM from '../get-example-dom';
+import insertCSS from '../lib/util/insert-css';
+import getExampleDOM from '../lib/test/get-example-dom';
 // query utilities:
 // adds special assertions like toHaveTextContent
 import '@testing-library/jest-dom';

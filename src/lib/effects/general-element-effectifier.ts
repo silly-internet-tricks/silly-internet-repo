@@ -1,4 +1,4 @@
-import holdKeyAndClickWithUndo from './hold-key-and-click-with-undo';
+import holdKeyAndClickWithUndo from '../util/hold-key-and-click-with-undo';
 
 export default function generalElementEffectifier(
  callback: (target: EventTarget, targetChildNodes: ChildNode[]) => void,

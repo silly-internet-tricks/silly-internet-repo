@@ -12,7 +12,7 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/52edbd6efc1d3ea14d201e3ab26e8f9f/raw/sarcasticizer.meta.js
 // ==/UserScript==
 
-import generalTextEffectifier from './general-text-effectifier';
+import generalTextEffectifier from '../../lib/effects/general-text-effectifier';
 
 (function sarcasticizer() {
  generalTextEffectifier(

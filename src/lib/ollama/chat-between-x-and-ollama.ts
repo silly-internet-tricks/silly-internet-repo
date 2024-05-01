@@ -1,5 +1,5 @@
-import insertCSS from './insert-css';
-import fillInputElement from './fill-input-element';
+import insertCSS from '../util/insert-css';
+import fillInputElement from '../util/fill-input-element';
 
 export default function chatBetweenXAndOllama(
  desiredOllamaModel: string,

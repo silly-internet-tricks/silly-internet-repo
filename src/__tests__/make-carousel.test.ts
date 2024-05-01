@@ -1,5 +1,5 @@
-import makeCarousel from '../make-carousel';
-import getExampleDOM from '../get-example-dom';
+import makeCarousel from '../lib/util/make-carousel';
+import getExampleDOM from '../lib/test/get-example-dom';
 // query utilities:
 // adds special assertions like toHaveTextContent
 import '@testing-library/jest-dom';

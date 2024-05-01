@@ -12,7 +12,7 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/9f27b1916073ffa74260116aa9dc9a03/raw/blinkify.meta.js
 // ==/UserScript==
 
-import generalAnimationifier from './general-animation-ifier';
+import generalAnimationifier from '../../lib/effects/general-animation-ifier';
 
 const blinkAnimationClass: string = 'blink-animation';
 

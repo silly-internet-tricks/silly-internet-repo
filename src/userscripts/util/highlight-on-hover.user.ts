@@ -11,7 +11,7 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/18abb8c8c183817367e63d5ecc400c9c/raw/highlight-on-hover.meta.js
 // ==/UserScript==
 
-import highlightElement from './highlight-element';
+import highlightElement from '../../lib/util/highlight-element';
 
 (function insertChaosCode() {
  highlightElement().startHighlighting();

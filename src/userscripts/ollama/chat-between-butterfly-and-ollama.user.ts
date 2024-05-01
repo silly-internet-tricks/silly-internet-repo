@@ -13,7 +13,7 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/658d6cbf776a950fce06f1fa49b2fd58/raw/chat-between-butterfly-and-ollama.meta.js
 // ==/UserScript==
 
-import chatBetweenXAndOllama from './chat-between-x-and-ollama';
+import chatBetweenXAndOllama from '../../lib/ollama/chat-between-x-and-ollama';
 
 (function chatBetweenChatGptAndOllama() {
  const desiredOllamaModel: string = 'llama3:latest';

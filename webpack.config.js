@@ -1,10 +1,10 @@
 const { globSync } = require('glob');
 
-const userscriptGlob = globSync('./ts-compiled/*.user.js');
+const userscriptGlob = globSync('./ts-compiled/**/*.user.js');
 const entryObj = {};
 
 userscriptGlob.forEach((file) => {
- entryObj[file] = { import: `./${file}`, filename: file.match(/[^/]+$/)[0] };
+ entryObj[file] = { import: `./${file}`, filename: file.replace(/^ts-compiled\/userscripts\//, '') };
 });
 
 module.exports = {

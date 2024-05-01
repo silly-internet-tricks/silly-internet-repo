@@ -12,7 +12,7 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/d09ec1d4d6cd4f1077841bd83e9e1918/raw/breatheify.meta.js
 // ==/UserScript==
 
-import generalAnimationifier from './general-animation-ifier';
+import generalAnimationifier from '../../lib/effects/general-animation-ifier';
 
 const breatheAnimationClass: string = 'breathe-animation';
 

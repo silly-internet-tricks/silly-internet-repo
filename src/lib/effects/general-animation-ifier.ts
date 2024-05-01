@@ -1,5 +1,5 @@
-import insertCSS from './insert-css';
-import holdKeyAndClickWithUndo from './hold-key-and-click-with-undo';
+import insertCSS from '../util/insert-css';
+import holdKeyAndClickWithUndo from '../util/hold-key-and-click-with-undo';
 import { makeInlineInlineBlock, undoInlineInlineBlock } from './make-inline-inline-block';
 
 export default function generalAnimationifier(animationClassName: string, CSS: string, scriptName: string) {

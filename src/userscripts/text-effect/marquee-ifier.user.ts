@@ -12,11 +12,11 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/c9f4aa467ba3f24d1332f720f4f7c113/raw/marquee-ifier.meta.js
 // ==/UserScript==
 
-import insertCSS from './insert-css';
-import generalElementEffectifier from './general-element-effectifier';
-import elementEffectHandler from './element-effect-handler';
-import { makeInlineInlineBlock, undoInlineInlineBlock } from './make-inline-inline-block';
-import getCssKeywordValue from './get-css-keyword-value';
+import insertCSS from '../../lib/util/insert-css';
+import generalElementEffectifier from '../../lib/effects/general-element-effectifier';
+import elementEffectHandler from '../../lib/effects/element-effect-handler';
+import { makeInlineInlineBlock, undoInlineInlineBlock } from '../../lib/effects/make-inline-inline-block';
+import getCssKeywordValue from '../../lib/util/get-css-keyword-value';
 
 (function marqueeifier() {
  let serialNumber: number = 0;
