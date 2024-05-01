@@ -59,6 +59,11 @@ select#ollama-model {
     const option: HTMLOptionElement = document.createElement('option');
     option.value = m;
     option.appendChild(new Text(m));
+
+    if (m === model) {
+     option.setAttribute('selected', 'selected');
+    }
+
     select.appendChild(option);
    });
 
