@@ -7,20 +7,21 @@ export default function chatBetweenXAndOllama(
  chatMessageSelector: string,
  roleCallback: (e: Element) => string,
  sendMessageSelectors?: { textAreaSelector: string, sendButtonSelector: string },
+ reverseMessageOrder?: boolean,
 ) {
  insertCSS(`
 #ollama-text {
  position: fixed;
- bottom: 10px;
+ bottom: 10dvh;
  left: 10px;
  border: solid chartreuse 8px;
  border-radius: 8px;
  padding: 20px;
- background-color: rgba(255,0,127,0.2);
+ background-color: rgba(255,160,247,0.85);
  max-width: 30dvw;
  overflow-y: auto;
  z-index: 10;
- max-height: 98dvh;
+ max-height: 88dvh;
 }
 `);
 
@@ -33,6 +34,9 @@ export default function chatBetweenXAndOllama(
 
  ollamaButton.addEventListener('click', () => {
   const chatMessages: Element[] = [...document.querySelectorAll(chatMessageSelector)];
+  if (reverseMessageOrder) {
+   chatMessages.reverse();
+  }
 
   const requestOptions: GmXmlHttpRequestRequestOptions = {
    url: `${ollamaAddress}api/chat`,

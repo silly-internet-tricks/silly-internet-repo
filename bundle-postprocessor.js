@@ -13,6 +13,7 @@ const processBundles = async function processBundles() {
 
   const name = file.match(/([^./]+).user.js$/)[1];
 
+  // TODO: this would be a good place to check that the source, downloadurl and updateurl fields in the metadata have the correct filenames.
   const userscriptHeader = fileContents.toString().split(delimiter)[0] + delimiter;
   const distFile = bundledUserscriptGlob.find((e) => e.includes(name));
 

@@ -14,10 +14,12 @@
 // ==/UserScript==
 
 import chatBetweenXAndOllama from '../../lib/ollama/chat-between-x-and-ollama';
+import selectOllamaModel from '../../lib/ollama/select-ollama-model';
 
 (function chatBetweenChatGptAndOllama() {
  const desiredOllamaModel: string = 'llama3:latest';
  const ollamaAddress: string = 'http://localhost:11434/';
+ const getModel: () => string = selectOllamaModel(ollamaAddress, desiredOllamaModel);
  const chatMessageSelector: string = '[data-message-author-role]';
  type RoleCallback = (e: Element) => string;
  const roleCallback: RoleCallback = (e) => {
@@ -28,5 +30,8 @@ import chatBetweenXAndOllama from '../../lib/ollama/chat-between-x-and-ollama';
   return 'user';
  };
 
- chatBetweenXAndOllama(desiredOllamaModel, ollamaAddress, chatMessageSelector, roleCallback);
+ chatBetweenXAndOllama(getModel(), ollamaAddress, chatMessageSelector, roleCallback, {
+  textAreaSelector: '#prompt-textarea',
+  sendButtonSelector: '[data-testid="send-button"]',
+ });
 })();
