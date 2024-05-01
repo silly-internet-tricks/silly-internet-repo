@@ -13,6 +13,8 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/25a8aa0997fe06984d5a9947c18583b1/raw/chat-between-chatgpt-and-ollama.meta.js
 // ==/UserScript==
 
+// TODO: much of this code can be reused in other scripts such as the characterai chat script
+
 import chatBetweenXAndOllama from '../../lib/ollama/chat-between-x-and-ollama';
 import selectOllamaModel from '../../lib/ollama/select-ollama-model';
 

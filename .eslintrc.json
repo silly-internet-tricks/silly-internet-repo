@@ -1,118 +1,136 @@
 {
- "settings": {
-  "import/resolver": {
-   "node": {
-    "extensions": [
-     ".js",
-     ".jsx",
-     ".ts",
-     ".tsx"
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    }
+  },
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "airbnb-base",
+    "plugin:jest/recommended",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/stylistic"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2021
+  },
+  "rules": {
+    "typedef": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "wrap-iife": "off",
+    "no-plusplus": [
+      "error",
+      {
+        "allowForLoopAfterthoughts": true
+      }
+    ],
+    "padding-line-between-statements": [
+      "error",
+      {
+        "blankLine": "always",
+        "prev": "block-like",
+        "next": "*"
+      }
+    ],
+    "no-console": 0,
+    "curly": "error",
+    "operator-linebreak": [
+      "error",
+      "before"
+    ],
+    "object-curly-newline": [
+      "error",
+      {
+        "ObjectExpression": {
+          "consistent": true,
+          "multiline": true
+        },
+        "ObjectPattern": {
+          "consistent": true,
+          "multiline": true
+        },
+        "ImportDeclaration": "never",
+        "ExportDeclaration": {
+          "multiline": true,
+          "minProperties": 3
+        }
+      }
+    ],
+    "max-len": [
+      "error",
+      109,
+      2,
+      {
+        "ignoreUrls": true,
+        "ignoreComments": true,
+        "ignoreRegExpLiterals": true,
+        "ignoreStrings": true,
+        "ignoreTemplateLiterals": true
+      }
+    ],
+    "max-statements-per-line": "error",
+    "indent": [
+      "error",
+      1
+    ],
+    "no-param-reassign": "off",
+    "@typescript-eslint/no-inferrable-types": 0,
+    "@typescript-eslint/typedef": [
+      "error",
+      {
+        "variableDeclaration": true
+      }
     ]
-   }
-  }
- },
- "env": {
-  "browser": true,
-  "es2021": true
- },
- "extends": [
-  "airbnb-base",
-  "plugin:jest/recommended",
-  "eslint:recommended",
-  "plugin:@typescript-eslint/recommended",
-  "plugin:@typescript-eslint/stylistic"
- ],
- "parser": "@typescript-eslint/parser",
- "parserOptions": {
-  "ecmaVersion": 2021
- },
- "rules": {
-  "import/extensions": [
-   "error",
-   "ignorePackages",
-   {
-    "js": "never",
-    "jsx": "never",
-    "ts": "never",
-    "tsx": "never"
-   }
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "jest"
   ],
-  "wrap-iife": "off",
-  "no-plusplus": [
-   "error",
-   {
-    "allowForLoopAfterthoughts": true
-   }
-  ],
-  "padding-line-between-statements": [
-    "error",
-    { "blankLine": "always", "prev": "block-like", "next": "*" }
-  ],
-  "no-console": 0,
-  "curly": "error",
-  "object-curly-newline": [
-    "error",
+  "overrides": [
     {
-      "ObjectExpression": { "consistent": true, "multiline": true },
-      "ObjectPattern": { "consistent": true, "multiline": true },
-      "ImportDeclaration": "never",
-      "ExportDeclaration": { "multiline": true, "minProperties": 3 }
+      "files": [
+        "*.ts",
+        "*.mts",
+        "*.cts",
+        "*.mjs",
+        "*.cjs"
+      ]
+    },
+    {
+      "files": [
+        "**/*.user.js"
+      ],
+      "env": {
+        "greasemonkey": true
+      }
     }
   ],
-  "max-len": [
-   "error",
-   109,
-   2,
-   {
-    "ignoreUrls": true,
-    "ignoreComments": true,
-    "ignoreRegExpLiterals": true,
-    "ignoreStrings": true,
-    "ignoreTemplateLiterals": true
-   }
-  ],
-  "max-statements-per-line": "error",
-  "indent": [
-   "error",
-   1
-  ],
-  "no-param-reassign": "off",
-  "@typescript-eslint/no-inferrable-types": 0,
-  "@typescript-eslint/typedef": [
-   "error",
-   {
-    "variableDeclaration": true
-   }
+  "ignorePatterns": [
+    "**/dist/**/*",
+    "**/node_modules/**/*",
+    "**/lc/**/*",
+    "**/leetcode/**/*",
+    "**/worldometer/example-chart-options.js"
   ]
- },
- "plugins": [
-  "@typescript-eslint",
-  "jest"
- ],
- "overrides": [
-  {
-   "files": [
-    "*.ts",
-    "*.mts",
-    "*.cts",
-    "*.mjs",
-    "*.cjs"
-   ]
-  },
-  {
-   "files": [
-    "**/*.user.js"
-   ],
-   "env": {
-    "greasemonkey": true
-   }
-  }
- ],
- "ignorePatterns": [
-  "**/dist/**/*",
-  "**/node_modules/**/*",
-  "**/lc/**/*",
-  "**/leetcode/**/*",
-  "**/worldometer/example-chart-options.js"
- ]
 }
