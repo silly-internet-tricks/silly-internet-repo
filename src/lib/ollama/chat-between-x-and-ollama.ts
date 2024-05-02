@@ -29,9 +29,11 @@ export default function chatBetweenXAndOllama(
 }
 `);
 
- const ollamaText: Element = document.createElement('div');
+ const ollamaText: HTMLElement = document.createElement('div');
+ ollamaText.style.setProperty('display', 'block');
  ollamaText.id = 'ollama-text';
- const ollamaButton: Element = document.createElement('button');
+ const ollamaButton: HTMLElement = document.createElement('button');
+ ollamaButton.style.setProperty('display', 'block');
  ollamaButton.appendChild(new Text('ask ollama'));
  ollamaText.appendChild(ollamaButton);
  document.body.appendChild(ollamaText);
