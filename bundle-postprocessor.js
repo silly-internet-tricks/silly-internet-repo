@@ -13,16 +13,20 @@ const processBundles = async function processBundles() {
 
   const name = file.match(/([^./]+).user.js$/)[1];
 
-  // TODO: this would be a good place to check that the source, downloadurl and updateurl fields in the metadata have the correct filenames.
   const userscriptHeader = fileContents.toString().split(delimiter)[0] + delimiter;
+
+  const sourceEditedUserscriptHeader = userscriptHeader.replace(/(@source.*main\/src)(.*)/, (_, m1) => `${m1}${file.replace('ts-compiled', '')}`);
+  const downloadurlEditedUserscriptHeader = sourceEditedUserscriptHeader.replace(/(@downloadURL.*raw\/)(.*)/, (_, m1) => `${m1}${file.match(/[^/]*$/)[0]}`);
+  const updateurlEditedUserscriptHeader = downloadurlEditedUserscriptHeader.replace(/(@downloadURL.*raw\/)(.*)/, (_, m1) => `${m1}${file.match(/[^/]*$/)[0].replace('.user.js', '.meta.js')}`);
+
   const distFile = bundledUserscriptGlob.find((e) => e.includes(name));
 
   const distFileContents = await readFile(distFile);
-  const bundleWithHeader = userscriptHeader + distFileContents.toString();
+  const bundleWithHeader = updateurlEditedUserscriptHeader + distFileContents.toString();
   await writeFile(distFile, bundleWithHeader);
 
   const metaFile = distFile.replace('user.js', 'meta.js');
-  await writeFile(metaFile, userscriptHeader);
+  await writeFile(metaFile, updateurlEditedUserscriptHeader);
  });
 };
 
