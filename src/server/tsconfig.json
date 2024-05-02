@@ -1,15 +1,12 @@
 {
   "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "src/server/"
+    "*.ts"
   ],
   "compilerOptions": {
-    "outDir": "./ts-compiled/",
+    "outDir": "../../ts-compiled/server/",
     "noImplicitAny": true,
-    "module": "es2020",
-    "target": "es2020",
+    "module": "commonjs",
+    "target": "es5",
     "jsx": "react",
     "allowJs": true,
     "moduleResolution": "node",

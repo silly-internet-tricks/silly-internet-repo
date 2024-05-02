@@ -4,10 +4,11 @@
   "description": "",
   "private": true,
   "scripts": {
+    "serve": "node ./ts-compiled/server/twitch-ws-server.js",
     "test": "jest",
     "lint": "./node_modules/.bin/eslint --fix src/**/*.ts",
     "bundle": "node bundle-build.js",
-    "build": "tsc && npx webpack && node bundle-postprocessor.js",
+    "build": "tsc && tsc -p ./src/server/tsconfig.json && npx webpack && node bundle-postprocessor.js",
     "publish": "node bundle-publish.js",
     "blt": "npm run build && npm run lint && npm run test"
   },
@@ -39,8 +40,13 @@
     "@octokit/auth-action": "^5.1.1",
     "@octokit/core": "^6.1.2",
     "@types/canvas-confetti": "^1.6.4",
+    "@types/node": "^20.12.8",
+    "@types/tmi.js": "^1.8.6",
+    "@types/websocket": "^1.0.10",
     "glob": "^10.3.12",
     "jest-environment-jsdom": "^29.7.0",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "tmi.js": "^1.8.5",
+    "websocket": "^1.0.34"
   }
 }

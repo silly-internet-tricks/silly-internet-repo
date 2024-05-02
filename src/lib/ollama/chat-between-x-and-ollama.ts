@@ -54,7 +54,6 @@ export default function chatBetweenXAndOllama(
    method: 'POST',
    responseType: 'stream',
    data: JSON.stringify({
-    // TODO: let's add a dropdown to select from the available models
     model: desiredOllamaModel,
     messages: chatMessages
      .map((e) => ({

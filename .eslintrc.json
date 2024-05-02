@@ -27,7 +27,6 @@
     "ecmaVersion": 2021
   },
   "rules": {
-    "typedef": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -97,7 +96,7 @@
     "no-param-reassign": "off",
     "@typescript-eslint/no-inferrable-types": 0,
     "@typescript-eslint/typedef": [
-      "error",
+      "off",
       {
         "variableDeclaration": true
       }

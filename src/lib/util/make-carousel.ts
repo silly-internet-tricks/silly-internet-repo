@@ -1,6 +1,5 @@
 import insertCSS from './insert-css';
 
-// type MakeCarousel = (p: HTMLElement, c: ChildNode[]) => void;
 export default function makeCarousel(parent: HTMLElement, children: Element[]) {
  if (!parent.id) throw new Error('parent id is required');
  if (children.find((child) => child.classList.length > 0)) {
@@ -23,7 +22,6 @@ export default function makeCarousel(parent: HTMLElement, children: Element[]) {
  const calculatedContainerWidth: number = pxChildWidth * numberOfChildElements;
 
  // TODO: note that the parent should have overflow hidden
- // TODO: find the right calculation for the transform amount.
  insertCSS(`${children
   .map(
    (_, i) => `
