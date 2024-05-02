@@ -40,5 +40,6 @@ export default function selectOllamaModel(ollamaAddress: string, defaultModel: s
 
    document.body.appendChild(select);
   });
+
  return () => model;
 }

@@ -13,27 +13,21 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/25a8aa0997fe06984d5a9947c18583b1/raw/chat-between-chatgpt-and-ollama.meta.js
 // ==/UserScript==
 
-// TODO: much of this code can be reused in other scripts such as the characterai chat script
-
-import chatBetweenXAndOllama from '../../lib/ollama/chat-between-x-and-ollama';
-import selectOllamaModel from '../../lib/ollama/select-ollama-model';
+import chatBetweenXAndSelectedOllamaModel from '../../lib/ollama/chat-between-x-and-selected-ollama-model';
 
 (function chatBetweenChatGptAndOllama() {
- const desiredOllamaModel: string = 'llama3:latest';
- const ollamaAddress: string = 'http://localhost:11434/';
- const getModel: () => string = selectOllamaModel(ollamaAddress, desiredOllamaModel);
- const chatMessageSelector: string = '[data-message-author-role]';
- type RoleCallback = (e: Element) => string;
- const roleCallback: RoleCallback = (e) => {
-  if (e.getAttribute('data-message-author-role') === 'user') {
-   return 'assistant';
-  }
+ chatBetweenXAndSelectedOllamaModel(
+  '[data-message-author-role]',
+  {
+   textAreaSelector: '#prompt-textarea',
+   sendButtonSelector: '[data-testid="send-button"]',
+  },
+  (e) => {
+   if (e.getAttribute('data-message-author-role') === 'user') {
+    return 'assistant';
+   }
 
-  return 'user';
- };
-
- chatBetweenXAndOllama(getModel(), ollamaAddress, chatMessageSelector, roleCallback, {
-  textAreaSelector: '#prompt-textarea',
-  sendButtonSelector: '[data-testid="send-button"]',
- });
+   return 'user';
+  },
+ );
 })();

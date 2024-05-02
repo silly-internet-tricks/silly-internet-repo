@@ -3,6 +3,7 @@ const { glob } = require('glob');
 
 // reference the file at https://github.com/joshparkerj/silly-internet-tricks/blob/main/bundle-build.js
 
+// TODO: update the eslint config to handle this file
 const delimiter = '==/UserScript==\n';
 
 const processBundles = async function processBundles() {

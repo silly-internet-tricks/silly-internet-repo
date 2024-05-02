@@ -13,27 +13,21 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/658d6cbf776a950fce06f1fa49b2fd58/raw/chat-between-butterfly-and-ollama.meta.js
 // ==/UserScript==
 
-import chatBetweenXAndOllama from '../../lib/ollama/chat-between-x-and-ollama';
+import chatBetweenXAndSelectedOllamaModel from '../../lib/ollama/chat-between-x-and-selected-ollama-model';
 
 (function chatBetweenChatGptAndOllama() {
- const desiredOllamaModel: string = 'llama3:latest';
- const ollamaAddress: string = 'http://localhost:11434/';
- const chatMessageSelector: string = '[id^="context-menu"]';
+ chatBetweenXAndSelectedOllamaModel(
+  '[id^="context-menu"]',
+  {
+   textAreaSelector: '[data-onboarding="send-message"] textarea',
+   sendButtonSelector: '[data-onboarding="send-message"] .flex-grow ~ button',
+  },
+  (e) => {
+   if (e.parentElement.parentElement.classList.contains('flex-row-reverse')) {
+    return 'assistant';
+   }
 
- const textAreaSelector: string = '[data-onboarding="send-message"] textarea';
- const sendButtonSelector: string = '[data-onboarding="send-message"] .flex-grow ~ button';
-
- type RoleCallback = (e: Element) => string;
- const roleCallback: RoleCallback = (e) => {
-  if (e.parentElement.parentElement.classList.contains('flex-row-reverse')) {
-   return 'assistant';
-  }
-
-  return 'user';
- };
-
- chatBetweenXAndOllama(desiredOllamaModel, ollamaAddress, chatMessageSelector, roleCallback, {
-  textAreaSelector,
-  sendButtonSelector,
- });
+   return 'user';
+  },
+ );
 })();

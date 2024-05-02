@@ -13,17 +13,17 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/cfa02f54a7ef2209be3584cd51e89bfc/raw/chat-between-claude-and-ollama.meta.js
 // ==/UserScript==
 
-import chatBetweenXAndOllama from '../../lib/ollama/chat-between-x-and-ollama';
+import chatBetweenXAndSelectedOllamaModel from '../../lib/ollama/chat-between-x-and-selected-ollama-model';
 
 (function chatBetweenClaudeAndOllama() {
- const desiredOllamaModel: string = 'llama3:latest';
- const ollamaAddress: string = 'http://localhost:11434/';
- const chatMessageSelector: string = '[class*="message"]';
-
- chatBetweenXAndOllama(
-  desiredOllamaModel,
-  ollamaAddress,
-  chatMessageSelector,
+ chatBetweenXAndSelectedOllamaModel(
+  '[class*="message"]',
+  {
+   textAreaSelector: (s) => {
+    document.querySelector('[contenteditable] > p').textContent += s;
+   },
+   sendButtonSelector: 'button[aria-label="Send Message"]',
+  },
   (e) => {
    if (e.getAttribute('class').match(/user/)) {
     return 'assistant';

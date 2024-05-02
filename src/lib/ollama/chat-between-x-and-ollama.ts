@@ -4,10 +4,14 @@ import fillInputElement from '../util/fill-input-element';
 export default function chatBetweenXAndOllama(
  desiredOllamaModel: string,
  ollamaAddress: string,
- chatMessageSelector: string,
+ chatMessageSelector: string | (() => Element[]),
  roleCallback: (e: Element) => string,
- sendMessageSelectors?: { textAreaSelector: string, sendButtonSelector: string },
+ sendMessageSelectors?: {
+  textAreaSelector: string | ((s?: string) => void) | (() => HTMLElement);
+  sendButtonSelector: string | (() => HTMLElement);
+ },
  reverseMessageOrder?: boolean,
+ getMessageContent?: (e: Element) => string,
 ) {
  insertCSS(`
 #ollama-text {
@@ -33,7 +37,12 @@ export default function chatBetweenXAndOllama(
  document.body.appendChild(ollamaText);
 
  ollamaButton.addEventListener('click', () => {
-  const chatMessages: Element[] = [...document.querySelectorAll(chatMessageSelector)];
+  // prettier-ignore
+  const chatMessages: Element[] = (
+   typeof chatMessageSelector === 'string'
+    ? [...document.querySelectorAll(chatMessageSelector)]
+    : chatMessageSelector());
+
   if (reverseMessageOrder) {
    chatMessages.reverse();
   }
@@ -45,24 +54,26 @@ export default function chatBetweenXAndOllama(
    data: JSON.stringify({
     // TODO: let's add a dropdown to select from the available models
     model: desiredOllamaModel,
-    messages: chatMessages.map((e) => ({
-     role: roleCallback(e),
-     content: e.textContent,
-    })).reduce((acc, e) => {
-     const last: { role: string, content: string } = acc.pop();
+    messages: chatMessages
+     .map((e) => ({
+      role: roleCallback(e),
+      content: getMessageContent ? getMessageContent(e) : e.textContent,
+     }))
+     .reduce((acc, e) => {
+      const last: { role: string; content: string } = acc.pop();
 
-     if (last && e.role === last.role) {
-      last.content += e.content;
-      acc.push(last);
-     } else if (last) {
-      acc.push(last);
-      acc.push(e);
-     } else {
-      acc.push(e);
-     }
+      if (last && e.role === last.role) {
+       last.content += e.content;
+       acc.push(last);
+      } else if (last) {
+       acc.push(last);
+       acc.push(e);
+      } else {
+       acc.push(e);
+      }
 
-     return acc;
-    }, []),
+      return acc;
+     }, []),
    }),
    fetch: true,
    onloadstart: async ({ response }) => {
@@ -71,9 +82,9 @@ export default function chatBetweenXAndOllama(
     // eslint-disable-next-line no-restricted-syntax
     for await (const chunk of response) {
      interface OllamaChatApiResponseJson {
-      done: boolean,
+      done: boolean;
       message: {
-       content: string
+       content: string;
       };
      }
 
@@ -83,15 +94,28 @@ export default function chatBetweenXAndOllama(
 
      const span: Element = document.createElement('span');
 
-     const { message: { content }, done } = responseJSON;
+     const {
+      message: { content },
+      done,
+     } = responseJSON;
 
      span.appendChild(new Text(content));
      responseParagraph.appendChild(span);
      if (sendMessageSelectors) {
-      fillInputElement(document.querySelector(sendMessageSelectors.textAreaSelector), content);
+      if (typeof sendMessageSelectors.textAreaSelector === 'string') {
+       fillInputElement(document.querySelector(sendMessageSelectors.textAreaSelector), content);
+      } else if (sendMessageSelectors.textAreaSelector.toString().substring(0, 2) === '()') {
+       fillInputElement(sendMessageSelectors.textAreaSelector() as HTMLInputElement, content);
+      } else {
+       sendMessageSelectors.textAreaSelector(content);
+      }
+
       if (done) {
        const { sendButtonSelector } = sendMessageSelectors;
-       const button: HTMLElement = document.querySelector(sendButtonSelector) as HTMLElement;
+       // prettier-ignore
+       const button: HTMLElement = typeof sendButtonSelector === 'string'
+        ? (document.querySelector(sendButtonSelector) as HTMLElement)
+        : sendButtonSelector();
        button.click();
       }
      }

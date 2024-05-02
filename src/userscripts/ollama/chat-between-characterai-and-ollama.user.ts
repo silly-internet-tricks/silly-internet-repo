@@ -13,31 +13,21 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/9565804be42d7e2a442a0d17ff318ef3/raw/chat-between-characterai-and-ollama.meta.js
 // ==/UserScript==
 
-import chatBetweenXAndOllama from '../../lib/ollama/chat-between-x-and-ollama';
-import selectOllamaModel from '../../lib/ollama/select-ollama-model';
+import chatBetweenXAndSelectedOllamaModel from '../../lib/ollama/chat-between-x-and-selected-ollama-model';
 
 (function chatBetweenCharacteraiAndOllama() {
- const desiredOllamaModel: string = 'llama3:latest';
- const ollamaAddress: string = 'http://localhost:11434/';
- const getModel: () => string = selectOllamaModel(ollamaAddress, desiredOllamaModel);
- const chatMessageSelector: string = 'div.group.relative [node]';
- type RoleCallback = (e: Element) => string;
- const roleCallback: RoleCallback = (e) => {
-  if (e?.parentNode?.parentNode?.parentNode?.parentElement?.getAttribute('class')?.match(/items-end/)) {
-   return 'assistant';
-  }
-
-  return 'user';
- };
-
- chatBetweenXAndOllama(
-  getModel(),
-  ollamaAddress,
-  chatMessageSelector,
-  roleCallback,
+ chatBetweenXAndSelectedOllamaModel(
+  'div.group.relative [node]',
   {
    textAreaSelector: 'textarea',
    sendButtonSelector: '.text-primary-foreground',
+  },
+  (e) => {
+   if (e?.parentNode?.parentNode?.parentNode?.parentElement?.getAttribute('class')?.match(/items-end/)) {
+    return 'assistant';
+   }
+
+   return 'user';
   },
   true,
  );
