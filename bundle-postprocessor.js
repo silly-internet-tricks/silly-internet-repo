@@ -15,7 +15,11 @@ const processBundles = async function processBundles() {
 
   const userscriptHeader = fileContents.toString().split(delimiter)[0] + delimiter;
 
-  const sourceEditedUserscriptHeader = userscriptHeader.replace(/(@source.*main\/src)(.*)/, (_, m1) => `${m1}${file.replace('ts-compiled', '')}`);
+  if (!userscriptHeader.match(/@source/)) {
+    console.warn(`${file} is missing the source field in its metadata`);
+  }
+
+  const sourceEditedUserscriptHeader = userscriptHeader.replace(/(@source.*main\/src)(.*)/, (_, m1) => `${m1}${file.replace('ts-compiled', '').replace('user.js', 'user.ts')}`);
   const downloadurlEditedUserscriptHeader = sourceEditedUserscriptHeader.replace(/(@downloadURL.*raw\/)(.*)/, (_, m1) => `${m1}${file.match(/[^/]*$/)[0]}`);
   const updateurlEditedUserscriptHeader = downloadurlEditedUserscriptHeader.replace(/(@downloadURL.*raw\/)(.*)/, (_, m1) => `${m1}${file.match(/[^/]*$/)[0].replace('.user.js', '.meta.js')}`);
 

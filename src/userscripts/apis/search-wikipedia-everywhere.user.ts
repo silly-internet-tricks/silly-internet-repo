@@ -8,6 +8,9 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=mozilla.org
 // @grant        GM_xmlhttpRequest
 // @connect      en.wikipedia.org
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/search-wikipedia-everywhere.user.ts
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/9e1271d6d8f950fb5cd5037b15d7e746/raw/search-wikipedia-everywhere.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/9e1271d6d8f950fb5cd5037b15d7e746/raw/search-wikipedia-everywhere.meta.js
 // ==/UserScript==
 
 import insertCSS from '../../lib/util/insert-css';
