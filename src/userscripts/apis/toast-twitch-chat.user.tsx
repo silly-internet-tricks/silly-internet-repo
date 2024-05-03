@@ -9,8 +9,8 @@
 // @grant        GM_xmlhttpRequest
 // @connect      localhost
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/toast-twitch-chat.user.ts
-// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/74b45baefede276f61fb0a84dd621772/raw/toast-twitch-chat.user.js
-// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/74b45baefede276f61fb0a84dd621772/raw/toast-twitch-chat.meta.js
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/9b6d4a20dcf00cddd53ac1392aabc5f0/raw/toast-twitch-chat.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/9b6d4a20dcf00cddd53ac1392aabc5f0/raw/toast-twitch-chat.meta.js
 // ==/UserScript==
 
 import * as React from 'react';

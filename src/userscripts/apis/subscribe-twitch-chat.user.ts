@@ -9,8 +9,8 @@
 // @grant        GM_xmlhttpRequest
 // @connect      localhost
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/subscribe-twitch-chat.user.ts
-// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/74b45baefede276f61fb0a84dd621772/raw/subscribe-twitch-chat.user.js
-// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/74b45baefede276f61fb0a84dd621772/raw/subscribe-twitch-chat.meta.js
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/8fbcbdc8cc79be479879ac73c1a2ff65/raw/subscribe-twitch-chat.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/8fbcbdc8cc79be479879ac73c1a2ff65/raw/subscribe-twitch-chat.meta.js
 // ==/UserScript==
 
 import insertCSS from '../../lib/util/insert-css';
