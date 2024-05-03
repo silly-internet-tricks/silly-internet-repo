@@ -4,7 +4,7 @@ export default function getOllamaGeneratedResponse(
  prompt: string,
  callback: (response: string) => void,
 ) {
- const promise: Promise<void> = new Promise<void>((resolve) => {
+ const promise: Promise<void> = new Promise<void>((resolve, reject) => {
   const requestOptions: GmXmlHttpRequestRequestOptions = {
    url: `${ollamaAddress}api/generate`,
    method: 'POST',
@@ -12,18 +12,24 @@ export default function getOllamaGeneratedResponse(
    data: JSON.stringify({ model, prompt }),
    fetch: true,
    onloadstart: async ({ response }) => {
-    // I think this is the idiomatic way to usually handle streams.
-    // Next time I'll try it a different way, but I'm ignoring the linter this time
-    // eslint-disable-next-line no-restricted-syntax
-    for await (const chunk of response) {
-     const responseJSON: { response: string } = JSON.parse(
-      [...chunk].map((b) => String.fromCharCode(b)).join(''),
-     );
+    try {
+     // I think this is the idiomatic way to usually handle streams.
+     // Next time I'll try it a different way, but I'm ignoring the linter this time
+     // eslint-disable-next-line no-restricted-syntax
+     for await (const chunk of response) {
+      const responseJSON: { response: string } = JSON.parse(
+       [...chunk].map((b) => String.fromCharCode(b)).join(''),
+      );
 
-     callback(responseJSON.response);
+      callback(responseJSON.response);
+     }
+
+     resolve();
+    } catch (e) {
+     console.error('got an error!');
+     console.error(e);
+     reject(e);
     }
-
-    resolve();
    },
   };
 

@@ -7,20 +7,23 @@ export default function highlightElement() {
 
  document.addEventListener('mouseover', findHoverTarget);
 
- const resetBorder: (e?: { htmlElement: HTMLElement; boxShadow: string }) => void = (() => {
+ const { resetBorder, setLast } = (() => {
   let last: { htmlElement: HTMLElement; boxShadow: string } = null;
-  return (e) => {
-   if (e) {
-    last = e;
-   } else if (last) {
-    const { htmlElement, boxShadow } = last;
-    htmlElement?.style.removeProperty('box-shadow');
-    if (boxShadow) {
-     htmlElement?.style.setProperty('box-shadow', boxShadow);
-    }
+  return {
+   resetBorder: () => {
+    if (last) {
+     const { htmlElement, boxShadow } = last;
+     htmlElement?.style.removeProperty('box-shadow');
+     if (boxShadow) {
+      htmlElement?.style.setProperty('box-shadow', boxShadow);
+     }
 
-    last = null;
-   }
+     last = null;
+    }
+   },
+   setLast: (e: { htmlElement: HTMLElement; boxShadow: string }) => {
+    last = e;
+   },
   };
  })();
 
@@ -28,7 +31,7 @@ export default function highlightElement() {
   resetBorder();
   const boxShadow: string = hoverTarget?.style.getPropertyValue('box-shadow');
   hoverTarget?.style.setProperty('box-shadow', '0 0 4px chartreuse');
-  resetBorder({ htmlElement: hoverTarget, boxShadow });
+  setLast({ htmlElement: hoverTarget, boxShadow });
  };
 
  const startHighlighting: () => void = () => {

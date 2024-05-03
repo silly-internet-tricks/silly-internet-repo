@@ -3,6 +3,8 @@ import pick from './pick';
 
 export default function makeAvailableKeys() {
  let div: HTMLElement;
+ // if the window has getEffectKey defined on it, I assume that this function has been called already
+ // and thus that the #effect-keys-menu div must already exist as well
  // @ts-expect-error I add the getEffectKey function to the window because it's meant to be accessible to any script that uses the hold key and click function
  if (!window.getEffectKey) {
   const getEffectKey: (requestedKeys: string[]) => string = (() => {
