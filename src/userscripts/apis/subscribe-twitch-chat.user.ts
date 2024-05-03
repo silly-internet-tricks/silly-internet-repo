@@ -6,9 +6,6 @@
 // @author       Josh Parker
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=wikipedia.org
-// @require      https://www.unpkg.com/react@18.3.1/umd/react.development.js
-// @require      https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js
-// @require      https://cdn.jsdelivr.net/npm/react-toastify@10.0.5/dist/react-toastify.umd.min.js
 // @grant        GM_xmlhttpRequest
 // @connect      localhost
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/subscribe-twitch-chat.user.ts
@@ -30,7 +27,7 @@ import getStringFromChunk from '../../lib/util/get-string-from-chunk';
   border: solid 1px chartreuse;
   border-radius: 3px;
   box-shadow: 1px 2px 3px #4F8F00;
-  z-index: 700;
+  z-index: 5051;
  }
 
  #twitch-chat .chat-message {
