@@ -1,3 +1,5 @@
+import getStringFromChunk from '../util/get-string-from-chunk';
+
 export default function getOllamaGeneratedResponse(
  ollamaAddress: string,
  model: string,
@@ -17,9 +19,7 @@ export default function getOllamaGeneratedResponse(
      // Next time I'll try it a different way, but I'm ignoring the linter this time
      // eslint-disable-next-line no-restricted-syntax
      for await (const chunk of response) {
-      const responseJSON: { response: string } = JSON.parse(
-       [...chunk].map((b) => String.fromCharCode(b)).join(''),
-      );
+      const responseJSON: { response: string } = JSON.parse(getStringFromChunk(chunk));
 
       callback(responseJSON.response);
      }

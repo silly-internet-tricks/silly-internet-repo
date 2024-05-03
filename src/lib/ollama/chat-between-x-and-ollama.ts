@@ -1,5 +1,6 @@
 import insertCSS from '../util/insert-css';
 import fillInputElement from '../util/fill-input-element';
+import getStringFromChunk from '../util/get-string-from-chunk';
 
 export default function chatBetweenXAndOllama(
  desiredOllamaModel: string,
@@ -89,9 +90,7 @@ export default function chatBetweenXAndOllama(
       };
      }
 
-     const responseJSON: OllamaChatApiResponseJson = JSON.parse(
-      [...chunk].map((b) => String.fromCharCode(b)).join(''),
-     );
+     const responseJSON: OllamaChatApiResponseJson = JSON.parse(getStringFromChunk(chunk));
 
      const span: Element = document.createElement('span');
 

@@ -17,6 +17,7 @@
 // ==/UserScript==
 
 import insertCSS from '../../lib/util/insert-css';
+import getStringFromChunk from '../../lib/util/get-string-from-chunk';
 
 (function ollamaWhatIsTheImage() {
  // TODO: This is copy-pasted from get ai nonsense, so consider moving to its own file
@@ -66,6 +67,7 @@ import insertCSS from '../../lib/util/insert-css';
    // @ts-expect-error GM is defined as part of the API for the tampermonkey chrome extension
    GM.xmlHttpRequest(imageRequestOptions).then((r: GmXmlHttpRequestResponse) => {
     const base64Image: string = btoa(
+     // this is based on the stack overflow answer: https://stackoverflow.com/a/9458996
      [...new Uint8Array(r.response)].map((b) => String.fromCharCode(b)).join(''),
     );
 
@@ -84,9 +86,7 @@ import insertCSS from '../../lib/util/insert-css';
       // Next time I'll try it a different way, but I'm ignoring the linter this time
       // eslint-disable-next-line no-restricted-syntax
       for await (const chunk of response) {
-       const responseJSON: { response: string } = JSON.parse(
-        [...chunk].map((b) => String.fromCharCode(b)).join(''),
-       );
+       const responseJSON: { response: string } = JSON.parse(getStringFromChunk(chunk));
 
        const span: Element = document.createElement('span');
        span.appendChild(new Text(responseJSON.response));
