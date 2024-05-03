@@ -11,15 +11,21 @@
 
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-function App() {
+const App = function App() {
+ const notify = () => toast('Wow so easy!');
+
  return (
   <div className="App">
    <h1>Hello CodeSandbox</h1>
    <h2>Start editing to see some magic happen!</h2>
+   <button onClick={notify}>Notify!</button>
+   <ToastContainer />
   </div>
  );
-}
+};
 
 const rootElement = document.getElementById('question-header');
 const root = createRoot(rootElement);
