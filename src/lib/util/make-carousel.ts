@@ -9,9 +9,10 @@ export default function makeCarousel(parent: HTMLElement, children: Element[]) {
  const carouselContainer: Element = document.createElement('div');
  carouselContainer.id = `${parent.id}-carousel-container`;
  parent.appendChild(carouselContainer);
+ let carouselNumber: number = 0;
 
  children.forEach((child) => {
-  child.classList.add('carousel-0');
+  child.classList.add(`carousel-${carouselNumber}`);
   carouselContainer.appendChild(child);
  });
 
@@ -46,9 +47,9 @@ export default function makeCarousel(parent: HTMLElement, children: Element[]) {
          `);
 
  parent.addEventListener('click', () => {
-  const carouselNumber: number = Number(children[0].classList[0].match(/(\d+)$/)[1]);
+  carouselNumber += 1;
   children.forEach((child) => {
-   child.classList.replace(child.classList[0], `carousel-${(1 + carouselNumber) % children.length}`);
+   child.classList.replace(child.classList[0], `carousel-${carouselNumber % children.length}`);
   });
  });
 }
