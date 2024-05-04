@@ -18,8 +18,8 @@ import { createRoot } from 'react-dom/client';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import getStringFromChunk from '../../lib/util/get-string-from-chunk';
-import findEmptyElement from '../../lib/util/find-empty-element';
 import insertCSS from '../../lib/util/insert-css';
+import observeElementRemovalAndReaddIt from '../../lib/util/observe-element-removal-and-readd-it';
 
 (function subscribeTwitchChat() {
  insertCSS(`
@@ -36,7 +36,10 @@ import insertCSS from '../../lib/util/insert-css';
   );
  };
 
- const emptyElement = findEmptyElement();
+ const emptyElement = document.createElement('div');
+ document.body.appendChild(emptyElement);
+ observeElementRemovalAndReaddIt(emptyElement);
+
  emptyElement.style.setProperty('z-index', '9001');
  const root = createRoot(emptyElement);
 
