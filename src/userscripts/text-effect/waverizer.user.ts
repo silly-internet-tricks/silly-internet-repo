@@ -8,8 +8,8 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=js.org
 // @grant        none
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/waverizer.user.ts
-// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/cfa5a159cf422ba3ee4b0823e8b9ef54/raw/waverizer.user.js
-// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/cfa5a159cf422ba3ee4b0823e8b9ef54/raw/waverizer.meta.js
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/e2b85fa0fdb3349ceef7ec8cb2e3c878/raw/waverizer.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/e2b85fa0fdb3349ceef7ec8cb2e3c878/raw/waverizer.meta.js
 // ==/UserScript==
 
 import generalTextEffectifier from '../../lib/effects/general-text-effectifier';

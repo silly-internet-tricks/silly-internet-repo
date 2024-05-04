@@ -8,8 +8,8 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=js.org
 // @grant        none
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/random-color-cycling.user.ts
-// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/cfa5a159cf422ba3ee4b0823e8b9ef54/raw/random-color-cycling.user.js
-// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/cfa5a159cf422ba3ee4b0823e8b9ef54/raw/random-color-cycling.meta.js
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/210324e42704a6b4a9f53ac4a04ea497/raw/random-color-cycling.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/210324e42704a6b4a9f53ac4a04ea497/raw/random-color-cycling.meta.js
 // ==/UserScript==
 
 import generalTextEffectifier from '../../lib/effects/general-text-effectifier';

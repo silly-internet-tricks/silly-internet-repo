@@ -8,8 +8,8 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=js.org
 // @grant        none
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/rainbow.user.ts
-// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/cfa5a159cf422ba3ee4b0823e8b9ef54/raw/rainbow.user.js
-// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/cfa5a159cf422ba3ee4b0823e8b9ef54/raw/rainbow.meta.js
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/e5b900b750adc1b16bd404dd1cc21898/raw/rainbow.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/e5b900b750adc1b16bd404dd1cc21898/raw/rainbow.meta.js
 // ==/UserScript==
 
 import generalTextEffectifier from '../../lib/effects/general-text-effectifier';
