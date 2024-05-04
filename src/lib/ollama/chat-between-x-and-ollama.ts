@@ -1,9 +1,10 @@
 import insertCSS from '../util/insert-css';
 import fillInputElement from '../util/fill-input-element';
 import getStringFromChunk from '../util/get-string-from-chunk';
+import observeElementRemovalAndReaddIt from '../util/observe-element-removal-and-readd-it';
 
 export default function chatBetweenXAndOllama(
- desiredOllamaModel: string,
+ desiredOllamaModel: string | (() => string),
  ollamaAddress: string,
  chatMessageSelector: string | (() => Element[]),
  roleCallback: (e: Element) => string,
@@ -39,6 +40,8 @@ export default function chatBetweenXAndOllama(
  ollamaText.appendChild(ollamaButton);
  document.body.appendChild(ollamaText);
 
+ observeElementRemovalAndReaddIt(ollamaText);
+
  ollamaButton.addEventListener('click', () => {
   // prettier-ignore
   const chatMessages: Element[] = (
@@ -55,7 +58,7 @@ export default function chatBetweenXAndOllama(
    method: 'POST',
    responseType: 'stream',
    data: JSON.stringify({
-    model: desiredOllamaModel,
+    model: typeof desiredOllamaModel === 'string' ? desiredOllamaModel : desiredOllamaModel(),
     messages: chatMessages
      .map((e) => ({
       role: roleCallback(e),
@@ -90,34 +93,47 @@ export default function chatBetweenXAndOllama(
       };
      }
 
-     const responseJSON: OllamaChatApiResponseJson = JSON.parse(getStringFromChunk(chunk));
+     const chunkString = getStringFromChunk(chunk);
+     try {
+      const responses = chunkString.split('}\n{');
+      responses
+       .map((r, i) => `${i === 0 ? '' : '{'}${r}${i === responses.length - 1 ? '' : '}'}`)
+       .forEach((r) => {
+        const responseJSON: OllamaChatApiResponseJson = JSON.parse(r);
 
-     const span: Element = document.createElement('span');
+        const span: Element = document.createElement('span');
 
-     const {
-      message: { content },
-      done,
-     } = responseJSON;
+        const {
+         message: { content },
+         done,
+        } = responseJSON;
 
-     span.appendChild(new Text(content));
-     responseParagraph.appendChild(span);
-     if (sendMessageSelectors) {
-      if (typeof sendMessageSelectors.textAreaSelector === 'string') {
-       fillInputElement(document.querySelector(sendMessageSelectors.textAreaSelector), content);
-      } else if (sendMessageSelectors.textAreaSelector.toString().substring(0, 2) === '()') {
-       fillInputElement(sendMessageSelectors.textAreaSelector() as HTMLInputElement, content);
-      } else {
-       sendMessageSelectors.textAreaSelector(content);
-      }
+        span.appendChild(new Text(content));
+        responseParagraph.appendChild(span);
+        if (sendMessageSelectors) {
+         if (typeof sendMessageSelectors.textAreaSelector === 'string') {
+          fillInputElement(document.querySelector(sendMessageSelectors.textAreaSelector), content);
+         } else if (sendMessageSelectors.textAreaSelector.toString().substring(0, 2) === '()') {
+          fillInputElement(sendMessageSelectors.textAreaSelector() as HTMLInputElement, content);
+         } else {
+          sendMessageSelectors.textAreaSelector(content);
+         }
 
-      if (done) {
-       const { sendButtonSelector } = sendMessageSelectors;
-       // prettier-ignore
-       const button: HTMLElement = typeof sendButtonSelector === 'string'
-        ? (document.querySelector(sendButtonSelector) as HTMLElement)
-        : sendButtonSelector();
-       button.click();
-      }
+         if (done) {
+          const { sendButtonSelector } = sendMessageSelectors;
+          // prettier-ignore
+          const button: HTMLElement = typeof sendButtonSelector === 'string'
+           ? (document.querySelector(sendButtonSelector) as HTMLElement)
+           : sendButtonSelector();
+          button.click();
+         }
+        }
+       });
+     } catch (e) {
+      console.error('had an error!');
+      console.error(e);
+      console.error(chunkString);
+      console.error('going to skip this chunk and just move on to the next');
      }
     }
    },

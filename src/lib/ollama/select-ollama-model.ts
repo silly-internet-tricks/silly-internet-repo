@@ -1,5 +1,6 @@
 import insertCSS from '../util/insert-css';
 import getOllamaModelList from './get-ollama-model-list';
+import observeElementRemovalAndReaddIt from '../util/observe-element-removal-and-readd-it';
 
 export default function selectOllamaModel(ollamaAddress: string, defaultModel: string) {
  insertCSS(`
@@ -39,6 +40,8 @@ export default function selectOllamaModel(ollamaAddress: string, defaultModel: s
    });
 
    document.body.appendChild(select);
+
+   observeElementRemovalAndReaddIt(select);
   });
 
  return () => model;

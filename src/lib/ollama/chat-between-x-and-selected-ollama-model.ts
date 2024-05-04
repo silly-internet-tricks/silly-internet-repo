@@ -17,7 +17,7 @@ export default function chatBetweenXAndSelectedOllamaModel(
  const getModel: () => string = selectOllamaModel(ollamaAddress, desiredOllamaModel);
 
  chatBetweenXAndOllama(
-  getModel(),
+  getModel,
   ollamaAddress,
   chatMessageSelector,
   roleCallback,
