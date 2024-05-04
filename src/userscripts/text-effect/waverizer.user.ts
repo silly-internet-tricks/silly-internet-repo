@@ -41,12 +41,15 @@ import insertCSS from '../../lib/util/insert-css';
     }
 }`);
 
+ let textIndex = 0;
+
  generalTextEffectifier((text, length) => {
   const letters: string[] = [...text.replace(/^\s+/, ' ').replace(/\s+$/, ' ').replace(/\s+/g, ' ')];
-  return letters.map((letter, i) => {
+  return letters.map((letter) => {
    const span: HTMLElement = document.createElement('span');
    span.classList.add('waverized');
-   span.style.setProperty('animation-delay', `${Math.floor((i / length) * 3000)}ms`);
+   span.style.setProperty('animation-delay', `${Math.floor((textIndex / length) * 3000)}ms`);
+   textIndex += 1;
    if (letter === ' ') {
     span.style.setProperty('padding', '0 0.2em');
    }
