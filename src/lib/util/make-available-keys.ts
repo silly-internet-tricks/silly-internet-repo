@@ -31,8 +31,44 @@ export default function makeAvailableKeys() {
 `);
 
   div = document.createElement('div');
-  div.appendChild(new Text('effect keys'));
+  const effectKeysHeading = document.createElement('h4');
+  effectKeysHeading.appendChild(new Text('effect keys'));
+  div.appendChild(effectKeysHeading);
   div.id = 'effect-keys-menu';
+
+  const collapseButton = document.createElement('button');
+  collapseButton.appendChild(new Text('X'));
+
+  const uncollapseButton = document.createElement('button');
+  uncollapseButton.appendChild(new Text('💗'));
+  uncollapseButton.style.setProperty('display', 'none');
+
+  collapseButton.addEventListener('click', () => {
+   div.childNodes.forEach((childNode) => {
+    if (childNode instanceof HTMLElement) {
+     childNode.style.setProperty('display', 'none');
+    }
+   });
+
+   uncollapseButton.style.removeProperty('display');
+  });
+
+  uncollapseButton.addEventListener('click', () => {
+   div.childNodes.forEach((childNode) => {
+    if (childNode instanceof HTMLElement) {
+     childNode.style.removeProperty('display');
+    }
+
+    uncollapseButton.style.setProperty('display', 'none');
+   });
+  });
+
+  // when the button is pressed, set the element style on all the div's children
+  // to display none
+  // then add an undo button
+
+  div.appendChild(collapseButton);
+  div.appendChild(uncollapseButton);
 
   document.body.appendChild(div);
  } else {
