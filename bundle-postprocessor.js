@@ -24,7 +24,7 @@ const processBundles = async function processBundles() {
   const downloadurlEditedUserscriptHeader = sourceEditedUserscriptHeader.replace(/(@downloadURL.*raw\/)(.*)/, (_, m1) => `${m1}${file.match(/[^/]*$/)[0]}`);
   const updateurlEditedUserscriptHeader = downloadurlEditedUserscriptHeader.replace(/(@updateURL.*raw\/)(.*)/, (_, m1) => `${m1}${file.match(/[^/]*$/)[0].replace('.user.js', '.meta.js')}`);
 
-  const distFile = bundledUserscriptGlob.find((e) => e.includes(name));
+  const distFile = bundledUserscriptGlob.find((e) => e.includes(`/${name}.user.js`));
 
   const distFileContents = await readFile(distFile);
   const bundleWithHeader = updateurlEditedUserscriptHeader + distFileContents.toString();

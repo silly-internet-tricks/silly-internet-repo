@@ -14,8 +14,15 @@
 // ==/UserScript==
 
 import chatBetweenXAndSelectedOllamaModel from '../../lib/ollama/chat-between-x-and-selected-ollama-model';
+import insertCSS from '../../lib/util/insert-css';
 
 (function chatBetweenClaudeAndOllama() {
+ insertCSS(`
+.pt-12 {
+ margin-left: 10dvw;
+}
+`);
+
  chatBetweenXAndSelectedOllamaModel(
   '[class*="message"]',
   {
