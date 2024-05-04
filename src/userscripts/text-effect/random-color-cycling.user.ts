@@ -19,47 +19,16 @@ import insertCSS from '../../lib/util/insert-css';
  insertCSS(`span.random-color-cycle {
     animation-name: random-color-cycle;
     animation-iteration-count: infinite;
+    animation-timing-function: linear;
 }
 
 @keyframes random-color-cycle {
  0% {
      filter: hue-rotate(0.0turn);
  }
-
- 10% {
-     filter: hue-rotate(0.1turn);
- }
- 
- 20% {
-     filter: hue-rotate(0.2turn);
- }
- 
- 30% {
-     filter: hue-rotate(0.3turn);
- }
- 
- 40% {
-     filter: hue-rotate(0.4turn);
- }
  
  50% {
      filter: hue-rotate(0.5turn);
- }
-
- 60% {
-     filter: hue-rotate(0.6turn);
- }
-
- 70% {
-     filter: hue-rotate(0.7turn);
- }
-
- 80% {
-     filter: hue-rotate(0.8turn);
- }
-
- 90% {
-     filter: hue-rotate(0.9turn);
  }
  
  100% {

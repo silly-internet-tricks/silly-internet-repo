@@ -25,6 +25,7 @@ const colorCyclingClass: string = 'color-cycling';
      animation-duration: 6s;
      animation-name: color-cycle;
      animation-iteration-count: infinite;
+     animation-timing-function: linear;
  }
  
  @keyframes color-cycle {
