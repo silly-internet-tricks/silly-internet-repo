@@ -78,11 +78,10 @@ import selectOllamaModel from '../../lib/ollama/select-ollama-model';
   });
  };
 
+ holdKeyAndClick(['l', 'k'], clickCallback, 'chaos code');
  const getAvailableKey: (requestedKeys: string[], label: string) => string = makeAvailableKeys();
  const undoKey: string = getAvailableKey(['z', 't'], 'chaos code undo').toLocaleUpperCase();
  const redoKey: string = getAvailableKey(['y', 'u'], 'chaos code redo').toLocaleUpperCase();
-
- holdKeyAndClick(['l', 'k'], clickCallback, 'chaos code');
 
  document.addEventListener('keydown', ({ code }) => {
   if (keyCodeMatch(undoKey, code)) {
