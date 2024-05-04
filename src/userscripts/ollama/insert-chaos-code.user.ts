@@ -22,17 +22,20 @@ import getOllamaGeneratedResponse from '../../lib/ollama/get-ollama-generated-re
 import makeAvailableKeys from '../../lib/util/make-available-keys';
 import holdKeyAndClick from '../../lib/util/hold-key-and-click';
 import keyCodeMatch from '../../lib/util/key-code-match';
+import selectOllamaModel from '../../lib/ollama/select-ollama-model';
 
 (function insertChaosCode() {
  // prettier-ignore
  const prompt: string = 'Please add an HTML element to complete the following incomplete snippet of markup. Use syntactically correct HTML to be viewed in a standards-compliant web browser. We need to impress the client, so use visually appealing CSS styling with liberal ornamentation and ostentatious flair. Make your code as flashy as you like. This is a playful project; chaos is welcome! Here is the code we have so far: ';
  const ollamaAddress: string = 'http://localhost:11434/';
  const model: string = 'codegemma:latest';
+ const getModel: () => string = selectOllamaModel(ollamaAddress, model);
 
  interface UndoStackElement {
   htmlElement: HTMLElement;
   prevInnerHTML: string;
  }
+
  const undoStack: UndoStackElement[] = [];
  const redoStack: UndoStackElement[] = [];
 
@@ -48,7 +51,7 @@ import keyCodeMatch from '../../lib/util/key-code-match';
 
   getOllamaGeneratedResponse(
    ollamaAddress,
-   model,
+   getModel(),
    prompt + htmlElement.outerHTML.replace(/<\/[^>]*>$/, ''),
    (response) => {
     responseSoFar += response;

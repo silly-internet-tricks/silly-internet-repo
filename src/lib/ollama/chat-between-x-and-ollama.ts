@@ -1,6 +1,6 @@
 import insertCSS from '../util/insert-css';
 import fillInputElement from '../util/fill-input-element';
-import getStringFromChunk from '../util/get-string-from-chunk';
+import getJsonsFromChunk from '../util/get-jsons-from-chunk';
 import observeElementRemovalAndReaddIt from '../util/observe-element-removal-and-readd-it';
 
 export default function chatBetweenXAndOllama(
@@ -86,53 +86,39 @@ export default function chatBetweenXAndOllama(
     ollamaText.appendChild(responseParagraph);
     // eslint-disable-next-line no-restricted-syntax
     for await (const chunk of response) {
-     interface OllamaChatApiResponseJson {
-      done: boolean;
-      message: {
-       content: string;
-      };
-     }
-
-     const chunkString = getStringFromChunk(chunk);
      try {
-      const responses = chunkString.split('}\n{');
-      responses
-       .map((r, i) => `${i === 0 ? '' : '{'}${r}${i === responses.length - 1 ? '' : '}'}`)
-       .forEach((r) => {
-        const responseJSON: OllamaChatApiResponseJson = JSON.parse(r);
+      getJsonsFromChunk(chunk).forEach((responseJSON) => {
+       const span: Element = document.createElement('span');
 
-        const span: Element = document.createElement('span');
+       const {
+        message: { content },
+        done,
+       } = responseJSON;
 
-        const {
-         message: { content },
-         done,
-        } = responseJSON;
-
-        span.appendChild(new Text(content));
-        responseParagraph.appendChild(span);
-        if (sendMessageSelectors) {
-         if (typeof sendMessageSelectors.textAreaSelector === 'string') {
-          fillInputElement(document.querySelector(sendMessageSelectors.textAreaSelector), content);
-         } else if (sendMessageSelectors.textAreaSelector.toString().substring(0, 2) === '()') {
-          fillInputElement(sendMessageSelectors.textAreaSelector() as HTMLInputElement, content);
-         } else {
-          sendMessageSelectors.textAreaSelector(content);
-         }
-
-         if (done) {
-          const { sendButtonSelector } = sendMessageSelectors;
-          // prettier-ignore
-          const button: HTMLElement = typeof sendButtonSelector === 'string'
-           ? (document.querySelector(sendButtonSelector) as HTMLElement)
-           : sendButtonSelector();
-          button.click();
-         }
+       span.appendChild(new Text(content));
+       responseParagraph.appendChild(span);
+       if (sendMessageSelectors) {
+        if (typeof sendMessageSelectors.textAreaSelector === 'string') {
+         fillInputElement(document.querySelector(sendMessageSelectors.textAreaSelector), content);
+        } else if (sendMessageSelectors.textAreaSelector.toString().substring(0, 2) === '()') {
+         fillInputElement(sendMessageSelectors.textAreaSelector() as HTMLInputElement, content);
+        } else {
+         sendMessageSelectors.textAreaSelector(content);
         }
-       });
+
+        if (done) {
+         const { sendButtonSelector } = sendMessageSelectors;
+         // prettier-ignore
+         const button: HTMLElement = typeof sendButtonSelector === 'string'
+          ? (document.querySelector(sendButtonSelector) as HTMLElement)
+          : sendButtonSelector();
+         button.click();
+        }
+       }
+      });
      } catch (e) {
       console.error('had an error!');
       console.error(e);
-      console.error(chunkString);
       console.error('going to skip this chunk and just move on to the next');
      }
     }

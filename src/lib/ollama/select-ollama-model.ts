@@ -6,7 +6,7 @@ export default function selectOllamaModel(ollamaAddress: string, defaultModel: s
  insertCSS(`
  select#ollama-model {
      position: fixed;
-     bottom: 2dvh;
+     bottom: 6dvh;
      left: 1dvw;
      font-family: monospace;
      background-color:  black;

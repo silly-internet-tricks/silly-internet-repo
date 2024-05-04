@@ -7,6 +7,7 @@ export default function makeAvailableKeys() {
  // and thus that the #effect-keys-menu div must already exist as well
  // @ts-expect-error I add the getEffectKey function to the window because it's meant to be accessible to any script that uses the hold key and click function
  if (!window.getEffectKey) {
+  console.log('window.getEffectKey not defined');
   const getEffectKey: (requestedKeys: string[]) => string = (() => {
    const availableKeys: Set<string> = new Set<string>('abcdefghijklmnopqrstuvwxyz1234567890');
    return (requestedKeys: string[]) => {
