@@ -21,6 +21,7 @@ import getHtmlAndCssBlocksFromMarkdown from '../../lib/ollama/get-html-and-css-b
 import getOllamaGeneratedResponse from '../../lib/ollama/get-ollama-generated-response';
 import makeAvailableKeys from '../../lib/util/make-available-keys';
 import holdKeyAndClick from '../../lib/util/hold-key-and-click';
+import keyCodeMatch from '../../lib/util/key-code-match';
 
 (function insertChaosCode() {
  // prettier-ignore
@@ -75,17 +76,17 @@ import holdKeyAndClick from '../../lib/util/hold-key-and-click';
  };
 
  const getAvailableKey: (requestedKeys: string[], label: string) => string = makeAvailableKeys();
- const undoKey: string = `Key${getAvailableKey(['z', 't'], 'chaos code undo').toLocaleUpperCase()}`;
- const redoKey: string = `Key${getAvailableKey(['y', 'u'], 'chaos code redo').toLocaleUpperCase()}`;
+ const undoKey: string = getAvailableKey(['z', 't'], 'chaos code undo').toLocaleUpperCase();
+ const redoKey: string = getAvailableKey(['y', 'u'], 'chaos code redo').toLocaleUpperCase();
 
  holdKeyAndClick(['l', 'k'], clickCallback, 'chaos code');
 
  document.addEventListener('keydown', ({ code }) => {
-  if (code === undoKey) {
+  if (keyCodeMatch(undoKey, code)) {
    const { htmlElement, prevInnerHTML } = undoStack.pop();
    redoStack.push({ htmlElement, prevInnerHTML: htmlElement.innerHTML });
    htmlElement.innerHTML = prevInnerHTML;
-  } else if (code === redoKey) {
+  } else if (keyCodeMatch(redoKey, code)) {
    const { htmlElement, prevInnerHTML } = redoStack.pop();
    undoStack.push({ htmlElement, prevInnerHTML: htmlElement.innerHTML });
    htmlElement.innerHTML = prevInnerHTML;

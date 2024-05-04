@@ -1,5 +1,6 @@
 import highlightElement from './highlight-element';
 import makeAvailableKeys from './make-available-keys';
+import keyCodeMatch from './key-code-match';
 
 export default function holdKeyAndClick(
  requestedKeys: string[],
@@ -15,20 +16,20 @@ export default function holdKeyAndClick(
  };
 
  const getAvailableKey: (r: string[], label: string) => string = makeAvailableKeys();
- const insertKey: string = `Key${getAvailableKey(requestedKeys, `insert ${scriptName}`).toLocaleUpperCase()}`;
+ const insertKey: string = getAvailableKey(requestedKeys, `insert ${scriptName}`).toLocaleUpperCase();
 
  const { startHighlighting, stopHighlighting } = highlightElement();
  const eventListener: (e: Event) => void = clickEventListener(stopHighlighting);
 
  document.addEventListener('keydown', ({ code }) => {
-  if (code === insertKey) {
+  if (keyCodeMatch(insertKey, code)) {
    startHighlighting();
    document.addEventListener('click', eventListener);
   }
  });
 
  document.addEventListener('keyup', ({ code }) => {
-  if (code === insertKey) {
+  if (keyCodeMatch(insertKey, code)) {
    stopHighlighting();
    document.removeEventListener('click', eventListener);
   }

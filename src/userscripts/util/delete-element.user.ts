@@ -15,6 +15,7 @@
 
 import makeAvailableKeys from '../../lib/util/make-available-keys';
 import holdKeyAndClick from '../../lib/util/hold-key-and-click';
+import keyCodeMatch from '../../lib/util/key-code-match';
 
 (function deleteElement() {
  interface UndoStackElement {
@@ -36,13 +37,13 @@ import holdKeyAndClick from '../../lib/util/hold-key-and-click';
  };
 
  const getAvailableKey: (requestedKeys: string[], label: string) => string = makeAvailableKeys();
- const undoKey: string = `Key${getAvailableKey(['z', 't'], 'delete element undo').toLocaleUpperCase()}`;
- const redoKey: string = `Key${getAvailableKey(['y', 'u'], 'delete element redo').toLocaleUpperCase()}`;
+ const undoKey: string = getAvailableKey(['z', 't'], 'delete element undo').toLocaleUpperCase();
+ const redoKey: string = getAvailableKey(['y', 'u'], 'delete element redo').toLocaleUpperCase();
 
  holdKeyAndClick(['l', 'k'], clickCallback, 'delete');
 
  document.addEventListener('keydown', ({ code }) => {
-  if (code === undoKey) {
+  if (keyCodeMatch(undoKey, code)) {
    const { htmlElement, prevDisplay } = undoStack.pop();
    redoStack.push({ htmlElement });
 
@@ -51,7 +52,7 @@ import holdKeyAndClick from '../../lib/util/hold-key-and-click';
    if (prevDisplay) {
     htmlElement.style.setProperty('display', prevDisplay);
    }
-  } else if (code === redoKey) {
+  } else if (keyCodeMatch(redoKey, code)) {
    const { htmlElement } = redoStack.pop();
    undoStack.push({ htmlElement, prevDisplay: htmlElement.style.getPropertyValue('display') });
    htmlElement.style.setProperty('display', 'none');
