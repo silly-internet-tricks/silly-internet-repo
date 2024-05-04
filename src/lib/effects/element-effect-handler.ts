@@ -1,4 +1,3 @@
-// type ElementEffectHandler = (Node[], ) => Node[];
 export default function elementEffectHandler(
  childNodes: ChildNode[],
  textNodeHandler: (textNode: Text, newChildNodes: Node[], prevNodeWasText: boolean) => Node[],

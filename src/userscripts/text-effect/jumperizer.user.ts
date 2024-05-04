@@ -42,7 +42,7 @@ import insertCSS from '../../lib/util/insert-css';
 }`);
 
  generalTextEffectifier((text) => {
-  const letters: string[] = [...text.trim().replace(/\s+/g, ' ')];
+  const letters: string[] = [...text.replace(/^\s+/, ' ').replace(/\s+$/, ' ').replace(/\s+/g, ' ')];
   return letters.map((letter) => {
    const span: HTMLElement = document.createElement('span');
    span.classList.add('jumping-bean');

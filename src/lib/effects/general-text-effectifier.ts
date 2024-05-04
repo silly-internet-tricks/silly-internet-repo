@@ -22,7 +22,6 @@ export default function generalTextEffectifier(
  type ChildNodeEffectifier = (target: Node, childNodes: ChildNode[]) => Node[];
 
  const childNodeEffectifier: ChildNodeEffectifier = function childNodeEffectifier(target, childNodes) {
-  // we probably have to append the childNodes to the target here.
   const newChildNodes: Node[] = elementEffectHandler(childNodes, textNodeHandler, (e) => e);
   newChildNodes.forEach((childNode) => {
    target.appendChild(childNode);
@@ -35,6 +34,5 @@ export default function generalTextEffectifier(
   childNodeEffectifier,
   scriptName,
   targetClassName,
-  /* , (target) => target */
  );
 }
