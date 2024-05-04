@@ -1,7 +1,7 @@
 import holdKeyAndClickWithUndo from '../util/hold-key-and-click-with-undo';
 
 export default function generalElementEffectifier(
- callback: (target: EventTarget, targetChildNodes: ChildNode[]) => void,
+ callback: (target: EventTarget, targetChildNodes: ChildNode[], length?: number) => void,
  scriptName: string,
  targetClassName: string,
  undoCallback?: (element: Element) => void,
@@ -10,20 +10,19 @@ export default function generalElementEffectifier(
   event.preventDefault();
   const { target } = event;
   const element: Element = target as Element;
+  const { length } = element.textContent;
   if (targetClassName) {
    element.classList.add(targetClassName);
   }
 
-  // if (!element['target-child-nodes']) {
   const targetChildNodes: ChildNode[] = [...element.childNodes];
 
   // @ts-expect-error: this is a property I dynamically add to the element in order to access it later
   element['target-child-nodes'] = targetChildNodes;
 
   element.innerHTML = '';
-  callback(element, targetChildNodes);
+  callback(element, targetChildNodes, length);
   document.removeEventListener('click', effectifierHandler);
-  // }
  };
 
  const revertChildNodes: (node: Node) => void = function revertChildNodes(node) {
