@@ -4,11 +4,7 @@
 // @version      2024-04-26
 // @description  Make the local llm (using ollama) insert code into the webpage
 // @author       Josh Parker
-// @match        https://en.wikipedia.org/wiki/*
-// @match        https://developer.mozilla.org/en-US/docs/*
-// @match        https://stackoverflow.com/*
-// @match        https://tvtropes.org/pmwiki/pmwiki.php/*
-// @match        https://www.npmjs.com/*
+// @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tampermonkey.net
 // @grant        GM_xmlhttpRequest
 // @connect      localhost
@@ -52,7 +48,7 @@ import selectOllamaModel from '../../lib/ollama/select-ollama-model';
   getOllamaGeneratedResponse(
    ollamaAddress,
    getModel(),
-   prompt + htmlElement.outerHTML.replace(/<\/[^>]*>$/, ''),
+   prompt + htmlElement.innerHTML,
    (response) => {
     responseSoFar += response;
 
