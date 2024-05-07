@@ -25,6 +25,12 @@ export default function generalAnimationifier(
     if (originalDisplay) {
      undoInlineInlineBlock(elementTarget as HTMLElement, originalDisplay);
     }
+
+    if (eventListeners) {
+     eventListeners.forEach((eventListener) => {
+      elementTarget.removeEventListener(eventListener.eventType, eventListener.eventListener);
+     });
+    }
    } else {
     undoHandler(target.parentNode);
    }

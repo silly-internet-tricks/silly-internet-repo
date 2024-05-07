@@ -17,7 +17,7 @@ const staticAnimationClass: string = 'static-animation';
 
  filter.innerHTML = `
 <svg width="0">
-<filter id="static-filter">
+<filter id="static-filter-small" transform="scale(4, 1)">
     <feTurbulence
       type="turbulence"
       baseFrequency="0.05"
@@ -30,21 +30,46 @@ const staticAnimationClass: string = 'static-animation';
       xChannelSelector="R"
       yChannelSelector="G" />
 </filter>
+<filter id="static-filter-large" transform="scale(4, 1)">
+    <feTurbulence
+      type="turbulence"
+      baseFrequency="0.05"
+      numOctaves="1"
+      result="turbulence" />
+    <feDisplacementMap
+      in2="turbulence"
+      in="SourceGraphic"
+      scale="24"
+      xChannelSelector="R"
+      yChannelSelector="G" />
+</filter>
 </svg>
 `;
 
  const body = document.querySelector('body');
  body.appendChild(filter);
 
- const feTurbulence = document.querySelector('#static-filter feTurbulence');
+ const feTurbulenceSmall = document.querySelector('#static-filter-small feTurbulence');
+ const feTurbulenceLarge = document.querySelector('#static-filter-large feTurbulence');
+
+ // TODO: refactor please: a lot of repetition here... NotLikeThis
  const animationCallback = () => {
-  const baseFrequency = Number(feTurbulence.getAttribute('baseFrequency'));
-  if (baseFrequency < 0.65) {
-   feTurbulence.setAttribute('baseFrequency', `${baseFrequency + Math.random() * 0.2}`);
-  } else if (baseFrequency > 0.85) {
-   feTurbulence.setAttribute('baseFrequency', `${baseFrequency - Math.random() * 0.2}`);
+  const baseFrequencySmall = Number(feTurbulenceSmall.getAttribute('baseFrequency').match(/\d+\.\d+$/));
+  const baseFrequencyLarge = Number(feTurbulenceLarge.getAttribute('baseFrequency').match(/\d+\.\d+$/));
+  if (baseFrequencySmall < 0.65) {
+   feTurbulenceSmall.setAttribute('baseFrequency', `0.0 ${baseFrequencySmall + Math.random() * 0.2}`);
+  } else if (baseFrequencySmall > 0.85) {
+   feTurbulenceSmall.setAttribute('baseFrequency', `0.0 ${baseFrequencySmall - Math.random() * 0.2}`);
   } else {
-   feTurbulence.setAttribute('baseFrequency', `${baseFrequency + Math.random() * 0.2 - 0.1}`);
+   feTurbulenceSmall.setAttribute('baseFrequency', `0.0 ${baseFrequencySmall + Math.random() * 0.2 - 0.1}`);
+  }
+
+  if (baseFrequencyLarge < 0.65) {
+   feTurbulenceLarge.setAttribute('baseFrequency', `0.0 ${baseFrequencyLarge + Math.random() * 0.2}`);
+  } else if (baseFrequencyLarge > 0.85) {
+   feTurbulenceLarge.setAttribute('baseFrequency', `0.0 ${baseFrequencyLarge - Math.random() * 0.2}`);
+  } else {
+   feTurbulenceLarge.setAttribute('baseFrequency', `0.0 ${baseFrequencyLarge + Math.random() * 0.2 - 0.1}`);
   }
 
   requestAnimationFrame(animationCallback);
@@ -52,19 +77,33 @@ const staticAnimationClass: string = 'static-animation';
 
  requestAnimationFrame(animationCallback);
 
- const feDisplacementMap = document.querySelector('#static-filter feDisplacementMap');
-
  generalAnimationifier(
   staticAnimationClass,
   `
  .${staticAnimationClass} {
-     filter: url(#static-filter);
+     filter: url(#static-filter-small);
+     transform: translate(-3px, -3px);
+ }
+
+ .${staticAnimationClass}.large {
+    filter: url(#static-filter-large);
+    transform: translate(-8px, -8px);
  }
    `,
   'static',
   [
-   { eventType: 'mouseover', eventListener: () => feDisplacementMap.setAttribute('scale', '24') },
-   { eventType: 'mouseout', eventListener: () => feDisplacementMap.setAttribute('scale', '8') },
+   {
+    eventType: 'mouseover',
+    eventListener: ({ target }) => {
+     if (target instanceof HTMLElement) target.classList.add('large');
+    },
+   },
+   {
+    eventType: 'mouseout',
+    eventListener: ({ target }) => {
+     if (target instanceof HTMLElement) target.classList.remove('large');
+    },
+   },
   ],
  );
 })();
