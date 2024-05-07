@@ -48,7 +48,7 @@ import selectOllamaModel from '../../lib/ollama/select-ollama-model';
   getOllamaGeneratedResponse(
    ollamaAddress,
    getModel(),
-   prompt + htmlElement.innerHTML,
+   prompt + htmlElement.innerHTML.replace(/<\/[>]*?>$/, ''),
    (response) => {
     responseSoFar += response;
 

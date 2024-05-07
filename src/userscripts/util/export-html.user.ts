@@ -15,8 +15,12 @@ import createOneStyle from '../../lib/util/create-one-style';
  document.addEventListener('keypress', ({ code }) => {
   if (code === 'KeyM') {
    const style = createOneStyle();
-   document.querySelectorAll('style').forEach((s) => {
+   document.querySelectorAll('style,script,#effect-keys-menu,#ollama-model').forEach((s) => {
     s.parentNode.removeChild(s);
+   });
+
+   document.querySelectorAll('[style]').forEach((e) => {
+    e.removeAttribute('style');
    });
 
    document.head.appendChild(style);

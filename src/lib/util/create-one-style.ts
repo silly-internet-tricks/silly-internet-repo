@@ -1,4 +1,7 @@
+import elementStylesToStyle from './element-styles-to-style';
+
 export default function createOneStyle() {
+ document.body.appendChild(elementStylesToStyle());
  const stylesheets = [...document.styleSheets];
 
  const rules = stylesheets
@@ -11,6 +14,7 @@ export default function createOneStyle() {
   })
   .filter((e) => e);
 
+ // TODO: check on whether non-style rules might have empty style
  const nonStyleRules = rules.filter((e) => !(e instanceof CSSStyleRule));
  const cssTexts: string[] = nonStyleRules.map((e) => e.cssText);
 
@@ -18,8 +22,11 @@ export default function createOneStyle() {
  //    yet select the exact same set of elements in the page (using the least specific selector)
 
  const styleRules: CSSStyleRule[] = rules.filter((e) => e instanceof CSSStyleRule) as CSSStyleRule[];
+
+ const nonEmptyCssRules = [...styleRules].filter((e) => e.style.cssText.length > 0);
+
  const cssRules = new Map<string, CSSStyleRule[]>();
- styleRules.forEach((rule) => {
+ nonEmptyCssRules.forEach((rule) => {
   if (cssRules.has(rule.selectorText)) {
    cssRules.get(rule.selectorText).push(rule);
   } else {
