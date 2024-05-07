@@ -28,6 +28,7 @@ export default function makeAvailableKeys() {
   bottom: 10px;
   background-color: rgba(127, 255, 0, 0.5);
   padding: 10px 20px;
+  transition: transform 0.7s;
 }
 `);
 
@@ -42,30 +43,22 @@ export default function makeAvailableKeys() {
 
   const uncollapseButton = document.createElement('button');
   uncollapseButton.appendChild(new Text('💗'));
-  uncollapseButton.style.setProperty('display', 'none');
+  uncollapseButton.style.setProperty('transform', 'translateX(-100dvw)');
+  uncollapseButton.style.setProperty('transition', 'transform 0.7s');
 
   collapseButton.addEventListener('click', () => {
-   div.childNodes.forEach((childNode) => {
-    if (childNode instanceof HTMLElement) {
-     childNode.style.setProperty('display', 'none');
-    }
-   });
+   div.style.setProperty('transform', 'translateX(-100dvw)');
 
-   uncollapseButton.style.removeProperty('display');
+   uncollapseButton.style.setProperty('transform', 'translateX(100dvw)');
   });
 
   uncollapseButton.addEventListener('click', () => {
-   div.childNodes.forEach((childNode) => {
-    if (childNode instanceof HTMLElement) {
-     childNode.style.removeProperty('display');
-    }
+   div.style.removeProperty('transform');
 
-    uncollapseButton.style.setProperty('display', 'none');
-   });
+   uncollapseButton.style.setProperty('transform', 'translateX(-100dvw)');
   });
 
   // when the button is pressed, set the element style on all the div's children
-  // to display none
   // then add an undo button
 
   div.appendChild(collapseButton);

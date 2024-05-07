@@ -18,5 +18,8 @@ export default function elementStylesToStyle() {
 
  style.appendChild(new Text(css.join('\n\n')));
 
+ console.log('made style from element styles');
+ console.log(style);
+
  return style;
 }

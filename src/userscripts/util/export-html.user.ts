@@ -14,8 +14,13 @@ import createOneStyle from '../../lib/util/create-one-style';
 (function exportHtml() {
  document.addEventListener('keypress', ({ code }) => {
   if (code === 'KeyM') {
+   // TODO: think on this: how do we want to configure these special exceptions?
+   document.querySelectorAll('#effect-keys-menu,#ollama-model').forEach((s) => {
+    s.parentNode.removeChild(s);
+   });
+
    const style = createOneStyle();
-   document.querySelectorAll('style,script,#effect-keys-menu,#ollama-model').forEach((s) => {
+   document.querySelectorAll('style,script,body meta,body title').forEach((s) => {
     s.parentNode.removeChild(s);
    });
 
@@ -25,7 +30,7 @@ import createOneStyle from '../../lib/util/create-one-style';
 
    document.head.appendChild(style);
 
-   console.log(document.body.parentElement.outerHTML);
+   navigator.clipboard.writeText(document.body.parentElement.outerHTML);
   }
  });
 })();
