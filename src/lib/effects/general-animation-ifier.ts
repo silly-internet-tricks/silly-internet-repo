@@ -2,7 +2,12 @@ import insertCSS from '../util/insert-css';
 import holdKeyAndClickWithUndo from '../util/hold-key-and-click-with-undo';
 import { makeInlineInlineBlock, undoInlineInlineBlock } from './make-inline-inline-block';
 
-export default function generalAnimationifier(animationClassName: string, CSS: string, scriptName: string) {
+export default function generalAnimationifier(
+ animationClassName: string,
+ CSS: string,
+ scriptName: string,
+ eventListeners?: { eventType: string; eventListener: (event: Event) => void }[],
+) {
  insertCSS(CSS);
 
  const undoHandler: (target: Node) => void = (target: Node) => {
@@ -43,6 +48,13 @@ export default function generalAnimationifier(animationClassName: string, CSS: s
     }
 
     htmlElement.classList.add(animationClassName);
+
+    if (eventListeners) {
+     eventListeners.forEach((eventListener) => {
+      htmlElement.addEventListener(eventListener.eventType, eventListener.eventListener);
+     });
+    }
+
     makeInlineInlineBlock(htmlElement);
    },
    undo: undoEventHandler,
