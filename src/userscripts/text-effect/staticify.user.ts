@@ -52,26 +52,9 @@ const staticAnimationClass: string = 'static-animation';
  const feTurbulenceSmall = document.querySelector('#static-filter-small feTurbulence');
  const feTurbulenceLarge = document.querySelector('#static-filter-large feTurbulence');
 
- // TODO: refactor please: a lot of repetition here... NotLikeThis
  const animationCallback = () => {
-  const baseFrequencySmall = Number(feTurbulenceSmall.getAttribute('baseFrequency').match(/\d+\.\d+$/));
-  const baseFrequencyLarge = Number(feTurbulenceLarge.getAttribute('baseFrequency').match(/\d+\.\d+$/));
-  if (baseFrequencySmall < 0.65) {
-   feTurbulenceSmall.setAttribute('baseFrequency', `0.0 ${baseFrequencySmall + Math.random() * 0.2}`);
-  } else if (baseFrequencySmall > 0.85) {
-   feTurbulenceSmall.setAttribute('baseFrequency', `0.0 ${baseFrequencySmall - Math.random() * 0.2}`);
-  } else {
-   feTurbulenceSmall.setAttribute('baseFrequency', `0.0 ${baseFrequencySmall + Math.random() * 0.2 - 0.1}`);
-  }
-
-  if (baseFrequencyLarge < 0.65) {
-   feTurbulenceLarge.setAttribute('baseFrequency', `0.0 ${baseFrequencyLarge + Math.random() * 0.2}`);
-  } else if (baseFrequencyLarge > 0.85) {
-   feTurbulenceLarge.setAttribute('baseFrequency', `0.0 ${baseFrequencyLarge - Math.random() * 0.2}`);
-  } else {
-   feTurbulenceLarge.setAttribute('baseFrequency', `0.0 ${baseFrequencyLarge + Math.random() * 0.2 - 0.1}`);
-  }
-
+  feTurbulenceSmall.setAttribute('baseFrequency', `0.0 ${Math.random() * 0.2 + 0.65}`);
+  feTurbulenceLarge.setAttribute('baseFrequency', `0.0 ${Math.random() * 0.2 + 0.65}`);
   requestAnimationFrame(animationCallback);
  };
 
@@ -85,25 +68,11 @@ const staticAnimationClass: string = 'static-animation';
      transform: translate(-3px, -3px);
  }
 
- .${staticAnimationClass}.large {
+ .${staticAnimationClass}:hover {
     filter: url(#static-filter-large);
     transform: translate(-8px, -8px);
  }
    `,
   'static',
-  [
-   {
-    eventType: 'mouseover',
-    eventListener: ({ target }) => {
-     if (target instanceof HTMLElement) target.classList.add('large');
-    },
-   },
-   {
-    eventType: 'mouseout',
-    eventListener: ({ target }) => {
-     if (target instanceof HTMLElement) target.classList.remove('large');
-    },
-   },
-  ],
  );
 })();
