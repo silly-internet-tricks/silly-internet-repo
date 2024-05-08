@@ -7,6 +7,9 @@
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=ollama.com
 // @grant        none
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/export-html.user.ts
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/77acb464b4d9fd6d07ca79ca0ea57f5c/raw/export-html.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/77acb464b4d9fd6d07ca79ca0ea57f5c/raw/export-html.meta.js
 // ==/UserScript==
 
 import createOneStyle from '../../lib/util/create-one-style';

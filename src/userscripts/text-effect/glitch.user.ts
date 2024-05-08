@@ -7,6 +7,9 @@
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=wikipedia.org
 // @grant        none
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/glitch.user.ts
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/a264ce6c2e4640d1348fe5ea59f3e0e0/raw/glitch.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/a264ce6c2e4640d1348fe5ea59f3e0e0/raw/glitch.meta.js
 // ==/UserScript==
 import generalAnimationifier from '../../lib/effects/general-animation-ifier';
 import glitchSvg from '../../lib/effects/effect-util/glitch-svg';

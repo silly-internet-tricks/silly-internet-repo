@@ -36,6 +36,7 @@ import('@octokit/core').then(({ Octokit }) => {
    }
   })).then(() => {
    octokitRequestsOptions.forEach(async (requestOptions) => {
+    // TODO: fix the logic for finding the old gists
     const oldGist = await octokit.request(`GET /gists/${requestOptions.gist_id}`, {
      gist_id: requestOptions.gist_id,
      headers: {
