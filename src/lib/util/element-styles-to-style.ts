@@ -8,9 +8,20 @@ export default function elementStylesToStyle() {
  elementsWithElementStyle.forEach((element) => {
   const { cssText } = element.style;
   if (cssText) {
-   const generatedSelector = `${element.tagName.toLocaleLowerCase()}${element.id ? `#${element.id}` : ''}${
-    element.classList.length ? `.${[...element.classList].join('.')}` : ''
-   }`;
+   const selector = [];
+   let cur = element;
+
+   while (cur && cur !== document.body.parentElement) {
+    selector.push(
+     `${cur.tagName.toLocaleLowerCase()}${cur.id ? `#${cur.id}` : ''}${
+      cur.classList.length ? `.${[...cur.classList].join('.')}` : ''
+     }`,
+    );
+
+    cur = cur.parentElement;
+   }
+
+   const generatedSelector = selector.reverse().join(' > ');
 
    css.push(`${generatedSelector} { ${cssText} }`);
   }

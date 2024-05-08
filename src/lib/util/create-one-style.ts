@@ -27,6 +27,12 @@ export default function createOneStyle() {
 
  const cssRules = new Map<string, CSSStyleRule[]>();
  nonEmptyCssRules.forEach((rule) => {
+  // when we look at the selector text I want to:
+  // 1. check what elements the selector text matches on the page
+  // 1 a. (note that selector text with pseudo-classes and/or pseudo-elements will need to have those stripped out)
+  // 2. if the selector text does not match any element, skip it
+  // 3. if the selector text matches the exact same set of elements as another selector text, then combine the rules.
+  // 3 a. (use the selector text with least specificity)
   if (cssRules.has(rule.selectorText)) {
    cssRules.get(rule.selectorText).push(rule);
   } else {
