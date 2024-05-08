@@ -37,6 +37,7 @@
         "tsx": "never"
       }
     ],
+    "no-throw-literal": "off",
     "wrap-iife": "off",
     "no-plusplus": [
       "error",
@@ -54,6 +55,7 @@
     ],
     "no-console": 0,
     "curly": "error",
+    "implicit-arrow-linebreak": "off",
     "operator-linebreak": [
       "error",
       "before"
@@ -89,10 +91,7 @@
       }
     ],
     "max-statements-per-line": "error",
-    "indent": [
-      "error",
-      1
-    ],
+    "indent": "off",
     "no-param-reassign": "off",
     "@typescript-eslint/no-inferrable-types": 0,
     "@typescript-eslint/typedef": [
