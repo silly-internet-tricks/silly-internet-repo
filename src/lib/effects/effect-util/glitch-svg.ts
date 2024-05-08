@@ -1,4 +1,4 @@
-export default function glitchSvg(floods: number, id: string, scale: number = 100) {
+export default function glitchSvg(floods: number, id: string, wiggle = false, scale: number = 100) {
  const randomRG = () =>
   Math.floor(Math.random() * 256 * 256)
    .toString(16)
@@ -28,7 +28,18 @@ export default function glitchSvg(floods: number, id: string, scale: number = 10
       ${new Array(n).fill(null).map(randomFlood).join('')}
       <feComposite in="flood0" in2="flood1" result="composite0" />
       ${new Array(n - 2).fill(null).map(composite).join('')}
-      <feDisplacementMap in="SourceGraphic" in2="flood" xChannelSelector="R" yChannelSelector="G" scale="${scale}" />
+      ${
+       wiggle
+        ? `
+      <feTurbulence type="fractalNoise" result="noise">
+        <animate attributeName="baseFrequency" from="0.0" to="1.0" dur="60s"></animate>
+      </feTurbulence>
+      <feDisplacementMap in2="noise" in="composite${
+       floods - 2
+      }" xChannelSelector="R" yChannelSelector="G" scale="${scale / 2}" />`
+        : ''
+      }
+      <feDisplacementMap in="SourceGraphic" xChannelSelector="R" yChannelSelector="G" scale="${scale}" />
     </filter>
   </svg>`;
  };
