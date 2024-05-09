@@ -27,6 +27,7 @@ export default function createOneStyle() {
  const nonEmptyCssRules = [...styleRules].filter((e) => e.style.cssText.length > 0);
 
  interface CssRuleData {
+  selectorText: string;
   rules: CSSStyleRule[];
   selectedElements: Set<HTMLElement>;
  }
@@ -42,9 +43,22 @@ export default function createOneStyle() {
   if (cssRules.has(rule.selectorText)) {
    cssRules.get(rule.selectorText).rules.push(rule);
   } else {
-   const selector = rule.selectorText.replace(pseudoElementRegExp, '').replace(pseudoClassRegExp, '');
+   const { selectorText } = rule;
+   const selector = selectorText.replace(pseudoElementRegExp, '').replace(pseudoClassRegExp, '');
    const selectedElements = new Set<HTMLElement>(document.querySelectorAll(selector));
-   cssRules.set(rule.selectorText, { rules: [rule], selectedElements });
+   cssRules.set(selectorText, { selectorText, rules: [rule], selectedElements });
+  }
+ });
+
+ // we need only compare each cssruledata selected element set to others of its own size
+ // so, if we sort the cssRuleData by set size we won't end up going over the whole array each time
+
+ const cssRulesByElementsSelected = new Map<number, CssRuleData[]>();
+ [...cssRules].forEach((rule) => {
+  if (cssRulesByElementsSelected.has(rule[1].selectedElements.size)) {
+   cssRulesByElementsSelected.get(rule[1].selectedElements.size).push(rule[1]);
+  } else {
+   cssRulesByElementsSelected.set(rule[1].selectedElements.size, [rule[1]]);
   }
  });
 

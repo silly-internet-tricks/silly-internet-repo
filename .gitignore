@@ -3,3 +3,5 @@ node_modules/
 dist/
 ts-compiled/
 src/example.html
+red-gradient.png
+demo.html

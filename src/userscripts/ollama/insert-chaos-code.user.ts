@@ -21,8 +21,8 @@ import keyCodeMatch from '../../lib/util/key-code-match';
 import selectOllamaModel from '../../lib/ollama/select-ollama-model';
 
 (function insertChaosCode() {
- // prettier-ignore
- const prompt: string = 'Please add an HTML element to complete the following incomplete snippet of markup. Use syntactically correct HTML to be viewed in a standards-compliant web browser. We need to impress the client, so use visually appealing CSS styling with liberal ornamentation and ostentatious flair. Make your code as flashy as you like. This is a playful project; chaos is welcome! Here is the code we have so far: ';
+ const prompt: string =
+  'Please add an HTML element to complete the following incomplete snippet of markup. Use syntactically correct HTML to be viewed in a standards-compliant web browser. We need to impress the client, so use visually appealing CSS styling with liberal ornamentation and ostentatious flair. Make your code as flashy as you like. This is a playful project; chaos is welcome! Here is the code we have so far: ';
  const ollamaAddress: string = 'http://localhost:11434/';
  const model: string = 'codegemma:latest';
  const getModel: () => string = selectOllamaModel(ollamaAddress, model);

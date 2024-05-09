@@ -17,14 +17,14 @@ import chatBetweenXAndSelectedOllamaModel from '../../lib/ollama/chat-between-x-
 
 (function chatBetweenChatGptAndOllama() {
  chatBetweenXAndSelectedOllamaModel(
-  // prettier-ignore
-  () => [
-   ...document
-    .querySelector('cib-serp[mode=conversation]')
-    .shadowRoot.querySelector('#cib-conversation-main')
-    .shadowRoot.querySelector('cib-chat-turn')
-    .shadowRoot.querySelectorAll('cib-message-group'),
-  ].map((cmg) => cmg.shadowRoot.querySelector('cib-message')),
+  () =>
+   [
+    ...document
+     .querySelector('cib-serp[mode=conversation]')
+     .shadowRoot.querySelector('#cib-conversation-main')
+     .shadowRoot.querySelector('cib-chat-turn')
+     .shadowRoot.querySelectorAll('cib-message-group'),
+   ].map((cmg) => cmg.shadowRoot.querySelector('cib-message')),
   {
    textAreaSelector: () => {
     const actionBar: HTMLElement = document

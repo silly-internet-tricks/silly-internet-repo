@@ -32,7 +32,7 @@ export default function glitchSvg(floods: number, id: string, wiggle = false, sc
        wiggle
         ? `
       <feTurbulence type="fractalNoise" result="noise">
-        <animate attributeName="baseFrequency" from="0.0" to="1.0" dur="60s"></animate>
+        <animate attributeName="baseFrequency" from="0.0" to="1.0" dur="60s" repeatCount="indefinite"></animate>
       </feTurbulence>
       <feDisplacementMap in2="noise" in="composite${
        floods - 2

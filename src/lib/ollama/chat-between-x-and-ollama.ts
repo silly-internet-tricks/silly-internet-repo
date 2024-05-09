@@ -43,11 +43,10 @@ export default function chatBetweenXAndOllama(
  observeElementRemovalAndReaddIt(ollamaText);
 
  ollamaButton.addEventListener('click', () => {
-  // prettier-ignore
-  const chatMessages: Element[] = (
+  const chatMessages: Element[] =
    typeof chatMessageSelector === 'string'
     ? [...document.querySelectorAll(chatMessageSelector)]
-    : chatMessageSelector());
+    : chatMessageSelector();
 
   if (reverseMessageOrder) {
    chatMessages.reverse();
@@ -108,10 +107,10 @@ export default function chatBetweenXAndOllama(
 
         if (done) {
          const { sendButtonSelector } = sendMessageSelectors;
-         // prettier-ignore
-         const button: HTMLElement = typeof sendButtonSelector === 'string'
-          ? (document.querySelector(sendButtonSelector) as HTMLElement)
-          : sendButtonSelector();
+         const button: HTMLElement =
+          typeof sendButtonSelector === 'string'
+           ? (document.querySelector(sendButtonSelector) as HTMLElement)
+           : sendButtonSelector();
          button.click();
         }
        }

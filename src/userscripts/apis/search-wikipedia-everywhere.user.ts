@@ -45,8 +45,8 @@ button.clear {
 }
 `);
 
- // prettier-ignore
- const selector: string = 'main#content > header > h1,div#mw-content-text > div.mw-parser-output > p,div#mw-content-text > div.mw-parser-output > ul,div#mw-content-text > div.mw-parser-output > h2,div#mw-content-text > div.mw-parser-output > h3,div#mw-content-text > div.mw-parser-output > div.reflist,div#mw-content-text > div.mw-parser-output > div.refbegin,div#mw-content-text > div.mw-parser-output > table.wikitable';
+ const selector: string =
+  'main#content > header > h1,div#mw-content-text > div.mw-parser-output > p,div#mw-content-text > div.mw-parser-output > ul,div#mw-content-text > div.mw-parser-output > h2,div#mw-content-text > div.mw-parser-output > h3,div#mw-content-text > div.mw-parser-output > div.reflist,div#mw-content-text > div.mw-parser-output > div.refbegin,div#mw-content-text > div.mw-parser-output > table.wikitable';
 
  const wikiArea: HTMLElement = document.createElement('div');
  wikiArea.id = 'wiki-area';

@@ -36,21 +36,13 @@
 
     const nodeText: string = node.textContent;
 
-    // this seems to me like exactly the kind of anti-pattern they tell you to steer far clear from
-    // because it looks like the kind of thing that will thwart javascript engine optimizations
-    // so, why is it like this?
-    // to try to satisfy my config for both prettier and eslint
-    // 🧟 🧟 🧟 🧟
-    // 🧟 🧟 🧟 🧟
-    const skipSingleSpaceConditions: boolean[] = [
-     nodeText === ' ',
-     targetChildNodes[i - 1]?.nodeName === '#text',
-     targetChildNodes[i + 1]?.nodeName === '#text',
-     !!targetChildNodes[i - 1]?.textContent?.match(/[01]{8}/),
-     !!targetChildNodes[i + 1]?.textContent?.match(/[01]{8}/),
-    ];
-
-    if (skipSingleSpaceConditions.every((e) => e)) {
+    if (
+     nodeText === ' ' &&
+     targetChildNodes[i - 1]?.nodeName === '#text' &&
+     targetChildNodes[i + 1]?.nodeName === '#text' &&
+     !!targetChildNodes[i - 1]?.textContent?.match(/[01]{8}/) &&
+     !!targetChildNodes[i + 1]?.textContent?.match(/[01]{8}/)
+    ) {
      return;
     }
 
