@@ -1,4 +1,5 @@
 import elementStylesToStyle from './element-styles-to-style';
+import { pseudoElementRegExp, pseudoClassRegExp } from './selector-regexps';
 
 export default function createOneStyle() {
  document.body.appendChild(elementStylesToStyle());
@@ -25,7 +26,12 @@ export default function createOneStyle() {
 
  const nonEmptyCssRules = [...styleRules].filter((e) => e.style.cssText.length > 0);
 
- const cssRules = new Map<string, CSSStyleRule[]>();
+ interface CssRuleData {
+  rules: CSSStyleRule[];
+  selectedElements: Set<HTMLElement>;
+ }
+
+ const cssRules = new Map<string, CssRuleData>();
  nonEmptyCssRules.forEach((rule) => {
   // when we look at the selector text I want to:
   // 1. check what elements the selector text matches on the page
@@ -34,18 +40,20 @@ export default function createOneStyle() {
   // 3. if the selector text matches the exact same set of elements as another selector text, then combine the rules.
   // 3 a. (use the selector text with least specificity)
   if (cssRules.has(rule.selectorText)) {
-   cssRules.get(rule.selectorText).push(rule);
+   cssRules.get(rule.selectorText).rules.push(rule);
   } else {
-   cssRules.set(rule.selectorText, [rule]);
+   const selector = rule.selectorText.replace(pseudoElementRegExp, '').replace(pseudoClassRegExp, '');
+   const selectedElements = new Set<HTMLElement>(document.querySelectorAll(selector));
+   cssRules.set(rule.selectorText, { rules: [rule], selectedElements });
   }
  });
 
- const nonDuplicatedCssRules = [...cssRules].filter((e) => e[1].length <= 1);
- const duplicatedCssRules = [...cssRules].filter((e) => e[1].length > 1);
+ const nonDuplicatedCssRules = [...cssRules].filter((e) => e[1].rules.length <= 1);
+ const duplicatedCssRules = [...cssRules].filter((e) => e[1].rules.length > 1);
  const dedupeRegExp = /([;{] [\w-]+: [^;]+)(.*?)(\1)/;
  // 1. combine all style rules that have the same selector text.
  const selectorsDeduped = duplicatedCssRules.map(
-  (x) => `${x[0]} { ${x[1].map((e) => e.style.cssText).join(' ')} }`,
+  (x) => `${x[0]} { ${x[1].rules.map((e) => e.style.cssText).join(' ')} }`,
  );
 
  // 3. dedupe all property values on a style rule that have the exact same values.
@@ -62,9 +70,10 @@ export default function createOneStyle() {
 
  const style = document.createElement('style');
  style.appendChild(
+  // TODO: check whether this is too convoluted and if so, can it be simplified
   new Text(
    `${deduped.join('\n\n')}\n\n${nonDuplicatedCssRules
-    .map((rule) => rule[1][0].cssText)
+    .map((rule) => rule[1].rules[0].cssText)
     .join('\n\n')}\n\n${cssTexts.join('\n\n')}`,
   ),
  );

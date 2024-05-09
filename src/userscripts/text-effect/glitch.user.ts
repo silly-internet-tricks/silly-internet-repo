@@ -22,6 +22,7 @@ const glitchFilterId: string = 'glitch-filter';
  filter.style.setProperty('position', 'fixed');
  filter.style.setProperty('width', '101dvw');
  filter.style.setProperty('height', '101dvh');
+ filter.style.setProperty('z-index', '-1');
 
  filter.innerHTML = glitchSvg(30, glitchFilterId);
 

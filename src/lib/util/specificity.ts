@@ -1,24 +1,28 @@
+import {
+ nonSpecificPseudoClassRegExp,
+ attributeRegExp,
+ pseudoElementRegExp,
+ idRegExp,
+ classAndPseudoClassRegExp,
+ elementRegExp,
+} from './selector-regexps';
+
 export default function calculateSpecificity(selector: string) {
  // Remove :is(), :not(), and :has() pseudo-classes and retain their parameters
- const cleanedSelector = selector.replace(/:(is|not|has)\(([^)]*)\)/g, ' $2 ');
+ const cleanedSelector = selector.replace(nonSpecificPseudoClassRegExp, ' $2 ');
 
- const attributeRegExp = /\[[^\]]*\]/g;
  const attributeCount = cleanedSelector.match(attributeRegExp)?.length || 0;
  const noAttributes = cleanedSelector.replace(attributeRegExp, '');
 
- const pseudoElementRegExp = /::[^.:#>~+\s]+/g;
  const pseudoElementCount = noAttributes.match(pseudoElementRegExp)?.length || 0;
  const noPseudoElements = noAttributes.replace(pseudoElementRegExp, '');
 
- const idRegExp = /#[^.:#>~+\s]+/g;
  const idCount = noPseudoElements.match(idRegExp)?.length || 0;
  const noIds = noPseudoElements.replace(idRegExp, '');
 
- const classRegExp = /[.:][^.:#>~+\s]+/g;
- const classCount = noIds.match(classRegExp)?.length || 0;
- const noClasses = noIds.replace(classRegExp, '');
+ const classCount = noIds.match(classAndPseudoClassRegExp)?.length || 0;
+ const noClasses = noIds.replace(classAndPseudoClassRegExp, '');
 
- const elementRegExp = /[^.:#>~+\s]+/g;
  const elementCount = noClasses.match(elementRegExp)?.length || 0;
  const noElements = noClasses.replace(elementRegExp, '');
 
