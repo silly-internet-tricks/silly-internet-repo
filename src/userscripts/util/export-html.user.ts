@@ -15,6 +15,7 @@
 import createOneStyle from '../../lib/util/create-one-style';
 
 (function exportHtml() {
+ // TODO: find out the cause of the error when running it on this page: https://developer.mozilla.org/en-US/docs/Web/CSS/:modal
  document.addEventListener('keypress', ({ code }) => {
   if (code === 'KeyM') {
    // TODO: think on this: how do we want to configure these special exceptions?

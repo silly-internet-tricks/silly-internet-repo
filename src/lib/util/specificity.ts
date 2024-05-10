@@ -9,6 +9,7 @@ import {
 
 export default function calculateSpecificity(selector: string) {
  // Remove :is(), :not(), and :has() pseudo-classes and retain their parameters
+ // because they do not count towards specificity. See: https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity#the_is_not_has_and_css_nesting_exceptions
  const cleanedSelector = selector.replace(nonSpecificPseudoClassRegExp, ' $2 ');
 
  const attributeCount = cleanedSelector.match(attributeRegExp)?.length || 0;
@@ -24,10 +25,6 @@ export default function calculateSpecificity(selector: string) {
  const noClasses = noIds.replace(classAndPseudoClassRegExp, '');
 
  const elementCount = noClasses.match(elementRegExp)?.length || 0;
- const noElements = noClasses.replace(elementRegExp, '');
-
- // Log any remaining parts of the selector (if any) to check for omissions
- console.log('Remaining parts of the selector:', noElements);
 
  return [idCount, classCount + attributeCount, elementCount + pseudoElementCount];
 }

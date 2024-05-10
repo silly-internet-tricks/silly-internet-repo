@@ -3,7 +3,7 @@ const attributeRegExp = /\[[^\]]*\]/g;
 const pseudoElementRegExp = /::[^.:#>~+\s]+/g;
 const idRegExp = /#[^.:#>~+\s]+/g;
 const classAndPseudoClassRegExp = /[.:][^.:#>~+\s]+/g;
-const pseudoClassRegExp = /[:][^.:#>~+\s]+/g;
+const pseudoClassRegExp = /[:]([^.:#>~+\s()]+\([^()]+\)|[^.:#>~+\s]+[^(])/g;
 const elementRegExp = /[^.:#>~+\s]+/g;
 
 export {
