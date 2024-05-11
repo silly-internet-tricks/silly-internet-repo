@@ -38,7 +38,7 @@ export default function createOneStyle() {
 
  const cssRules = new Map<string, CssRuleData>();
  const inAttrSelectorEndRegExp = /\[[^=]=['"][^'"]*$/;
- const inAttrSelectorStartRegExp = /^[^'"[]*['"][^[\]]*\]/;
+ const inAttrSelectorStartRegExp = /^[^'"[]*['"][^[\]]*\]/; // a[href*='x,y'] // a[href*='x
 
  const addRule = (rule: CSSStyleRule) => (selector: string) => {
   if (selector.match(inAttrSelectorEndRegExp) || selector.match(inAttrSelectorStartRegExp)) {
