@@ -45,7 +45,11 @@ export default function createOneStyle() {
    throw `handling comma in attribute selector is not implemented. Selector fragment was: ${selector}`;
   }
 
-  const querySelector = selector.replace(pseudoElementRegExp, '').replace(pseudoClassRegExp, '');
+  const querySelector = selector.replace(pseudoElementRegExp, '').replace(pseudoClassRegExp, '')
+  .trim()
+  // handle special cases as they come up
+  .replace(/[>+~]$/, '');
+  if (!querySelector) return;
   const selectedElements = new Set<HTMLElement>(document.querySelectorAll(querySelector));
   if (selectedElements.size > 0) {
    cssRules.set(selector, { selectorText: selector, rules: [rule], selectedElements });

@@ -14,6 +14,7 @@
 
 import generalTextEffectifier from '../../lib/effects/general-text-effectifier';
 
+// TODO: add a lot more emojis (if I feel like it)
 const replacements = [
  { wordRegExp: /zombie/g, emoji: '🧟' },
  { wordRegExp: /sparkle/g, emoji: '✨' },
