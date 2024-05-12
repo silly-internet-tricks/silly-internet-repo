@@ -37,6 +37,8 @@ import('@octokit/core').then(({ Octokit }) => {
   })).then(() => {
    octokitRequestsOptions.forEach(async (requestOptions) => {
     // TODO: fix the logic for finding the old gists
+    // TODO: see about automating the initial creation of new gists as well (the new ids would have to be put into the source code I guess?)
+    // ... OR, maybe that metadata can be taken out of the original source code entirely and purely generated at the publish step
     const oldGist = await octokit.request(`GET /gists/${requestOptions.gist_id}`, {
      gist_id: requestOptions.gist_id,
      headers: {

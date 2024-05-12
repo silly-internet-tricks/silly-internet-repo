@@ -8,8 +8,8 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=stackoverflow.com
 // @grant        none
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/emoji-substitutions.user.ts
-// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/52edbd6efc1d3ea14d201e3ab26e8f9f/raw/emoji-substitutions.user.js
-// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/52edbd6efc1d3ea14d201e3ab26e8f9f/raw/emoji-substitutions.meta.js
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/f91e7b8aa2ff0d314f564615809d0780/raw/emoji-substitutions.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/f91e7b8aa2ff0d314f564615809d0780/raw/emoji-substitutions.meta.js
 // ==/UserScript==
 
 import generalTextEffectifier from '../../lib/effects/general-text-effectifier';

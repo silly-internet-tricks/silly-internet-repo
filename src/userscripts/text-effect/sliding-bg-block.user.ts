@@ -8,8 +8,8 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=stackexchange.com
 // @grant        none
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/sliding-bg-block.user.ts
-// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/d09ec1d4d6cd4f1077841bd83e9e1918/raw/sliding-bg-block.user.js
-// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/d09ec1d4d6cd4f1077841bd83e9e1918/raw/sliding-bg-block.meta.js
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/002bc33024e0c79337af7d18e0cf81eb/raw/sliding-bg-block.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/002bc33024e0c79337af7d18e0cf81eb/raw/sliding-bg-block.meta.js
 // ==/UserScript==
 
 import generalAnimationifier from '../../lib/effects/general-animation-ifier';
