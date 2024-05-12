@@ -16,12 +16,18 @@ import generalTextEffectifier from '../../lib/effects/general-text-effectifier';
 
 // TODO: add a lot more emojis (if I feel like it)
 const replacements = [
- { wordRegExp: /zombie/g, emoji: '🧟' },
- { wordRegExp: /sparkle/g, emoji: '✨' },
- { wordRegExp: /joy/g, emoji: '😂' },
- { wordRegExp: /(sad|sadness|depressed|depression)/g, emoji: '😟' },
- { wordRegExp: /(angry|anger|mad|upset)/g, emoji: '😡' },
- { wordRegExp: /(apple)/g, emoji: '🍎' },
+ { wordRegExp: /zombie/gi, emoji: '🧟' },
+ { wordRegExp: /sparkle/gi, emoji: '✨' },
+ { wordRegExp: /joy/gi, emoji: '😂' },
+ { wordRegExp: /(sad|sadness|depressed|depression)/gi, emoji: '😟' },
+ { wordRegExp: /(angry|anger|mad|upset)/gi, emoji: '😡' },
+ { wordRegExp: /(apple)/gi, emoji: '🍎' },
+ { wordRegExp: /(banana|guineo|plantain|platano)/gi, emoji: '🍌' },
+ { wordRegExp: /(avocado)/gi, emoji: '🥑' },
+ { wordRegExp: /(clown)/gi, emoji: '🤡' },
+ { wordRegExp: /(circus)/gi, emoji: '🎪' },
+ { wordRegExp: /(fireworks)/gi, emoji: '🎆' },
+ { wordRegExp: /(telephone)/gi, emoji: '☎️' },
 ];
 
 (function emojiSubstitutions() {
