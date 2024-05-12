@@ -28,11 +28,11 @@ import insertCSS from '../../lib/util/insert-css';
         transform: translateY(0);
     }
 
-    2% {
+    20% {
         transform: translateY(-200%);
     }
 
-    4% {
+    40% {
         transform: translateY(0);
     }
 

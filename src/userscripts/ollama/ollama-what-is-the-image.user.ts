@@ -18,23 +18,10 @@
 
 import insertCSS from '../../lib/util/insert-css';
 import getStringFromChunk from '../../lib/util/get-string-from-chunk';
+import divOllamaStyle from '../../lib/ollama/div-ollama-style';
 
 (function ollamaWhatIsTheImage() {
- // TODO: This is copy-pasted from get ai nonsense, so consider moving to its own file
- insertCSS(`
-  div#ollama {
-    position: fixed;
-    inset: 0;
-    color: chartreuse;
-    background-color: black;
-    height: fit-content;
-    z-index: 70;
-    padding: 1%;
-    font-family: monospace;
-    max-height: 30dvh;
-    overflow: auto;
-}
-  `);
+ insertCSS(divOllamaStyle);
 
  const ollamaAddress: string = 'http://localhost:11434/';
  const ollamaDiv: HTMLElement = document.createElement('div');

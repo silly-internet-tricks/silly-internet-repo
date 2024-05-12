@@ -16,22 +16,10 @@
 import insertCSS from '../../lib/util/insert-css';
 import getOllamaGeneratedResponse from '../../lib/ollama/get-ollama-generated-response';
 import selectOllamaModel from '../../lib/ollama/select-ollama-model';
+import divOllamaStyle from '../../lib/ollama/div-ollama-style';
 
 (function getAINonsense() {
- insertCSS(`
-  div#ollama {
-    position: fixed;
-    inset: 0;
-    color: chartreuse;
-    background-color: black;
-    height: fit-content;
-    z-index: 70;
-    padding: 1%;
-    font-family: monospace;
-    max-height: 30dvh;
-    overflow: auto;
-}
-  `);
+ insertCSS(divOllamaStyle);
 
  const ollamaAddress: string = 'http://localhost:11434/';
 

@@ -23,9 +23,6 @@ export default function createOneStyle() {
  const nonStyleRules = rules.filter((e) => !(e instanceof CSSStyleRule));
  const cssTexts: string[] = nonStyleRules.map((e) => e.cssText);
 
- // TODO: 2. combine all style rules which have different selector texts,
- //    yet select the exact same set of elements in the page (using the least specific selector)
-
  const styleRules: CSSStyleRule[] = rules.filter((e) => e instanceof CSSStyleRule) as CSSStyleRule[];
 
  const nonEmptyCssRules = [...styleRules].filter((e) => e.style.cssText.length > 0);
@@ -45,10 +42,12 @@ export default function createOneStyle() {
    throw `handling comma in attribute selector is not implemented. Selector fragment was: ${selector}`;
   }
 
-  const querySelector = selector.replace(pseudoElementRegExp, '').replace(pseudoClassRegExp, '')
-  .trim()
-  // handle special cases as they come up
-  .replace(/[>+~]$/, '');
+  const querySelector = selector
+   .replace(pseudoElementRegExp, '')
+   .replace(pseudoClassRegExp, '')
+   .trim()
+   // handle special cases as they come up
+   .replace(/[>+~]$/, '');
   if (!querySelector) return;
   const selectedElements = new Set<HTMLElement>(document.querySelectorAll(querySelector));
   if (selectedElements.size > 0) {
@@ -139,12 +138,7 @@ export default function createOneStyle() {
  });
 
  const style = document.createElement('style');
- style.appendChild(
-  // TODO: check whether this is too convoluted and if so, can it be simplified
-  new Text(
-   `${deduped.join('\n\n')}\n\n${cssTexts.join('\n\n')}`,
-  ),
- );
+ style.appendChild(new Text(`${deduped.join('\n\n')}\n\n${cssTexts.join('\n\n')}`));
 
  return style;
 }
