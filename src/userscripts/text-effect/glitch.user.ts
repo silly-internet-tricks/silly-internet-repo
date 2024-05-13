@@ -31,7 +31,7 @@ const glitchFilterId: string = 'glitch-filter';
  filter.innerHTML = svg;
  parameterForm(
   'glitch',
-  new Map([['glitch-speed', { val: 0.0, min: -3.3, max: 3.3 }]]),
+  new Map([['glitch-speed', { val: 0.0, min: -3.3, max: 3.3, step: 0.1 }]]),
   (parameterLabel, parameterValue: number) => {
    // when we add more parameters into the callback, we'll need to use the parameterLabel
    changeGlitchSpeed(2.0 ** parameterValue);

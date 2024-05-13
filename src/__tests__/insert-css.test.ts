@@ -11,12 +11,12 @@ input {
  color: chartreuse;
  width: 100px;
 }
- `, 'input-styling');
+ `);
 
  const input: HTMLInputElement = container.querySelector('input') as HTMLInputElement;
  expect(input).toBeDefined();
 
- const inputStyling: HTMLStyleElement = container.querySelector('input[title="input-styling"]') as HTMLStyleElement;
+ const inputStyling: HTMLStyleElement = container.querySelector('style') as HTMLStyleElement;
  expect(inputStyling).toBeDefined();
 
  /* get bounding client rect does not work as expected in jsdom

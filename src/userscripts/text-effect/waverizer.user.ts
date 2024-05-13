@@ -17,7 +17,8 @@ import insertCSS from '../../lib/util/insert-css';
 import parameterForm from '../../lib/util/parameter-form';
 
 (function waverizer() {
- insertCSS(`span.waverized {
+ const styleSheet = insertCSS(
+  `span.waverized {
     animation-duration: 3s;
     animation-name: the-wave;
     animation-iteration-count: infinite;
@@ -40,7 +41,8 @@ import parameterForm from '../../lib/util/parameter-form';
     to {
         transform: translateY(0);
     }
-}`, 'waverizer-style');
+}`,
+ );
 
  let textIndex = 0;
 
@@ -60,7 +62,16 @@ import parameterForm from '../../lib/util/parameter-form';
   });
  }, 'waverizer');
 
- parameterForm('waverizer', new Map([['wave-height', { val: 200, min: 0, max: 1000 }]]), (_, parameterValue) => {
-    throw 'not yet implemented';
- });
+ parameterForm(
+  'waverizer',
+  new Map([['wave-height', { val: 0.0, min: -2.3, max: 2.3, step: 0.1 }]]),
+  (_, parameterValue: number) => {
+   console.log(parameterValue);
+   const percentWaveHeight = 200 * 2 ** parameterValue - 20;
+   const cssRules = [...styleSheet.cssRules];
+   const keyframesRule = cssRules.find((e) => e instanceof CSSKeyframesRule) as CSSKeyframesRule;
+   const secondKeyframe = [...keyframesRule][1];
+   secondKeyframe.style.setProperty('transform', `translateY(-${percentWaveHeight}%)`);
+  },
+ );
 })();

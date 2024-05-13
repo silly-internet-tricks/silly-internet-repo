@@ -4,6 +4,7 @@ interface SliderParameter {
  val: number;
  min: number;
  max: number;
+ step: number;
 }
 
 const formInput = (label: string, parameter: string[] | SliderParameter | boolean) => {
@@ -49,7 +50,8 @@ const formInput = (label: string, parameter: string[] | SliderParameter | boolea
       name="${label}"
       min="${parameter.min}"
       max="${parameter.max}"
-      value="${parameter.val}">
+      value="${parameter.val}"
+      step="${parameter.step}">
     <label for="${label}>${label}</label>
   </div>
   `;
@@ -68,8 +70,9 @@ export default function parameterForm(
  >,
  callback: (parameterLabel: string, parameterValue: string | number | boolean) => void,
 ) {
+ const formContainerId = 'silly-internet-parameter-form-container';
  insertCSS(`  
- #${formName} { 
+ #${formContainerId} { 
   position: fixed;
   left: 0.5em;
   top: 0.5em;
@@ -93,18 +96,16 @@ export default function parameterForm(
  console.log(callback);
 
  // do not recreate the form container if it already exists on the page
-
- const formContainerId = 'silly-internet-parameter-form-container';
  let formContainer = document.getElementById(formContainerId);
  if (!formContainer) {
   formContainer = document.createElement('div');
   formContainer.id = formContainerId;
   document.body.appendChild(formContainer);
-}
+ }
 
-const formSection = document.createElement('section');
-formSection.innerHTML = formHtml;
-formContainer.appendChild(formSection);
+ const formSection = document.createElement('section');
+ formSection.innerHTML = formHtml;
+ formContainer.appendChild(formSection);
  // add event listeners
  [...formContainer.querySelectorAll('input')].forEach((input) => {
   input.addEventListener('change', () => {

@@ -15,10 +15,24 @@ import insertCSS from '../../lib/util/insert-css';
 
 (function brbScreen() {
  let isDisplayed = false;
+ const brb = document.createElement('div');
+ brb.id = 'brb-screen';
+ brb.innerHTML = '<h1>BRB</h1>';
+
+ document.addEventListener('keypress', ({ code }) => {
+  if (code === 'NumpadDivide') {
+   if (isDisplayed) {
+    brb.parentElement.removeChild(brb);
+    isDisplayed = false;
+   } else {
+    document.body.appendChild(brb);
+    isDisplayed = true;
+   }
+  }
+ });
 
  insertCSS(
-  `
-div#brb-screen {
+  `div#brb-screen {
  position: fixed;
  inset: 0;
  z-index: 9001;
@@ -35,7 +49,6 @@ div#brb-screen h1 {
  animation-name: brb;
  animation-iteration-count: infinite;
  animation-duration: 10s;
- 
 }
 
 @keyframes brb {
@@ -48,24 +61,5 @@ div#brb-screen h1 {
  }
 }
 `,
-  'brb-screen',
  );
-
- const brb = document.createElement('div');
- brb.id = 'brb-screen';
- brb.innerHTML = '<h1>BRB</h1>';
- document.body.appendChild(brb);
- brb.style.setProperty('display', 'none');
-
- document.addEventListener('keypress', ({ code }) => {
-  if (code === 'NumpadDivide') {
-   if (isDisplayed) {
-    brb.style.setProperty('display', 'none');
-    isDisplayed = false;
-   } else {
-    brb.style.setProperty('display', 'block');
-    isDisplayed = true;
-   }
-  }
- });
 })();

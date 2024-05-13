@@ -61,7 +61,6 @@ let showCards: boolean = true;
  background-position: center;
 }
 `,
-  'pokemon-card',
  );
  const pokemonCardContainer: HTMLElement = document.createElement('div');
  document.addEventListener('keydown', async ({ code }) => {
