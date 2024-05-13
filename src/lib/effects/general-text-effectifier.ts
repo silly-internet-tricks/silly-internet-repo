@@ -1,6 +1,7 @@
 import generalElementEffectifier from './general-element-effectifier';
 import elementEffectHandler from './element-effect-handler';
 
+// TODO: untangle the horrible web of spaghetti code I've hidden behind the general text effectifier 😹😹😹😹😹😹
 export default function generalTextEffectifier(
  affectText: (t: string, length?: number) => Node[],
  scriptName?: string,

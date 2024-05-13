@@ -15,6 +15,9 @@ export default function elementEffectHandler(
    prevNodeWasText = true;
   } else if (node.nodeType === Node.COMMENT_NODE) {
    newChildNodes.push(new Comment(node.textContent));
+  } else if (node instanceof HTMLElement && node.tagName.toLocaleLowerCase() === 'script') {
+   // do nothing to script element; just put it on the new child nodes
+   newChildNodes.push(node);
   } else {
    const elementNode: Element = node as Element;
    if (!elementNode.tagName) {
