@@ -1,0 +1,105 @@
+import insertCSS from './insert-css';
+
+interface SliderParameter {
+ val: number;
+ min: number;
+ max: number;
+}
+
+const formInput = (label: string, parameter: string[] | SliderParameter | boolean) => {
+ if (Array.isArray(parameter)) {
+  // this means we will insert radio buttons
+  const buttons = parameter.map(
+   (radioValue) => `
+  <div>
+  <input
+    type="radio"
+    id="${radioValue}"
+    name="${label}"
+    value="${radioValue}">
+  <label for="${radioValue}">${radioValue}</label>
+  </div>
+  `,
+  );
+  return `<fieldset><legend>${label}</legend>${buttons}</fieldset>`;
+ }
+
+ if (typeof parameter === 'boolean') {
+  // this means we will insert a toggle (checkbox)
+  return `
+  <div>
+    <input
+      type="checkbox"
+      id="${label}"
+      name="${label}"
+      ${parameter ? 'checked' : ''}>
+    <label for="${label}>${label}</label>
+  </div>
+  `;
+ }
+
+ // TODO: there will probably be more than one object type
+ if (typeof parameter === 'object') {
+  // this means we will insert a slider (unless other object types are added later)
+  return `
+  <div>
+    <input
+      type="range"
+      id="${label}"
+      name="${label}"
+      min="${parameter.min}"
+      max="${parameter.max}"
+      value="${parameter.val}">
+    <label for="${label}>${label}</label>
+  </div>
+  `;
+ }
+
+ throw `parameter type not recognized! ${parameter}`;
+};
+
+export default function parameterForm(
+ formName: string,
+ parameters: Map<
+  string, // this will be used as the label
+  | string[] // radio button: array of strings
+  | SliderParameter // slider
+  | boolean // toggle: boolean
+ >,
+ callback: (parameterLabel: string, parameterValue: string | number | boolean) => void,
+) {
+ insertCSS(`  
+ #${formName} { 
+  position: fixed;
+  left: 0.5em;
+  top: 0.5em;
+  background-color: yellow;
+  height: fit-content;
+  width: fit-content;
+  z-index: 9001;
+  border-radius: 0.5em;
+ }
+  `);
+
+ const formHtml = `
+ <form id="${formName}">
+  <h3>${formName}</h3>
+  ${[...parameters].map(([label, parameter]) => formInput(label, parameter)).join('')}
+ </form>
+
+ `;
+
+ console.log(parameters);
+ console.log(callback);
+
+ const formContainer = document.createElement('div');
+ formContainer.innerHTML = formHtml;
+ document.body.appendChild(formContainer);
+
+ // add event listeners
+ [...formContainer.querySelectorAll('input')].forEach((input) => {
+  input.addEventListener('change', () => {
+   callback(input.name, input.value);
+  });
+ });
+}

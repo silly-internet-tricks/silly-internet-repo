@@ -1,25 +1,41 @@
 export default function glitchSvg(floods: number, id: string, wiggle = false, scale: number = 100) {
+ // TODO: move most parameters out of this file (so that the caller can configure them)
+ const changeGlitchSpeed = (multiplier: number) =>
+  [...document.querySelectorAll(`#${id} animate[attributeName=y]`)].forEach((animateElement) =>
+   animateElement.setAttribute(
+    'dur',
+    // TODO: see if there's a more efficient way to track these durations rather than attribute using a regexp
+    (Number(animateElement.getAttribute('data-original-dur').match(/[\d.]+/)[0]) / multiplier).toString(),
+   ),
+  );
+
  const randomRG = () =>
   Math.floor(Math.random() * 256 * 256)
    .toString(16)
    .padStart(4, '0')
    .toLocaleUpperCase();
- const randomFlood = (_: unknown, i: number) => `<feFlood width="100%" result="flood${i + 1}">
+
+ const randomFlood = (_: unknown, i: number) => {
+  const animationDurs = new Array(4).fill(0).map(() => Math.random() * 30);
+  return `<feFlood width="100%" result="flood${i + 1}">
         <animate attributeName="y" from="${Math.random() * 100}%" to="${Math.random() * 100}%" dur="${
-  Math.random() * 30
- }s" repeatCount="indefinite"></animate>
+   animationDurs[0]
+  }s" repeatCount="indefinite" data-original-dur="${animationDurs[0]}"></animate>
         <animate attributeName="height" from="${Math.random() * 20}" to="${Math.random() * 20}" dur="${
-  Math.random() * 30
- }s" repeatCount="indefinite"></animate>
+   animationDurs[1]
+  }s" repeatCount="indefinite" data-original-dur="${animationDurs[1]}"></animate>
         <animate attributeName="flood-color" from="#${randomRG()}00" to="#${randomRG()}00" dur="${
-  Math.random() * 30
- }s" repeatCount="indefinite"></animate>
+   animationDurs[2]
+  }s" repeatCount="indefinite" data-original-dur="${animationDurs[2]}"></animate>
         <animate attributeName="flood-opacity" from="${Math.random()}" to="${Math.random()}" dur="${
-  Math.random() * 30
- }s" repeatCount="indefinite"></animate>
+   animationDurs[3]
+  }s" repeatCount="indefinite" data-original-dur="${animationDurs[3]}"></animate>
       </feFlood>`;
+ };
+
  const composite = (_: unknown, i: number) =>
   `<feComposite in="flood${i + 2}" in2="composite${i}" result="composite${i + 1}" />`;
+
  const createSVG = (n: number) => {
   if (n < 2) throw 'function does not support n less than 2';
   return `<svg width="200%" height="100%">
@@ -44,5 +60,8 @@ export default function glitchSvg(floods: number, id: string, wiggle = false, sc
   </svg>`;
  };
 
- return createSVG(floods);
+ return {
+  svg: createSVG(floods),
+  changeGlitchSpeed,
+ };
 }

@@ -17,14 +17,14 @@ import glitchSvg from '../../lib/effects/effect-util/glitch-svg';
 const glitchAnimationClass: string = 'wiggle-glitch-animation';
 const glitchFilterId: string = 'wiggle-glitch-filter';
 
-(function glitchify() {
+(function wiggleGlitchify() {
  const filter = document.createElement('div');
  filter.style.setProperty('position', 'fixed');
  filter.style.setProperty('width', '101dvw');
  filter.style.setProperty('height', '101dvh');
  filter.style.setProperty('z-index', '-1');
 
- filter.innerHTML = glitchSvg(30, glitchFilterId, true);
+ filter.innerHTML = glitchSvg(30, glitchFilterId, true).svg;
 
  const body = document.querySelector('body');
  body.appendChild(filter);

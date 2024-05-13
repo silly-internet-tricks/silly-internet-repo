@@ -55,6 +55,7 @@
     ],
     "no-console": 0,
     "curly": "error",
+    "function-paren-newline": "off",
     "implicit-arrow-linebreak": "off",
     "operator-linebreak": "off",
     "object-curly-newline": "off",
