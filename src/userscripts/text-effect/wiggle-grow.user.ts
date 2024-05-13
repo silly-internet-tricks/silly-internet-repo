@@ -8,8 +8,8 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=js.org
 // @grant        none
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/wiggle-grow.user.ts
-// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/c3398ce0d3d802e6fbb76e2f615d0204/raw/wiggle-grow.user.js
-// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/c3398ce0d3d802e6fbb76e2f615d0204/raw/wiggle-grow.meta.js
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/d269d9eae99e4971b46bd125fa3fe96b/raw/wiggle-grow.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/d269d9eae99e4971b46bd125fa3fe96b/raw/wiggle-grow.meta.js
 // ==/UserScript==
 
 import generalTextEffectifier from '../../lib/effects/general-text-effectifier';

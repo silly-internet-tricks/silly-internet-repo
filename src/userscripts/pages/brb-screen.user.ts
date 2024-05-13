@@ -7,8 +7,8 @@
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tampermonkey.net
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/brb-screen.user.ts
-// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/8425fd5111b59067d0a6acd4c0ffe318/raw/brb-screen.user.js
-// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/8425fd5111b59067d0a6acd4c0ffe318/raw/brb-screen.meta.js
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/bc25ad5961f1e2e5ffcbab0916943e40/raw/brb-screen.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/bc25ad5961f1e2e5ffcbab0916943e40/raw/brb-screen.meta.js
 // ==/UserScript==
 
 import insertCSS from '../../lib/util/insert-css';

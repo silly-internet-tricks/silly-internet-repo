@@ -14,6 +14,7 @@
 
 import generalTextEffectifier from '../../lib/effects/general-text-effectifier';
 import insertCSS from '../../lib/util/insert-css';
+import parameterForm from '../../lib/util/parameter-form';
 
 (function waverizer() {
  insertCSS(`span.waverized {
@@ -39,7 +40,7 @@ import insertCSS from '../../lib/util/insert-css';
     to {
         transform: translateY(0);
     }
-}`);
+}`, 'waverizer-style');
 
  let textIndex = 0;
 
@@ -58,4 +59,8 @@ import insertCSS from '../../lib/util/insert-css';
    return span;
   });
  }, 'waverizer');
+
+ parameterForm('waverizer', new Map([['wave-height', { val: 200, min: 0, max: 1000 }]]), (_, parameterValue) => {
+    throw 'not yet implemented';
+ });
 })();

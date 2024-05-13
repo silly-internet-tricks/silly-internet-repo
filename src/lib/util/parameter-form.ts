@@ -92,10 +92,19 @@ export default function parameterForm(
  console.log(parameters);
  console.log(callback);
 
- const formContainer = document.createElement('div');
- formContainer.innerHTML = formHtml;
- document.body.appendChild(formContainer);
+ // do not recreate the form container if it already exists on the page
 
+ const formContainerId = 'silly-internet-parameter-form-container';
+ let formContainer = document.getElementById(formContainerId);
+ if (!formContainer) {
+  formContainer = document.createElement('div');
+  formContainer.id = formContainerId;
+  document.body.appendChild(formContainer);
+}
+
+const formSection = document.createElement('section');
+formSection.innerHTML = formHtml;
+formContainer.appendChild(formSection);
  // add event listeners
  [...formContainer.querySelectorAll('input')].forEach((input) => {
   input.addEventListener('change', () => {

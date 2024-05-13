@@ -16,18 +16,26 @@ import generalTextEffectifier from '../../lib/effects/general-text-effectifier';
 
 // TODO: add a lot more emojis (if I feel like it)
 const replacements = [
- { wordRegExp: /zombie/gi, emoji: '🧟' },
+ { wordRegExp: /(telephone)/gi, emoji: '☎️' },
+ { wordRegExp: /(mountain)/gi, emoji: '⛰️' },
+ { wordRegExp: /((air)?plane)/gi, emoji: '✈️' },
  { wordRegExp: /sparkle/gi, emoji: '✨' },
+ { wordRegExp: /(volcano)/gi, emoji: '🌋' },
+ { wordRegExp: /(banana|guineo|plantain|platano)/gi, emoji: '🍌' },
+ { wordRegExp: /(apple)/gi, emoji: '🍎' },
+ { wordRegExp: /(pizza)/gi, emoji: '🍕' },
+ { wordRegExp: /(birthday( cake)?)/gi, emoji: '🎂' },
+ { wordRegExp: /(fireworks)/gi, emoji: '🎆' },
+ { wordRegExp: /(circus)/gi, emoji: '🎪' },
+ { wordRegExp: /(trash|garbage|dumpster|refuse)/gi, emoji: '🗑️' },
  { wordRegExp: /joy/gi, emoji: '😂' },
  { wordRegExp: /(sad|sadness|depressed|depression)/gi, emoji: '😟' },
- { wordRegExp: /(angry|anger|mad|upset)/gi, emoji: '😡' },
- { wordRegExp: /(apple)/gi, emoji: '🍎' },
- { wordRegExp: /(banana|guineo|plantain|platano)/gi, emoji: '🍌' },
- { wordRegExp: /(avocado)/gi, emoji: '🥑' },
+ { wordRegExp: /(angry|anger|mad\b|upset)/gi, emoji: '😡' },
  { wordRegExp: /(clown)/gi, emoji: '🤡' },
- { wordRegExp: /(circus)/gi, emoji: '🎪' },
- { wordRegExp: /(fireworks)/gi, emoji: '🎆' },
- { wordRegExp: /(telephone)/gi, emoji: '☎️' },
+ { wordRegExp: /(avocado)/gi, emoji: '🥑' },
+ { wordRegExp: /(salad)/gi, emoji: '🥗' },
+ { wordRegExp: /zombie/gi, emoji: '🧟' },
+ { wordRegExp: /bicycle/gi, emoji: '🚲️' },
 ];
 
 (function emojiSubstitutions() {
