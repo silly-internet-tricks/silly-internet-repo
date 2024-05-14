@@ -4,7 +4,7 @@
   "description": "",
   "private": true,
   "scripts": {
-    "serve": "node ./ts-compiled/server/twitch-ws-server.js",
+    "serve": "node ./ts-compiled/server/src/server/twitch-ws-server.js",
     "test": "jest",
     "lint": "./node_modules/.bin/eslint --fix src/**/*.ts",
     "bundle": "node bundle-build.js",
@@ -20,6 +20,7 @@
     "@testing-library/dom": "^10.0.0",
     "@testing-library/jest-dom": "^6.4.2",
     "@types/jest": "^29.5.12",
+    "@types/ws": "^8.5.10",
     "css-loader": "^7.1.1",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -56,6 +57,7 @@
     "react-dom": "^18.3.1",
     "react-toastify": "^10.0.5",
     "tmi.js": "^1.8.5",
-    "websocket": "^1.0.34"
+    "websocket": "^1.0.34",
+    "ws": "^8.17.0"
   }
 }

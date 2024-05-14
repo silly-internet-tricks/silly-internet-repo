@@ -12,6 +12,7 @@ const requestListener: RequestListener = (req: IncomingMessage, res: ServerRespo
  res.writeHead(200);
  console.log('connected to webpage');
 
+ // TODO: fix this
  sitClient.on('message', (channel: string, tags: unknown, message: string) => {
   console.log(`Got twitch chat message: ${message}`);
   res.write(message);
