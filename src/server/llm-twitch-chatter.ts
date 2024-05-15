@@ -14,16 +14,21 @@ const queue = new Queue<string>();
 
 const history: { role: string; content: string }[] = [];
 
+const enqueueMessage = (msgId: string, editedMessage: string) => {
+ const unquotedMessage = editedMessage.replace(/^['"]/, '').replace(/['"]$/, '');
+ history.push({ role: 'assistant', content: unquotedMessage });
+ const message = `@reply-parent-msg-id=${msgId} PRIVMSG #${channelName} :${unquotedMessage}`;
+ console.log(`ATTN SENDING MSG: \x1b[1m\x1b[41m${message}\x1b[0m`);
+ queue.enqueue(message);
+};
+
 const ollamaCallback =
  (msgId: string, retry = true) =>
  (messagePiece: string) => {
   console.log(`\x1b[1m\x1b[45m${messagePiece}\x1b[0m`);
   const editedMessage = messagePiece.replace(/^\*+[\w\d-]+\*+:?/, '');
   if (!retry) {
-   history.push({ role: 'assistant', content: editedMessage });
-   const message = `@reply-parent-msg-id=${msgId} PRIVMSG #${channelName} :${editedMessage}`;
-   console.log(message);
-   queue.enqueue(message);
+   enqueueMessage(msgId, editedMessage.replace(/\(4[^)]+\)/, ''));
   } else if (Math.random() < chatFraction) {
    if (editedMessage.length > 126) {
     ollamaChatRequest(
@@ -39,10 +44,7 @@ const ollamaCallback =
      ollamaCallback(msgId, false),
     );
    } else {
-    history.push({ role: 'assistant', content: editedMessage });
-    const message = `@reply-parent-msg-id=${msgId} PRIVMSG #${channelName} :${editedMessage}`;
-    console.log(message);
-    queue.enqueue(message);
+    enqueueMessage(msgId, editedMessage);
    }
   }
  };
@@ -113,6 +115,8 @@ listeners.onOpen = () => {
   } else {
    chatFraction += 0.01;
   }
+
+  console.log(`chat fraction: ${chatFraction}`);
  }, 20000);
 };
 
