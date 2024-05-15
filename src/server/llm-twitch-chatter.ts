@@ -32,7 +32,7 @@ const ollamaCallback =
   console.log(`\x1b[1m\x1b[45m${messagePiece}\x1b[0m`);
   const editedMessage = messagePiece.replace(/^\*+[\w\d-]+\*+:?/, '');
   if (!retry) {
-   enqueueMessage(msgId, editedMessage.replace(/\(4[^)]+\)/, ''));
+   enqueueMessage(msgId, editedMessage.replace(/\([34][^)]+\)/, ''));
   } else if (100 * Math.random() < chatPercent) {
    if (editedMessage.length > 126) {
     ollamaChatRequest('chatter:latest', [

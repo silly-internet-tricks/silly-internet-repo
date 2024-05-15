@@ -8,7 +8,7 @@ interface Message {
 
 export default function ollamaChatRequest(model: string, messages: Message[]) {
  return new Promise<string>((solve, ject) => {
-  console.log(messages);
+  console.log(messages.map((e) => e.content));
 
   const postData = JSON.stringify({
    model,
