@@ -5,8 +5,8 @@
   "compilerOptions": {
     "outDir": "../../ts-compiled/server/",
     "noImplicitAny": true,
-    "module": "commonjs",
-    "target": "es5",
+    "module": "CommonJS",
+    "target": "es2020",
     "jsx": "react",
     "allowJs": true,
     "moduleResolution": "node",
