@@ -10,7 +10,9 @@ const msgPrefix = '';
 
 let chatPercent = 1;
 
-let ws = new WebSocket('ws://irc-ws.chat.twitch.tv:80');
+const chatAddress = 'ws://irc-ws.chat.twitch.tv:80';
+
+let ws = new WebSocket(chatAddress);
 let accessToken = token;
 const queue = new Queue<string>();
 
@@ -63,7 +65,16 @@ const setupWs = () => {
 };
 
 listeners.onError = (err: Error) => console.error(err.toString());
-listeners.onClose = (code: number, reason: Buffer) => console.warn(`ws closed: ${code} ${reason}`);
+listeners.onClose = (code: number, reason: Buffer) => {
+ console.warn(`ws closed: ${code} ${reason}`);
+
+ // just reconnect if the code was 1006
+ // eslint-disable-next-line eqeqeq
+ if (code == 1006) {
+  ws = new WebSocket(chatAddress);
+  setupWs();
+ }
+};
 
 listeners.onMessage = (data: WebSocket.RawData) => {
  const msg = data.toString();
@@ -73,7 +84,7 @@ listeners.onMessage = (data: WebSocket.RawData) => {
   ws.close();
   refreshTwitchAccessToken(refreshToken, clientId, clientSecret).then((newToken) => {
    accessToken = newToken;
-   ws = new WebSocket('ws://irc-ws.chat.twitch.tv:80');
+   ws = new WebSocket(chatAddress);
    setupWs();
   });
  }

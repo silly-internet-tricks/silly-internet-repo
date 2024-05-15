@@ -35,25 +35,65 @@
   const formattedToday = formatDate(today);
   const formattedStartDate = formatDate(startDate);
 
-  categoryLinks
-   .map((e) => e.href.match(/\/wiki\/(.*)$/)[1])
-   .forEach((pageTitle, i) =>
-    setTimeout(
-     () =>
-      fetch(
-       `https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/${pageTitle}/daily/${formattedStartDate}/${formattedToday}`,
-      )
-       .then((r) => r.json())
-       .then((j) => {
-        const pageViewCount = j.items.reduce((acc: number, e: { views: number }) => acc + e.views, 0);
-        console.log(`page view count for ${pageTitle} is ${pageViewCount}`);
+  Promise.all(
+   categoryLinks
+    .map((e) => e.href.match(/\/wiki\/(.*)$/)[1])
+    .map(
+     (pageTitle, i) =>
+      new Promise((solve, ject) => {
+       setTimeout(
+        () =>
+         fetch(
+          `https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/${pageTitle}/daily/${formattedStartDate}/${formattedToday}`,
+         )
+          .then((r) => r.json())
+          .then((j) => {
+           const pageViewCount = j.items.reduce((acc: number, e: { views: number }) => acc + e.views, 0);
+           const result = `page view count for ${pageTitle} is ${pageViewCount}`;
+           console.log(result);
 
-        // next step: show the viewcount on each link
-        const link = document.querySelector(`#mw-pages .mw-category a[href$="${pageTitle}"]`);
-        link.appendChild(new Text(`(page view count: ${pageViewCount})`));
-       }),
-     10 * i,
+           const link = document.querySelector(`#mw-pages .mw-category a[href$="${pageTitle}"]`);
+           link.appendChild(new Text(`(page view count: ${pageViewCount})`));
+           link.setAttribute('page-view-count', pageViewCount);
+           solve(result);
+          })
+          .catch((reason) => ject(reason)),
+        10 * i,
+       );
+      }),
     ),
-   );
+  ).then(() => {
+   // now add the button that can be used to activate the sorting
+   const sortButton = document.createElement('button');
+   sortButton.id = 'sit-sort-button';
+   sortButton.appendChild(new Text('sort by page view counts'));
+   sortButton.addEventListener('click', () => {
+    // have a button for doing the sort
+    // next step: blank out the category divs so we can reinster all the links (remember to save the links first!);
+    categoryLinks.forEach((link) => link.parentNode.removeChild(link));
+
+    // TODO: we'll also want to be able to undo this change
+    document.querySelectorAll('div.mw-category').forEach((e) => {
+     e.innerHTML = '';
+    });
+
+    // next: sort the links
+    const sortedLinks = [...categoryLinks].sort(
+     (a, b) => Number(b.getAttribute('page-view-count')) - Number(a.getAttribute('page-view-count')),
+    );
+
+    const firstMwCategory = document.querySelector('div.mw-category');
+    const ul = document.createElement('ul');
+    firstMwCategory.appendChild(ul);
+
+    sortedLinks.forEach((link) => {
+     const li = document.createElement('li');
+     li.appendChild(link);
+     ul.appendChild(li);
+    });
+   });
+
+   p.appendChild(sortButton);
+  });
  });
 })();

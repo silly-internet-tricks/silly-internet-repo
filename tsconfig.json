@@ -9,8 +9,8 @@
   "compilerOptions": {
     "outDir": "./ts-compiled/",
     "noImplicitAny": true,
-    "module": "es2020",
-    "target": "es2020",
+    "module": "es2022",
+    "target": "es2022",
     "jsx": "react",
     "allowJs": true,
     "moduleResolution": "node",
