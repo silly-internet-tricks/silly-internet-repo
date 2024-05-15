@@ -1,13 +1,15 @@
 import * as WebSocket from 'ws';
 import Queue from '../lib/util/queue';
 import ollamaChatRequest from './server-util/ollama-chat-request';
-import twitchChatbotToken from '../../secrets/twitch-chatbot-token';
+import refreshTwitchAccessToken from './server-util/refresh-twitch-access-token';
+import { token } from '../../secrets/twitch-chatbot.json';
 
 const channelName = 'sillyinternettricks';
 
 let chatFraction = 0.01;
 
-const ws = new WebSocket('ws://irc-ws.chat.twitch.tv:80');
+let ws = new WebSocket('ws://irc-ws.chat.twitch.tv:80');
+let accessToken = token;
 const queue = new Queue<string>();
 
 const history: { role: string; content: string }[] = [];
@@ -45,12 +47,37 @@ const ollamaCallback =
   }
  };
 
-ws.on('error', (e) => console.error(e.toString()));
-ws.on('close', (c) => console.warn(c.toString()));
+interface Listeners {
+ onError?: (err: Error) => void;
+ onClose?: (code: number, reason: Buffer) => void;
+ onMessage?: (data: WebSocket.RawData) => void;
+ onOpen?: () => void;
+}
+const listeners: Listeners = {};
 
-ws.on('message', (m) => {
- const msg = m.toString();
+const setupWs = () => {
+ ws.on('error', listeners.onError);
+ ws.on('close', listeners.onClose);
+ ws.on('message', listeners.onMessage);
+ ws.on('open', listeners.onOpen);
+};
+
+listeners.onError = (err: Error) => console.error(err.toString());
+listeners.onClose = (code: number, reason: Buffer) => console.warn(`ws closed: ${code} ${reason}`);
+
+listeners.onMessage = (data: WebSocket.RawData) => {
+ const msg = data.toString();
  console.log(msg);
+
+ if (msg.match(/:Login authentication failed/)) {
+  ws.close();
+  refreshTwitchAccessToken().then((newToken) => {
+   accessToken = newToken;
+   ws = new WebSocket('ws://irc-ws.chat.twitch.tv:80');
+   setupWs();
+  });
+ }
+
  const msgMatchRe = new RegExp(`PRIVMSG #${channelName} :`);
 
  if (msg.match(msgMatchRe)) {
@@ -70,10 +97,10 @@ ws.on('message', (m) => {
 
   ollamaChatRequest(postData, ollamaCallback(msgId));
  }
-});
+};
 
-ws.on('open', () => {
- ws.send(`PASS oauth:${twitchChatbotToken}`);
+listeners.onOpen = () => {
+ ws.send(`PASS oauth:${accessToken}`);
  ws.send('NICK joshparkerj');
  ws.send(`JOIN #${channelName}`);
  ws.send('CAP REQ :twitch.tv/commands twitch.tv/membership twitch.tv/tags');
@@ -86,5 +113,7 @@ ws.on('open', () => {
   } else {
    chatFraction += 0.01;
   }
- }, 10000);
-});
+ }, 20000);
+};
+
+setupWs();

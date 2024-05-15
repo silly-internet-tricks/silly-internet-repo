@@ -28,6 +28,7 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm audit
+    - run: echo "{\"token\":\"\",\"refreshToken\":\"\",\"clientId\":\"\",\"clientSecret\":\"\"}" > ./secrets/twitch-chatbot.json
     - run: npm run build --if-present
     - run: npm run lint
     - run: npm run test

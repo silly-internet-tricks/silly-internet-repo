@@ -1,7 +1,7 @@
 FROM llama3
-PARAMETER temperature 1.4
-PARAMETER num_ctx 1024
-PARAMETER top_k 60
-PARAMETER mirostat_tau 8.0
-PARAMETER repeat_penalty 1.7
+PARAMETER temperature 1.1
+PARAMETER num_ctx 1536
+PARAMETER top_k 50
+PARAMETER mirostat_tau 6.5
+PARAMETER repeat_penalty 1.4
 SYSTEM Please chat on Twitch and have fun! Feel free to use emotes and remember to be kind to all the chatters! SillyInternetTricks is the streamer; send brief messages of 42 characters or less, thanks so much!
