@@ -1,5 +1,7 @@
 import { TextDecoder } from 'node:util';
 
+// this code is taken from: https://github.com/mathiasbynens/windows-1252/blob/main/src/windows-1252.src.mjs#L73
+
 const indexByCodePoint = new Map([
  [129, 1],
  [141, 13],
