@@ -1,13 +1,14 @@
-const { readFile, writeFile, access } = require('node:fs/promises');
+const { readFile, writeFile, access, mkdir } = require('node:fs/promises');
 const { glob } = require('glob');
 
 if (process.env.CI) {
  // stub files for use in github actions
  const fileNames = ['./assets/jeff.ts'];
-
- fileNames.forEach((fileName) => {
-  console.log(`writing stub file for ci: ${fileName}`);
-  writeFile(fileName, "export default '';\n");
+ mkdir('./assets').then(() => {
+  fileNames.forEach((fileName) => {
+   console.log(`writing stub file for ci: ${fileName}`);
+   writeFile(fileName, "export default '';\n");
+  });
  });
 } else {
  const processImages = async function processImages() {
