@@ -9,7 +9,7 @@
     "test": "jest",
     "lint": "./node_modules/.bin/eslint --fix src/**/*.ts",
     "bundle": "node bundle-build.js",
-    "build": "rm -r ./ts-compiled && npm run images && tsc --build --verbose && tsc --build ./src/server/tsconfig.json --verbose && npx webpack && node bundle-postprocessor.js",
+    "build": "rm -rf ./ts-compiled && npm run images && tsc --build --verbose && tsc --build ./src/server/tsconfig.json --verbose && npx webpack && node bundle-postprocessor.js",
     "publish": "node bundle-publish.js",
     "blt": "npm run build && npm run lint && npm run test"
   },
