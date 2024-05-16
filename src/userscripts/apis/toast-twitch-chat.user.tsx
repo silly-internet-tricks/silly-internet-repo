@@ -60,6 +60,5 @@ import observeElementRemovalAndReaddIt from '../../lib/util/observe-element-remo
   },
  };
 
- // @ts-expect-error GM is defined as part of the API for the tampermonkey chrome extension
  GM.xmlHttpRequest(requestOptions);
 })();

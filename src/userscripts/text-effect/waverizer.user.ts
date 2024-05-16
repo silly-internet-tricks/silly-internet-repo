@@ -70,6 +70,8 @@ import parameterForm from '../../lib/util/parameter-form';
    const percentWaveHeight = 200 * 2 ** parameterValue - 20;
    const cssRules = [...styleSheet.cssRules];
    const keyframesRule = cssRules.find((e) => e instanceof CSSKeyframesRule) as CSSKeyframesRule;
+
+   // @ts-ignore CSSKeyframesRules does seem to spread just fine in this context in chrome (better keep an eye on it I guess)
    const secondKeyframe = [...keyframesRule][1];
    secondKeyframe.style.setProperty('transform', `translateY(-${percentWaveHeight}%)`);
   },

@@ -20,8 +20,7 @@ export default function generalAnimationifier(
    if (elementTarget.classList.contains(animationClassName)) {
     elementTarget.classList.remove(animationClassName);
 
-    // @ts-expect-error original display is an attribute that I add to the element specifically to use when I undo the animation
-    const originalDisplay: string = elementTarget['original-display'];
+    const originalDisplay: string = elementTarget.getAttribute('original-display');
     if (originalDisplay) {
      undoInlineInlineBlock(elementTarget as HTMLElement, originalDisplay);
     }

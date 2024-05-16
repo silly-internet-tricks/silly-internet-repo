@@ -132,7 +132,6 @@ let showCards: boolean = true;
        if (!pokeResponses.has(url)) {
         pokeResponses.add(url);
 
-        // @ts-expect-error GM is defined as part of the API for the tampermonkey chrome extension
         yield GM.xmlHttpRequest({ url, responseType: 'json' });
        }
       }

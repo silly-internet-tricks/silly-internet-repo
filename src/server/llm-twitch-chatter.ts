@@ -12,6 +12,7 @@ let chatPercent = 1;
 
 const chatAddress = 'ws://irc-ws.chat.twitch.tv:80';
 
+let intervalId: NodeJS.Timeout;
 let ws = new WebSocket(chatAddress);
 let accessToken = token;
 const queue = new Queue<string>();
@@ -58,6 +59,10 @@ interface Listeners {
 const listeners: Listeners = {};
 
 const setupWs = () => {
+ // we must stop any old interval that was running
+ // because a new interval will be set when we get the on open event
+ // (if we don't get an on open event after this, then something is wrong)
+ clearInterval(intervalId);
  ws.on('error', listeners.onError);
  ws.on('close', listeners.onClose);
  ws.on('message', listeners.onMessage);
@@ -71,6 +76,7 @@ listeners.onClose = (code: number, reason: Buffer) => {
  // just reconnect if the code was 1006
  // eslint-disable-next-line eqeqeq
  if (code == 1006) {
+  ws.close();
   ws = new WebSocket(chatAddress);
   setupWs();
  }
@@ -111,7 +117,7 @@ listeners.onOpen = () => {
  ws.send(`JOIN #${channelName}`);
  ws.send('CAP REQ :twitch.tv/commands twitch.tv/membership twitch.tv/tags');
 
- setInterval(() => {
+ intervalId = setInterval(() => {
   if (queue.size() > 0) {
    const message = queue.dequeue();
    ws.send(message);

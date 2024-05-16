@@ -56,6 +56,5 @@ import getStringFromChunk from '../../lib/util/get-string-from-chunk';
   },
  };
 
- // @ts-expect-error GM is defined as part of the API for the tampermonkey chrome extension
  GM.xmlHttpRequest(requestOptions);
 })();

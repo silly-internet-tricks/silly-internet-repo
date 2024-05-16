@@ -4,8 +4,8 @@ interface GmXmlHttpRequestResponse {
 
 interface GmXmlHttpRequestRequestOptions {
  url: string;
- method?: string;
- responseType: string;
+ method?: 'GET' | 'POST' | 'HEAD';
+ responseType: 'json' | 'arraybuffer' | 'blob' | 'stream';
  data?: string;
  fetch?: boolean;
  onloadstart?: (r: GmXmlHttpRequestResponse) => Promise;

@@ -1,4 +1,4 @@
-export default function pick<T>(collection: Set<T> | T[]) {
+export default function pick<T>(collection: Set<T> | T[]): T {
  if (!Array.isArray(collection)) {
   return pick([...collection]);
  }

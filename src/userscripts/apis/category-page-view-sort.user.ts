@@ -63,13 +63,10 @@
       }),
     ),
   ).then(() => {
-   // now add the button that can be used to activate the sorting
    const sortButton = document.createElement('button');
    sortButton.id = 'sit-sort-button';
    sortButton.appendChild(new Text('sort by page view counts'));
    sortButton.addEventListener('click', () => {
-    // have a button for doing the sort
-    // next step: blank out the category divs so we can reinster all the links (remember to save the links first!);
     categoryLinks.forEach((link) => link.parentNode.removeChild(link));
 
     // TODO: we'll also want to be able to undo this change
@@ -77,7 +74,6 @@
      e.innerHTML = '';
     });
 
-    // next: sort the links
     const sortedLinks = [...categoryLinks].sort(
      (a, b) => Number(b.getAttribute('page-view-count')) - Number(a.getAttribute('page-view-count')),
     );

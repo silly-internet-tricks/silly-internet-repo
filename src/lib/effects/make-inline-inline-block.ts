@@ -4,8 +4,10 @@ type MakeInlineInlineBlock = (htmlElement: HTMLElement) => void;
 const makeInlineInlineBlock: MakeInlineInlineBlock = function makeInlineInlineBlock(htmlElement) {
  if (getCssKeywordValue(htmlElement, 'display') === 'inline') {
   const displayValue: string = htmlElement.style.getPropertyValue('display');
-  // @ts-expect-error original display is an attribute that I add to the element specifically to use when I undo the animation
-  htmlElement['original-display'] = displayValue === 'inline' ? 'element-style-inline' : 'inline';
+  htmlElement.setAttribute(
+   'original-display',
+   displayValue === 'inline' ? 'element-style-inline' : 'inline',
+  );
   htmlElement.style.setProperty('display', 'inline-block');
  }
 };
@@ -15,8 +17,7 @@ const undoInlineInlineBlock: UndoInlineInlineBlock = function undoInlineInlineBl
  htmlElement,
  originalDisplay,
 ) {
- // @ts-expect-error original display is an attribute that I add to the element specifically to use when I undo the animation
- delete htmlElement['original-display'];
+ htmlElement.removeAttribute('original-display');
  if (!htmlElement.style) {
   throw new Error(`expected the target (${htmlElement}) to be an html element `);
  }

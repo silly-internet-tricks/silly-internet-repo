@@ -51,7 +51,6 @@ import divOllamaStyle from '../../lib/ollama/div-ollama-style';
     responseType: 'arraybuffer',
    };
 
-   // @ts-expect-error GM is defined as part of the API for the tampermonkey chrome extension
    GM.xmlHttpRequest(imageRequestOptions).then((r: GmXmlHttpRequestResponse) => {
     const base64Image: string = btoa(
      // this is based on the stack overflow answer: https://stackoverflow.com/a/9458996
@@ -85,7 +84,6 @@ import divOllamaStyle from '../../lib/ollama/div-ollama-style';
      },
     };
 
-    // @ts-expect-error GM is defined as part of the API for the tampermonkey chrome extension
     GM.xmlHttpRequest(requestOptions);
    });
   }

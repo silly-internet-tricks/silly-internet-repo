@@ -66,7 +66,6 @@ button.clear {
     responseType: 'json',
    };
 
-   // @ts-expect-error GM is defined as part of the API for the tampermonkey chrome extension
    GM.xmlHttpRequest(searchRequestOptions).then((r) => {
     if (r.response.pages.length === 0) {
      const errorMessage: HTMLElement = document.createElement('p');
@@ -79,10 +78,9 @@ button.clear {
     const { key } = r.response.pages[0];
     const requestOptions: GmXmlHttpRequestRequestOptions = {
      url: `https://en.wikipedia.org/wiki/${key}`,
-     responseType: 'text',
+     responseType: 'arraybuffer',
     };
 
-    // @ts-expect-error GM is defined as part of the API for the tampermonkey chrome extension
     GM.xmlHttpRequest(requestOptions).then((t) => {
      const dom: Document = parser.parseFromString(t.response, 'text/html');
      const wikiPartsWithNav: HTMLElement[] = [...dom.querySelectorAll(selector)] as HTMLElement[];

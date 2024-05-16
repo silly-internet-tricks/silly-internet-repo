@@ -121,8 +121,7 @@ import getCssKeywordValue from '../../lib/util/get-css-keyword-value';
   'marqueeifier',
   'marquee-container-parent',
   (element) => {
-   // @ts-expect-error original display is an attribute that I add to the element specifically to use when I undo the animation
-   const originalDisplay: string = element['original-display'];
+   const originalDisplay: string = element.getAttribute('original-display');
    undoInlineInlineBlock(element as HTMLElement, originalDisplay);
   },
  );

@@ -7,7 +7,6 @@ export default function getOllamaModelList<T>(ollamaAddress: string) {
    fetch: true,
   };
 
-  // @ts-expect-error GM is defined as part of the API for the tampermonkey chrome extension
   resolve(GM.xmlHttpRequest(requestOptions));
  });
 

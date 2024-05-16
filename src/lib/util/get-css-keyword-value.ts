@@ -1,4 +1,5 @@
 export default function getCssKeywordValue(htmlElement: HTMLElement, keyword: string) {
+ // @ts-ignore the computedStyleMap does define CSSKeywordValues in chrome
  const cssKeywordValue: CSSKeywordValue = htmlElement.computedStyleMap().get(keyword) as CSSKeywordValue;
 
  if (!cssKeywordValue.value) {
