@@ -14,14 +14,14 @@
 // ==/UserScript==
 
 (function categoryPageViewSort() {
- const btn = document.createElement('button');
+ const button = document.createElement('button');
  const p = document.querySelector('#mw-pages > p');
- btn.appendChild(new Text('show page view counts'));
- p.appendChild(btn);
+ button.appendChild(new Text('show page view counts'));
+ p.appendChild(button);
 
- btn.addEventListener('click', () => {
+ button.addEventListener('click', () => {
   const categoryLinks = [
-   ...document.querySelectorAll('#mw-content-text .mw-category a[href^="/wiki"]'),
+   ...document.querySelectorAll('#mw-content-text #mw-pages .mw-category a[href^="/wiki"]'),
   ] as HTMLAnchorElement[];
 
   const today = new Date();
@@ -48,16 +48,25 @@
          )
           .then((r) => r.json())
           .then((j) => {
-           const pageViewCount = j.items.reduce((acc: number, e: { views: number }) => acc + e.views, 0);
-           const result = `page view count for ${pageTitle} is ${pageViewCount}`;
-           console.log(result);
+           if (Array.isArray(j.items)) {
+            const pageViewCount = j.items.reduce((acc: number, e: { views: number }) => acc + e.views, 0);
+            const result = `page view count for ${pageTitle} is ${pageViewCount}`;
+            console.log(result);
 
-           const link = document.querySelector(`#mw-pages .mw-category a[href$="${pageTitle}"]`);
-           link.appendChild(new Text(`(page view count: ${pageViewCount})`));
-           link.setAttribute('page-view-count', pageViewCount);
-           solve(result);
+            const link = document.querySelector(`#mw-pages .mw-category a[href$="${pageTitle}"]`);
+            link.appendChild(new Text(`(page view count: ${pageViewCount})`));
+            link.setAttribute('page-view-count', pageViewCount);
+            solve(result);
+           } else {
+            console.log('no items', j);
+            solve('');
+           }
           })
-          .catch((reason) => ject(reason)),
+          .catch((reason) => {
+           console.log('Hey! Listen!');
+           console.log(reason);
+           ject(reason);
+          }),
         10 * i,
        );
       }),
@@ -70,7 +79,7 @@
     categoryLinks.forEach((link) => link.parentNode.removeChild(link));
 
     // TODO: we'll also want to be able to undo this change
-    document.querySelectorAll('div.mw-category').forEach((e) => {
+    document.querySelectorAll('#mw-pages div.mw-category').forEach((e) => {
      e.innerHTML = '';
     });
 
@@ -78,7 +87,7 @@
      (a, b) => Number(b.getAttribute('page-view-count')) - Number(a.getAttribute('page-view-count')),
     );
 
-    const firstMwCategory = document.querySelector('div.mw-category');
+    const firstMwCategory = document.querySelector('#mw-pages div.mw-category');
     const ul = document.createElement('ul');
     firstMwCategory.appendChild(ul);
 

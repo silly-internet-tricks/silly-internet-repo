@@ -49,6 +49,7 @@
         url: blobUrl,
         name: `youtube-subtitles/${videoId}.txt`,
         saveAs: true,
+        conflictAction: 'overwrite',
         onload: () => {
          console.log('loading');
         },
