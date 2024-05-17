@@ -1,4 +1,5 @@
 import { request } from 'node:https';
+import { writeFile } from 'node:fs/promises';
 
 export default function refreshTwitchAccessToken(
  refreshToken: string,
@@ -7,7 +8,6 @@ export default function refreshTwitchAccessToken(
 ) {
  return new Promise<string>((solve, ject) => {
   const postData = `grant_type=refresh_token&refresh_token=${refreshToken}&client_id=${clientId}&client_secret=${clientSecret}`;
-  console.log(postData);
   const req = request(
    {
     hostname: 'id.twitch.tv',
@@ -22,12 +22,12 @@ export default function refreshTwitchAccessToken(
    (res) => {
     res.on('data', (chunk) => {
      const responseObject = JSON.parse(chunk.toString());
-     console.log(responseObject);
-     console.log(res.statusCode);
      const token = responseObject.access_token;
      const newRefreshToken = responseObject.refresh_token;
-     console.log(JSON.stringify({ token, refreshToken: newRefreshToken, clientId, clientSecret }));
-     solve(token);
+     writeFile(
+      'twitch-chatbot.json',
+      JSON.stringify({ token, refreshToken: newRefreshToken, clientId, clientSecret }),
+     ).then(() => solve(token));
     });
    },
   );

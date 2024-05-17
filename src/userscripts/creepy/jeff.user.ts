@@ -33,8 +33,9 @@ import polarCoordsToPercent from '../../lib/util/polar-coords-to-percent';
   [initRadii],
  );
 
- const keyframes = radiiSteps.map(
-  (e: number[], i: number) => `
+ const keyframes = radiiSteps
+  .map(
+   (e: number[], i: number) => `
  ${10 * i}% {
   clip-path: polygon(
    ${e
@@ -44,7 +45,8 @@ import polarCoordsToPercent from '../../lib/util/polar-coords-to-percent';
   );
  }
  `,
- ).join('');
+  )
+  .join('');
 
  insertCSS(`
  #sit-jeff-image {
@@ -52,26 +54,32 @@ import polarCoordsToPercent from '../../lib/util/polar-coords-to-percent';
  }
  `);
 
- const animationDelay = Math.random() * 300;
+ const animationDelay = Math.random() * 1000;
 
  insertCSS(`
- #sit-jeff-image {
-  position: fixed;
-  inset: 0;
-  z-index: 5555;
-  background-size: cover;
-  background-position: center;
+ .jeff-clip-animation {
   animation-name: jeff-the-killer;
   animation-duration: 3s;
   animation-iteration-count: 1;
   animation-timing-function: linear;
   animation-delay: ${animationDelay}s;
+  animation-fill-mode: forwards;
+  clip-path: polygon(0% 0%, 0% 0%, 0% 0%);
+ }
+
+ .jeff-position {
+  position: fixed;
+  inset: 0;
+  z-index: 11111;
+ }
+
+ #sit-jeff-image {
+  background-size: cover;
+  background-position: center;
  }
 
  #sit-jeff-image-parent {
-  position: fixed;
-  inset: 0;
-  z-index: 666;
+  filter: url(#jeff-inset-drop-shadow)
  }
 
  @keyframes jeff-the-killer {
@@ -79,7 +87,6 @@ import polarCoordsToPercent from '../../lib/util/polar-coords-to-percent';
  }
  `);
 
- // TODO: Try to get the inset drop shadow to work!
  // TODO: see if there is some other more straightforward simple way to do the inset drop shadow
 
  // in the matrix, using zeroes in the rgb channels is expected to give us
@@ -98,7 +105,7 @@ import polarCoordsToPercent from '../../lib/util/polar-coords-to-percent';
       />
      <feGaussianBlur
        in="inverted-alpha"
-       stdDeviation="1"
+       stdDeviation="10"
        result="blurred"
      />
      <feOffset
@@ -120,11 +127,22 @@ import polarCoordsToPercent from '../../lib/util/polar-coords-to-percent';
  filterDiv.innerHTML = filterSvg;
  document.body.appendChild(filterDiv);
 
+ const grandpaDiv = document.createElement('div');
+ grandpaDiv.id = 'sit-jeff-image-grandpa';
+ grandpaDiv.classList.add('jeff-position');
+ grandpaDiv.classList.add('jeff-clip-animation');
+
  const parentDiv = document.createElement('div');
- const div = document.createElement('div');
  parentDiv.id = 'sit-jeff-image-parent';
+ parentDiv.classList.add('jeff-position');
+
+ const div = document.createElement('div');
  div.id = 'sit-jeff-image';
- document.body.appendChild(parentDiv);
+ div.classList.add('jeff-position');
+ div.classList.add('jeff-clip-animation');
+
+ document.body.appendChild(grandpaDiv);
+ grandpaDiv.appendChild(parentDiv);
  parentDiv.appendChild(div);
 
  // notes
