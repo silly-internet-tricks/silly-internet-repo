@@ -17,7 +17,9 @@ import insertCSS from '../../lib/util/insert-css';
  let isDisplayed = false;
  const brb = document.createElement('div');
  brb.id = 'brb-screen';
- brb.innerHTML = '<h1>BRB</h1>';
+ const h1 = document.createElement('h1');
+ h1.appendChild(new Text('BRB'));
+ brb.appendChild(h1);
 
  document.addEventListener('keypress', ({ code }) => {
   if (code === 'NumpadDivide') {
