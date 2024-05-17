@@ -11,74 +11,62 @@
 // ==/UserScript==
 
 (function downloadSubtitles() {
- const saveButton = document.createElement('button');
- saveButton.innerText = 'Save subtitles';
- saveButton.setAttribute('style', 'position: fixed; left: 13dvw; top: 0; z-index: 2021;');
+ const mo = new MutationObserver((mutationRecords) => {
+  if (
+   mutationRecords.find((mr) => {
+    const { target } = mr;
+    return target instanceof HTMLElement && target.tagName === 'TITLE';
+   })
+  ) {
+   const videoId = window.location.href.match(/[^=]+$/)[0];
+   const parser = new DOMParser();
 
- document.querySelector('body').appendChild(saveButton);
+   fetch(window.location.href)
+    .then((r) => r.text())
+    .then((t) => parser.parseFromString(t, 'text/html'))
+    .then((dom): void => {
+     const re = /"([^"]*timedtext[^"]*lang=en)"/;
 
- saveButton.addEventListener('click', () => {
-  const videoId = window.location.href.match(/[^=]+$/)[0];
-  const parser = new DOMParser();
+     const script = [...dom.querySelectorAll('script')].find((s) => s.textContent.match(re));
+     const url = `${script.textContent
+      .match(re)[1]
+      .replace(
+       /\\u0026/g,
+       '&',
+      )}&fmt=json3&xorb=2&xobt=3&xovt=3&cbr=Chrome&cbrver=124.0.0.0&c=WEB&cver=2.20240514.03.00&cplayer=UNIPLAYER&cos=X11&cplatform=DESKTOP`;
 
-  fetch(window.location.href)
-   .then((r) => r.text())
-   .then((t) => parser.parseFromString(t, 'text/html'))
-   .then((dom): void => {
-    const re = /"([^"]*timedtext[^"]*lang=en)"/;
+     fetch(url)
+      .then((r) => r.json())
+      .then((j) => {
+       const { events } = j;
+       const segs = events.flatMap((e: { segs: { utf8: string }[] }) => e.segs);
+       const utf8s = segs.filter((e: { utf8: string }) => e).map((e: { utf8: string }) => e.utf8);
+       const text = utf8s.join('');
+       const blob = new Blob([text], { type: 'text/plain' });
+       const blobUrl = URL.createObjectURL(blob);
 
-    const script = [...dom.querySelectorAll('script')].find((s) => s.textContent.match(re));
-    const url = `${script.textContent
-     .match(re)[1]
-     .replace(
-      /\\u0026/g,
-      '&',
-     )}&fmt=json3&xorb=2&xobt=3&xovt=3&cbr=Chrome&cbrver=124.0.0.0&c=WEB&cver=2.20240514.03.00&cplayer=UNIPLAYER&cos=X11&cplatform=DESKTOP`;
-
-    fetch(url)
-     .then((r) => r.json())
-     .then((j) => {
-      console.log('got j');
-      const events = j.events;
-      console.log('events', events);
-
-      const segs = events.flatMap((e: { segs: { utf8: string }[] }) => e.segs);
-      console.log(segs, segs);
-      const utf8s = segs.filter((e: { utf8: string }) => e).map((e: { utf8: string }) => e.utf8);
-      console.log('utf8s', utf8s);
-      const text = utf8s.join('');
-      console.log('text', text);
-
-      const blob = new Blob([text], { type: 'text/plain' });
-
-      console.log('blob', blob);
-
-      const blobUrl = URL.createObjectURL(blob);
-
-      console.log(blobUrl);
-      console.log(videoId);
-
-      console.log(GM_info);
-
-      GM_download({
-       url: blobUrl,
-       name: `${videoId}.txt`,
-       saveAs: true,
-       onload: () => {
-        console.log('loading');
-       },
-       onerror: ({ error, details }) => {
-        console.error(error);
-        console.error(details);
-       },
-       onprogress: () => {
-        console.log('progressing');
-       },
-       ontimeout: () => {
-        console.log('timing out');
-       },
+       GM_download({
+        url: blobUrl,
+        name: `youtube-subtitles/${videoId}.txt`,
+        saveAs: true,
+        onload: () => {
+         console.log('loading');
+        },
+        onerror: ({ error, details }) => {
+         console.error(error);
+         console.error(details);
+        },
+        onprogress: () => {
+         console.log('progressing');
+        },
+        ontimeout: () => {
+         console.log('timing out');
+        },
+       });
       });
-     });
-   });
+    });
+  }
  });
+
+ mo.observe(document.head.querySelector('title'), { childList: true });
 })();
