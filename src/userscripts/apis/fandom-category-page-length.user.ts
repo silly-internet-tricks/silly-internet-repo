@@ -63,6 +63,7 @@
    sortButton.addEventListener('click', () => {
     categoryLinks.forEach((link) => link.parentNode.removeChild(link));
 
+    // TODO: also make the styling look better/closer to the original after sorting
     // TODO: we'll also want to be able to undo this change
     document.querySelectorAll('.category-page__members-wrapper').forEach((e) => {
      e.innerHTML = '';

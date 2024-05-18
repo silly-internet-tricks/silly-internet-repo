@@ -13,7 +13,9 @@
 // ==/UserScript==
 
 (function tvtropesVisitorCount() {
- const parser = new DOMParser();
+  // TODO: find out if we're getting rate limited or something
+  // TODO: find out the cause of the 403 error
+  const parser = new DOMParser();
 
  const getPageTitle = (link: HTMLAnchorElement) => link.href.match(/pmwiki\.php\/(.*)$/)[1];
 
