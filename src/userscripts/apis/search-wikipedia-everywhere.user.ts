@@ -53,6 +53,7 @@ button.clear {
  document.body.appendChild(wikiArea);
 
  const parser: DOMParser = new DOMParser();
+ const decoder = new TextDecoder();
 
  document.addEventListener('keypress', ({ code }) => {
   if (code === 'KeyW') {
@@ -81,8 +82,8 @@ button.clear {
      responseType: 'arraybuffer',
     };
 
-    GM.xmlHttpRequest(requestOptions).then((t) => {
-     const dom: Document = parser.parseFromString(t.response, 'text/html');
+    GM.xmlHttpRequest(requestOptions).then((t): void => {
+     const dom: Document = parser.parseFromString(decoder.decode(t.response), 'text/html');
      const wikiPartsWithNav: HTMLElement[] = [...dom.querySelectorAll(selector)] as HTMLElement[];
      const wikiParts: HTMLElement[] = wikiPartsWithNav.filter(
       (e) => !(e.tagName === 'UL' && e.getAttribute('role') === 'navigation'),

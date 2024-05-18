@@ -41,6 +41,7 @@ import insertCSS from '../../lib/util/insert-css';
  overflow: hidden;
  margin: auto;
  background-image: linear-gradient(to right, rgba(0,255,0, 0.1), rgba(255,255,0, 0.1));
+ text-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFBFFF, 0 0 30px #FF9FFF, 0 0 40px #FF7FFF, 0 0 50px #FF5FFF, 0 0 60px #FF3FFF;
 }
 
 div#brb-screen h1 {
