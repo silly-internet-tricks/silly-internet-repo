@@ -12,79 +12,37 @@
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/74b45baefede276f61fb0a84dd621772/raw/category-page-view-sort.meta.js
 // ==/UserScript==
 
+import categoryPageSort from '../../lib/apis/category-page-sort';
+
 (function fandomCategoryPageLength() {
+ const categoryContentSelector = '.category-page__members-wrapper';
+ const buttonParentSelector = '#mw-content-text p.category-page__total-number';
+ const metricName = 'length';
+ const categoryLinkSelector = '.category-page__members a[href^="/wiki"].category-page__member-link';
  const parser = new DOMParser();
+ const fetchAddress = (link: HTMLAnchorElement) => `${link}?action=info`;
 
- const linkAttribute = 'page-length';
+ const linkAttribute = `page-${metricName.replace(/\s+/g, '-')}`;
+ const fetchPromiseHandler = (link: HTMLAnchorElement, solve: (x: string) => void) => (r: Response) => {
+  r.text().then((t) => {
+   const dom = parser.parseFromString(t, 'text/html');
+   const metric = Number(dom.querySelector('#mw-pageinfo-length td + td').textContent.replace(/\D/g, ''));
 
- const button = document.createElement('button');
- const p = document.querySelector('#mw-content-text p.category-page__total-number');
- button.appendChild(new Text('show page lengths'));
- p.appendChild(button);
-
- button.addEventListener('click', () => {
-  const categoryLinks = [
-   ...document.querySelectorAll('.category-page__members a[href^="/wiki"].category-page__member-link'),
-  ] as HTMLAnchorElement[];
-
-  Promise.all(
-   categoryLinks.map(
-    (link, i) =>
-     new Promise((solve, ject) => {
-      setTimeout(
-       () =>
-        fetch(`${link}?action=info`)
-         .then((r) => r.text())
-         .then((t) => {
-          const dom = parser.parseFromString(t, 'text/html');
-          const pageLength = Number(
-           dom.querySelector('#mw-pageinfo-length td + td').textContent.replace(/\D/g, ''),
-          );
-
-          const result = `page length for ${link.title} is ${pageLength}`;
-          console.log(result);
-          link.appendChild(new Text(` (page length: ${pageLength})`));
-          link.setAttribute(linkAttribute, `${pageLength}`);
-          solve(result);
-         })
-         .catch((reason) => {
-          console.log('Hey! Listen!');
-          console.log(reason);
-          ject(reason);
-         }),
-       10 * i,
-      );
-     }),
-   ),
-  ).then(() => {
-   const sortButton = document.createElement('button');
-   sortButton.id = 'sit-sort-button';
-   sortButton.appendChild(new Text('sort by page lengths'));
-   sortButton.addEventListener('click', () => {
-    categoryLinks.forEach((link) => link.parentNode.removeChild(link));
-
-    // TODO: also make the styling look better/closer to the original after sorting
-    // TODO: we'll also want to be able to undo this change
-    document.querySelectorAll('.category-page__members-wrapper').forEach((e) => {
-     e.innerHTML = '';
-    });
-
-    const sortedLinks = [...categoryLinks].sort(
-     (a, b) => Number(b.getAttribute(linkAttribute)) - Number(a.getAttribute(linkAttribute)),
-    );
-
-    const firstMwCategory = document.querySelector('.category-page__members-wrapper');
-    const ul = document.createElement('ul');
-    firstMwCategory.appendChild(ul);
-
-    sortedLinks.forEach((link) => {
-     const li = document.createElement('li');
-     li.appendChild(link);
-     ul.appendChild(li);
-    });
-   });
-
-   p.appendChild(sortButton);
+   const result = `page ${metricName} for ${link.title} is ${metric}`;
+   console.log(result);
+   link.appendChild(new Text(` (page ${metricName}: ${metric})`));
+   link.setAttribute(linkAttribute, `${metric}`);
+   solve(result);
   });
- });
+ };
+
+ categoryPageSort(
+  buttonParentSelector,
+  metricName,
+  categoryLinkSelector,
+  fetchAddress,
+  fetchPromiseHandler,
+  categoryContentSelector,
+  linkAttribute,
+ );
 })();
