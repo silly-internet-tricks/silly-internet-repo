@@ -13,8 +13,9 @@
 // ==/UserScript==
 
 import insertCSS from '../../lib/util/insert-css';
+import moreCategoryPages from '../../lib/apis/more-category-pages';
 
-(function moreCategoryPages() {
+(function moreFandomCategoryPages() {
  insertCSS(`#content > button {
   background: none;
   padding: 0.5em 1.5em;
@@ -26,74 +27,17 @@ import insertCSS from '../../lib/util/insert-css';
   margin-left: 20dvw;
 }`);
 
- const parser: DOMParser = new DOMParser();
- const buttonForMorePages: (
-  pageDescriptor: string,
-  pageLinkHref: string,
-  pagePlacer: (nextPage: Element) => void,
-  pageSelector: string,
- ) => void = function buttonForMorePages(pageDescriptor, pageLinkHref, pagePlacer, pageSelector) {
-  const button: HTMLElement = document.createElement('button');
-  document.querySelector('div#content').insertAdjacentElement('beforeend', button);
-  button.appendChild(new Text(`get all ${pageDescriptor} pages`));
-
-  button.addEventListener('click', () => {
-   const getPage: (href: string) => void = function getPage(href) {
-    return fetch(href)
-     .then((r) => r.text())
-     .then((t) => {
-      const dom: Document = parser.parseFromString(t, 'text/html');
-      const nextPage: Element = dom.querySelector('div.category-page__members');
-      pagePlacer(nextPage);
-      const nextPageLinkFromDom: HTMLAnchorElement = dom.querySelector(pageSelector);
-      if (nextPageLinkFromDom) {
-       getPage(nextPageLinkFromDom.href);
-      } else {
-       const headingSet: Set<string> = new Set<string>();
-       document.querySelectorAll('div.category-page__first-char').forEach((heading: HTMLElement) => {
-        if (headingSet.has(heading.textContent)) {
-         heading.style.setProperty('display', 'none');
-        } else {
-         headingSet.add(heading.textContent);
-        }
-       });
-      }
-     });
-   };
-
-   getPage(pageLinkHref);
-  });
- };
-
+ const contentSelector = 'div#content';
+ const pageContentSelector = 'div.category-page__members';
+ const headingSelector = 'div.category-page__first-char';
  const nextPageSelector: string = '.category-page__pagination-next';
- const nextPageLink: HTMLAnchorElement = document.querySelector(nextPageSelector);
- if (nextPageLink) {
-  buttonForMorePages(
-   'following',
-   nextPageLink.href,
-   (page) => {
-    const lastDiv: Element = [...document.querySelectorAll('div.category-page__members')].pop();
-    const hr: Element = document.createElement('hr');
-    lastDiv.insertAdjacentElement('afterend', hr);
-    hr.insertAdjacentElement('afterend', page);
-   },
-   nextPageSelector,
-  );
- }
-
  const prevPageSelector: string = '.category-page__pagination-prev';
- const prevPageLink: HTMLAnchorElement = document.querySelector(prevPageSelector);
- if (prevPageLink) {
-  buttonForMorePages(
-   'preceding',
-   prevPageLink.href,
-   (page) => {
-    const firstDiv: Element = document.querySelector('div.category-page__members');
-    const hr: Element = document.createElement('hr');
-    firstDiv.insertAdjacentElement('beforebegin', hr);
-    hr.insertAdjacentElement('beforebegin', page);
-   },
-   prevPageSelector,
-  );
- }
+
+ moreCategoryPages(
+  contentSelector,
+  pageContentSelector,
+  headingSelector,
+  nextPageSelector,
+  prevPageSelector,
+ );
 })();
