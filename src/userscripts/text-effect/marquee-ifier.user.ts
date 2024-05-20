@@ -7,7 +7,7 @@
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=google.com
 // @grant        none
-// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/marquee-ifier.user.ts
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/text-effect/marquee-ifier.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/c9f4aa467ba3f24d1332f720f4f7c113/raw/marquee-ifier.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/c9f4aa467ba3f24d1332f720f4f7c113/raw/marquee-ifier.meta.js
 // ==/UserScript==

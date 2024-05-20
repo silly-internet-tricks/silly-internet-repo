@@ -8,7 +8,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tampermonkey.net
 // @grant        GM_xmlhttpRequest
 // @connect      localhost
-// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/chat-between-chatgpt-and-ollama.user.ts
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/ollama/chat-between-chatgpt-and-ollama.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/25a8aa0997fe06984d5a9947c18583b1/raw/chat-between-chatgpt-and-ollama.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/25a8aa0997fe06984d5a9947c18583b1/raw/chat-between-chatgpt-and-ollama.meta.js
 // ==/UserScript==

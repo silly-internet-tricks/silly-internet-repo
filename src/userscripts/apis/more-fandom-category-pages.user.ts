@@ -7,9 +7,9 @@
 // @match        https://*.fandom.com/wiki/Category:*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=wikipedia.org
 // @grant        none
-// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/more-fandom-category-pages.user.ts
-// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/74b45baefede276f61fb0a84dd621772/raw/more-fandom-category-pages.user.js
-// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/74b45baefede276f61fb0a84dd621772/raw/more-fandom-category-pages.meta.js
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/apis/more-fandom-category-pages.user.ts
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/08550bbd9cd0e32bd3ee5565abff8190/raw/more-fandom-category-pages.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/08550bbd9cd0e32bd3ee5565abff8190/raw/more-fandom-category-pages.meta.js
 // ==/UserScript==
 
 import insertCSS from '../../lib/util/insert-css';

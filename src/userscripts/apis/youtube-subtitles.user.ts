@@ -8,6 +8,9 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=youtube.com
 // @grant        GM_download
 // @grant        GM_info
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/apis/youtube-subtitles.user.ts
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/ec46427ee08ca2252bab339cca3fcaac/raw/youtube-subtitles.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/ec46427ee08ca2252bab339cca3fcaac/raw/youtube-subtitles.meta.js
 // ==/UserScript==
 
 (function downloadSubtitles() {

@@ -7,7 +7,7 @@
 // @match        https://stackoverflow.com/questions/71421441/can-you-create-a-react-js-with-cdn
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=stackoverflow.com
 // @grant        GM_getResourceText
-// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/quick-bundled-react-demo.user.ts
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/demo/quick-bundled-react-demo.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/865b2a94b57a561cf5a227dd40cb3502/raw/quick-bundled-react-demo.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/865b2a94b57a561cf5a227dd40cb3502/raw/quick-bundled-react-demo.meta.js
 // ==/UserScript==

@@ -1,6 +1,8 @@
 const { readFile, writeFile } = require('node:fs/promises');
 const { glob } = require('glob');
 
+// TODO: find a way to generate more of the metadata rather than maintaining it manually
+
 // reference the file at https://github.com/joshparkerj/silly-internet-tricks/blob/main/bundle-build.js
 
 // TODO: update the eslint config to handle this file
@@ -20,9 +22,22 @@ const processBundles = async function processBundles() {
    console.warn(`${file} is missing the source field in its metadata`);
   }
 
-  const sourceEditedUserscriptHeader = userscriptHeader.replace(/(@source.*main\/src)(.*)/, (_, m1) => `${m1}${file.replace('ts-compiled', '').replace('user.js', 'user.ts')}`);
-  const downloadurlEditedUserscriptHeader = sourceEditedUserscriptHeader.replace(/(@downloadURL.*raw\/)(.*)/, (_, m1) => `${m1}${file.match(/[^/]*$/)[0]}`);
-  const updateurlEditedUserscriptHeader = downloadurlEditedUserscriptHeader.replace(/(@updateURL.*raw\/)(.*)/, (_, m1) => `${m1}${file.match(/[^/]*$/)[0].replace('.user.js', '.meta.js')}`);
+  // this generates the path to be used to link to the source file on github
+  // however, it may not always work correctly e.g.:
+  // // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/src/userscripts/text-effect/marquee-ifier.user.ts
+  const sourceEditedUserscriptHeader = userscriptHeader.replace(
+   /(@source.*main\/src)(.*)/,
+   (_, m1) => `${m1}${file.replace('ts-compiled', '').replace('user.js', 'user.ts')}`,
+  );
+
+  const downloadurlEditedUserscriptHeader = sourceEditedUserscriptHeader.replace(
+   /(@downloadURL.*raw\/)(.*)/,
+   (_, m1) => `${m1}${file.match(/[^/]*$/)[0]}`,
+  );
+  const updateurlEditedUserscriptHeader = downloadurlEditedUserscriptHeader.replace(
+   /(@updateURL.*raw\/)(.*)/,
+   (_, m1) => `${m1}${file.match(/[^/]*$/)[0].replace('.user.js', '.meta.js')}`,
+  );
 
   const distFile = bundledUserscriptGlob.find((e) => e.includes(`/${name}.user.js`));
 

@@ -8,7 +8,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tampermonkey.net
 // @grant        GM_xmlhttpRequest
 // @connect      localhost
-// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/chat-between-bing-and-ollama.user.ts
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/ollama/chat-between-bing-and-ollama.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/6d6e469a6a76c7b1270120d5db7a0145/raw/chat-between-bing-and-ollama.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/6d6e469a6a76c7b1270120d5db7a0145/raw/chat-between-bing-and-ollama.meta.js
 // ==/UserScript==

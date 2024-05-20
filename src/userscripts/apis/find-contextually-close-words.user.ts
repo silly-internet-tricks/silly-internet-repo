@@ -7,7 +7,7 @@
 // @match        https://contexto.me/
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=contexto.me
 // @grant        none
-// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/find-contextually-close-words.user.ts
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/apis/find-contextually-close-words.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/4f2dd2ef174d4ed8661acfff7130cec0/raw/find-contextually-close-words.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/4f2dd2ef174d4ed8661acfff7130cec0/raw/find-contextually-close-words.meta.js
 // ==/UserScript==

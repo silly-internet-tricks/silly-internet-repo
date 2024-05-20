@@ -7,7 +7,7 @@
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=stackexchange.com
 // @grant        none
-// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/blinkify.user.ts
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/text-effect/blinkify.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/9f27b1916073ffa74260116aa9dc9a03/raw/blinkify.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/9f27b1916073ffa74260116aa9dc9a03/raw/blinkify.meta.js
 // ==/UserScript==
@@ -15,6 +15,8 @@
 import generalAnimationifier from '../../lib/effects/general-animation-ifier';
 
 const blinkAnimationClass: string = 'blink-animation';
+
+// TODO: work out how to apply the effect to a selection
 
 (function blinkify() {
  generalAnimationifier(

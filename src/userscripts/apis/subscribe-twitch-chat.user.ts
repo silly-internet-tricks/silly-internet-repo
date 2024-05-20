@@ -8,7 +8,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=wikipedia.org
 // @grant        GM_xmlhttpRequest
 // @connect      localhost
-// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/subscribe-twitch-chat.user.ts
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/apis/subscribe-twitch-chat.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/8fbcbdc8cc79be479879ac73c1a2ff65/raw/subscribe-twitch-chat.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/8fbcbdc8cc79be479879ac73c1a2ff65/raw/subscribe-twitch-chat.meta.js
 // ==/UserScript==

@@ -7,7 +7,7 @@
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=js.org
 // @grant        none
-// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/random-color-cycling.user.ts
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/text-effect/random-color-cycling.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/210324e42704a6b4a9f53ac4a04ea497/raw/random-color-cycling.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/210324e42704a6b4a9f53ac4a04ea497/raw/random-color-cycling.meta.js
 // ==/UserScript==

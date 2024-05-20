@@ -8,7 +8,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tampermonkey.net
 // @grant        GM_xmlhttpRequest
 // @connect      localhost
-// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/chat-between-butterfly-and-ollama.user.ts
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/ollama/chat-between-butterfly-and-ollama.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/658d6cbf776a950fce06f1fa49b2fd58/raw/chat-between-butterfly-and-ollama.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/658d6cbf776a950fce06f1fa49b2fd58/raw/chat-between-butterfly-and-ollama.meta.js
 // ==/UserScript==

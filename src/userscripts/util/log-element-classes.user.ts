@@ -7,7 +7,7 @@
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=wikipedia.org
 // @grant        none
-// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/log-element-classes.user.ts
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/util/log-element-classes.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/b0047711ca333e777fe20e8ab9e88fdf/raw/log-element-classes.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/b0047711ca333e777fe20e8ab9e88fdf/raw/log-element-classes.meta.js
 // ==/UserScript==

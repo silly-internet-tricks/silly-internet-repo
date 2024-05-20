@@ -8,7 +8,7 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tampermonkey.net
 // @grant        GM_xmlhttpRequest
 // @connect      localhost
-// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/get-ai-nonsense.user.ts
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/ollama/get-ai-nonsense.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/00426b084f8089a2cc1c4289e930cede/raw/get-ai-nonsense.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/00426b084f8089a2cc1c4289e930cede/raw/get-ai-nonsense.meta.js
 // ==/UserScript==

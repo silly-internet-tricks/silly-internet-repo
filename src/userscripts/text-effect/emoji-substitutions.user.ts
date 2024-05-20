@@ -7,7 +7,7 @@
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=stackoverflow.com
 // @grant        none
-// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/emoji-substitutions.user.ts
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/text-effect/emoji-substitutions.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/f91e7b8aa2ff0d314f564615809d0780/raw/emoji-substitutions.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/f91e7b8aa2ff0d314f564615809d0780/raw/emoji-substitutions.meta.js
 // ==/UserScript==

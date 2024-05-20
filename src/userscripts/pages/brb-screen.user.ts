@@ -6,7 +6,7 @@
 // @author       Josh Parker
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tampermonkey.net
-// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/brb-screen.user.ts
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/pages/brb-screen.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/bc25ad5961f1e2e5ffcbab0916943e40/raw/brb-screen.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/bc25ad5961f1e2e5ffcbab0916943e40/raw/brb-screen.meta.js
 // ==/UserScript==
@@ -41,7 +41,7 @@ import insertCSS from '../../lib/util/insert-css';
  overflow: hidden;
  margin: auto;
  background-image: linear-gradient(to right, rgba(0,255,0, 0.1), rgba(255,255,0, 0.1));
- text-shadow: 0 0 10px #FFFFFF, 0 0 20px #FFBFFF, 0 0 30px #FF9FFF, 0 0 40px #FF7FFF, 0 0 50px #FF5FFF, 0 0 60px #FF3FFF;
+ text-shadow: 0 0 10px #FFFFFF, 0 0 20px #DFBFFF, 0 0 30px #CF9FFF, 0 0 40px #BF7FFF, 0 0 50px #AF5FFF, 0 0 60px #9F3FFF;
 }
 
 div#brb-screen h1 {

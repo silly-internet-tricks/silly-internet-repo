@@ -7,9 +7,9 @@
 // @match        https://tvtropes.org/pmwiki/pmwiki.php/Main/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=wikipedia.org
 // @grant        none
-// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/category-page-view-sort.user.ts
-// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/74b45baefede276f61fb0a84dd621772/raw/category-page-view-sort.user.js
-// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/74b45baefede276f61fb0a84dd621772/raw/category-page-view-sort.meta.js
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/apis/tvtropes-visitor-count.user.ts
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/dd85b9320e592c96410458bacb7114d1/raw/tvtropes-visitor-count.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/dd85b9320e592c96410458bacb7114d1/raw/tvtropes-visitor-count.meta.js
 // ==/UserScript==
 
 (function tvtropesVisitorCount() {

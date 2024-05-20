@@ -7,6 +7,9 @@
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=github.com
 // @grant        none
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/apis/userscripts/creepy/jeff.user.ts
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/ec46427ee08ca2252bab339cca3fcaac/raw/jeff.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/ec46427ee08ca2252bab339cca3fcaac/raw/jeff.meta.js
 // ==/UserScript==
 
 import jeffImage from '../../../assets/jeff';
