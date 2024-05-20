@@ -9,8 +9,8 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=wikipedia.org
 // @grant        none
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/apis/category-page-view-sort.user.ts
-// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/74b45baefede276f61fb0a84dd621772/raw/category-page-view-sort.user.js
-// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/74b45baefede276f61fb0a84dd621772/raw/category-page-view-sort.meta.js
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/3464d1b4c9f02ec5b10163857afff872/raw/category-page-view-sort.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/3464d1b4c9f02ec5b10163857afff872/raw/category-page-view-sort.meta.js
 // ==/UserScript==
 
 import categoryPageSort from '../../lib/apis/category-page-sort';
