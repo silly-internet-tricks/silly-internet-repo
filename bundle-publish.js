@@ -50,8 +50,6 @@ import('@octokit/core').then(({ Octokit }) => {
     });
 
     const gistDescription = oldGist.data.description;
-    console.log(gistDescription);
-
     const oldFile = Object.entries(oldGist.data.files).find(([fileName]) => fileName.endsWith('user.js'))[1];
 
     const delimiter = '==/UserScript==\n';
@@ -65,7 +63,7 @@ import('@octokit/core').then(({ Octokit }) => {
        if (gistDescription !== fileContentDescription) {
         console.error('HEY! LISTEN!');
         console.error(
-         `Descriptions do not match! Gist description says ${gistDescription} and does not match ${fileContentDescription} from file!`,
+         `Descriptions do not match! Gist description says ****${gistDescription}**** and does not match ****${fileContentDescription}**** from file!`,
         );
        }
 
