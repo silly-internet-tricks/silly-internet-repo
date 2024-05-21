@@ -13,28 +13,31 @@ import('@octokit/core').then(({ Octokit }) => {
   const files = await glob('./@(dist)/**/*.@(user|meta).js');
 
   const octokitRequestsOptions = [];
-  Promise.all(files.map(async (file) => {
-   const fileContent = await readFile(file);
-   const fileContentString = fileContent.toString();
-   const gistIdMatch = fileContentString.match(/downloadURL.*silly-internet-tricks\/(?<gistId>[^/]*)/);
-   const gistId = gistIdMatch?.groups?.gistId;
-   if (gistIdMatch && gistId) {
-    const filename = file.includes('meta')
-     ? fileContentString.match(/updateURL.*raw\/([^/]*)/)[1].trim()
-     : fileContentString.match(/downloadURL.*raw\/([^/]*)/)[1].trim();
+  Promise.all(
+   files.map(async (file) => {
+    const fileContent = await readFile(file);
+    const fileContentString = fileContent.toString();
+    const gistIdMatch = fileContentString.match(/downloadURL.*silly-internet-tricks\/(?<gistId>[^/]*)/);
+    const gistId = gistIdMatch?.groups?.gistId;
+    if (gistIdMatch && gistId) {
+     const filename = file.includes('meta')
+      ? fileContentString.match(/updateURL.*raw\/([^/]*)/)[1].trim()
+      : fileContentString.match(/downloadURL.*raw\/([^/]*)/)[1].trim();
 
-    // find the requestOptions in the array if they're there.
-    const requestOptions = octokitRequestsOptions.find((e) => e.gist_id === gistId)
-    || (
-     octokitRequestsOptions.push({ files: {} })
-      && octokitRequestsOptions[octokitRequestsOptions.length - 1]
-    );
+     // find the requestOptions in the array if they're there.
+     const requestOptions =
+      octokitRequestsOptions.find((e) => e.gist_id === gistId) ||
+      (octokitRequestsOptions.push({ files: {} }) &&
+       octokitRequestsOptions[octokitRequestsOptions.length - 1]);
 
-    requestOptions.gist_id = gistId;
-    requestOptions.description = fileContentString.match(/description\s+(?<description>.*)/).groups.description;
-    requestOptions.files[filename] = { filename, content: fileContentString };
-   }
-  })).then(() => {
+     requestOptions.gist_id = gistId;
+     requestOptions.description = fileContentString.match(
+      /description\s+(?<description>.*)/,
+     ).groups.description;
+     requestOptions.files[filename] = { filename, content: fileContentString };
+    }
+   }),
+  ).then(() => {
    octokitRequestsOptions.forEach(async (requestOptions) => {
     // TODO: fix the logic for finding the old gists
     // TODO: see about automating the initial creation of new gists as well (the new ids would have to be put into the source code I guess?)
@@ -48,19 +51,30 @@ import('@octokit/core').then(({ Octokit }) => {
      },
     });
 
-    console.log(oldGist);
-    console.log(oldGist.data);
+    const gistDescription = oldGist.data.description;
+    console.log(gistDescription);
 
     const oldFile = Object.entries(oldGist.data.files).find(([fileName]) => fileName.endsWith('user.js'))[1];
 
     const delimiter = '==/UserScript==\n';
     try {
      const oldUserscriptCode = oldFile.content.split(delimiter)[1];
-     const newUserscriptCode = Object.entries(requestOptions.files).find(([fileName]) => fileName.endsWith('user.js'))[1].content.split(delimiter)[1];
+     const newUserscriptCode = Object.entries(requestOptions.files)
+      .find(([fileName]) => fileName.endsWith('user.js'))[1]
+      .content.split(delimiter)[1];
 
      if (oldUserscriptCode !== newUserscriptCode) {
       Object.values(requestOptions.files).forEach((file) => {
-       file.content = file.content.replace(/\/\/ @version {6}.*/, `// @version      ${new Date().toISOString()}`);
+       file.content = file.content.replace(
+        /\/\/ @version {6}.*/,
+        `// @version      ${new Date().toISOString()}`,
+       );
+
+       const fileContentDescription = file.content.match(/\/\/ @description {2}(.*)$/)[1];
+       if (gistDescription !== fileContentDescription) {
+        console.error('HEY! LISTEN!');
+        console.error(`Descriptions do not match! Gist description says ${gistDescription} and does not match ${fileContentDescription} from file!`);
+       }
       });
 
       octokit.request(`PATCH /gists/${requestOptions.gist_id}`, requestOptions);
