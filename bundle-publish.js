@@ -61,7 +61,7 @@ import('@octokit/core').then(({ Octokit }) => {
       fileName.endsWith('user.js'),
      )[1].content;
 
-     const fileContentDescription = newUserscript.content.match(/\/\/ @description {2}(.*)$/)[1];
+     const fileContentDescription = newUserscript.match(/\/\/ @description {2}(.*)$/)[1];
        if (gistDescription !== fileContentDescription) {
         console.error('HEY! LISTEN!');
         console.error(
