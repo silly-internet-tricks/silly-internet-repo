@@ -48,6 +48,9 @@ import('@octokit/core').then(({ Octokit }) => {
      },
     });
 
+    console.log(oldGist);
+    console.log(oldGist.data);
+
     const oldFile = Object.entries(oldGist.data.files).find(([fileName]) => fileName.endsWith('user.js'))[1];
 
     const delimiter = '==/UserScript==\n';
