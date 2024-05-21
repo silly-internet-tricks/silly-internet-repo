@@ -42,8 +42,6 @@ import('@octokit/core').then(({ Octokit }) => {
     // TODO: fix the logic for finding the old gists
     // TODO: see about automating the initial creation of new gists as well (the new ids would have to be put into the source code I guess?)
     // ... OR, maybe that metadata can be taken out of the original source code entirely and purely generated at the publish step
-
-    // TODO: also see if there is a way to check that the gist description is correct (matches the source code metadata)
     const oldGist = await octokit.request(`GET /gists/${requestOptions.gist_id}`, {
      gist_id: requestOptions.gist_id,
      headers: {
@@ -59,9 +57,19 @@ import('@octokit/core').then(({ Octokit }) => {
     const delimiter = '==/UserScript==\n';
     try {
      const oldUserscriptCode = oldFile.content.split(delimiter)[1];
-     const newUserscriptCode = Object.entries(requestOptions.files)
-      .find(([fileName]) => fileName.endsWith('user.js'))[1]
-      .content.split(delimiter)[1];
+     const newUserscript = Object.entries(requestOptions.files).find(([fileName]) =>
+      fileName.endsWith('user.js'),
+     )[1].content;
+
+     const fileContentDescription = newUserscript.content.match(/\/\/ @description {2}(.*)$/)[1];
+       if (gistDescription !== fileContentDescription) {
+        console.error('HEY! LISTEN!');
+        console.error(
+         `Descriptions do not match! Gist description says ${gistDescription} and does not match ${fileContentDescription} from file!`,
+        );
+       }
+
+     const newUserscriptCode = newUserscript.split(delimiter)[1];
 
      if (oldUserscriptCode !== newUserscriptCode) {
       Object.values(requestOptions.files).forEach((file) => {
@@ -69,12 +77,6 @@ import('@octokit/core').then(({ Octokit }) => {
         /\/\/ @version {6}.*/,
         `// @version      ${new Date().toISOString()}`,
        );
-
-       const fileContentDescription = file.content.match(/\/\/ @description {2}(.*)$/)[1];
-       if (gistDescription !== fileContentDescription) {
-        console.error('HEY! LISTEN!');
-        console.error(`Descriptions do not match! Gist description says ${gistDescription} and does not match ${fileContentDescription} from file!`);
-       }
       });
 
       octokit.request(`PATCH /gists/${requestOptions.gist_id}`, requestOptions);
