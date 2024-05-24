@@ -9,9 +9,10 @@ interface SliderParameter {
 
 const formInput = (label: string, parameter: string[] | SliderParameter | boolean) => {
  if (Array.isArray(parameter)) {
-  // this means we will insert radio buttons
-  const buttons = parameter.map(
-   (radioValue) => `
+  if (parameter.length < 10) {
+   // this means we will insert radio buttons
+   const buttons = parameter.map(
+    (radioValue) => `
   <div>
   <input
     type="radio"
@@ -21,8 +22,23 @@ const formInput = (label: string, parameter: string[] | SliderParameter | boolea
   <label for="${radioValue}">${radioValue}</label>
   </div>
   `,
+   );
+
+   return `<fieldset><legend>${label}</legend>${buttons.join('')}</fieldset>`;
+  }
+
+  // this means we will insert a dropdown
+  const options = parameter.map(
+   (optionValue) => `
+        <option value="${optionValue}">
+          ${optionValue}
+        </option>
+      `,
   );
-  return `<fieldset><legend>${label}</legend>${buttons}</fieldset>`;
+
+  return `<label for="${label}" >${label}</label><select name="${label}" id="${label}" >${options.join(
+   '',
+  )}</select>`;
  }
 
  if (typeof parameter === 'boolean') {
@@ -107,9 +123,11 @@ export default function parameterForm(
  formSection.innerHTML = formHtml;
  formContainer.appendChild(formSection);
  // add event listeners
- [...formContainer.querySelectorAll('input')].forEach((input) => {
-  input.addEventListener('change', () => {
-   callback(input.name, input.value);
-  });
- });
+ [...formContainer.querySelectorAll('input,select')].forEach(
+  (input: HTMLInputElement | HTMLSelectElement) => {
+   input.addEventListener('change', () => {
+    callback(input.name, input.value);
+   });
+  },
+ );
 }
