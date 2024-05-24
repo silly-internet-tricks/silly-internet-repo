@@ -19,6 +19,7 @@
 import insertCSS from '../../lib/util/insert-css';
 import getStringFromChunk from '../../lib/util/get-string-from-chunk';
 import divOllamaStyle from '../../lib/ollama/div-ollama-style';
+import bufferToBase64 from '../../lib/util/buffer-to-base64';
 
 (function ollamaWhatIsTheImage() {
  insertCSS(divOllamaStyle);
@@ -52,10 +53,7 @@ import divOllamaStyle from '../../lib/ollama/div-ollama-style';
    };
 
    GM.xmlHttpRequest(imageRequestOptions).then((r: GmXmlHttpRequestResponse) => {
-    const base64Image: string = btoa(
-     // this is based on the stack overflow answer: https://stackoverflow.com/a/9458996
-     [...new Uint8Array(r.response)].map((b) => String.fromCharCode(b)).join(''),
-    );
+    const base64Image: string = bufferToBase64(r.response);
 
     const requestOptions: GmXmlHttpRequestRequestOptions = {
      url: `${ollamaAddress}api/generate`,

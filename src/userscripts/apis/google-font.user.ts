@@ -8,11 +8,13 @@
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tampermonkey.net
 // @grant        GM_setValue
 // @grant        GM_getValue
+// @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
 import insertCSS from '../../lib/util/insert-css';
 import holdKeyAndClickWithUndo from '../../lib/util/hold-key-and-click-with-undo';
 import parameterForm from '../../lib/util/parameter-form';
+import bufferToBase64 from '../../lib/util/buffer-to-base64';
 
 (function useGoogleFont() {
  const gmKey = 'google-font-api-key';
@@ -27,12 +29,24 @@ import parameterForm from '../../lib/util/parameter-form';
 
  const families = new Set<string>();
 
- const insertHeadCode = (family: string) => {
-  const stylesheet = document.createElement('link');
-  stylesheet.setAttribute('rel', 'stylesheet');
-  stylesheet.setAttribute('href', `https://fonts.googleapis.com/css2?family=${family.replace(/\s+/, '+')}`);
-  document.head.appendChild(stylesheet);
- };
+ const insertHeadCode = (family: string, regular: string) =>
+  new Promise<void>((solve, ject) => {
+   const fileType = regular.match(/\.(\w+)$/i)[1];
+   GM.xmlHttpRequest({
+    url: regular,
+    method: 'GET',
+    responseType: 'arraybuffer',
+   })
+    .then((r) => {
+     insertCSS(`
+     @font-face {
+      font-family: '${family}';
+      src: url(data:font/${fileType};base64,${bufferToBase64(r.response)});
+    }`);
+     solve();
+    })
+    .catch((e) => ject(e));
+  });
 
  const promptForKey = () =>
   new Promise((solve) => {
@@ -57,14 +71,20 @@ import parameterForm from '../../lib/util/parameter-form';
   });
 
  promptForKey().then((key) => {
-  fetch(`https://www.googleapis.com/webfonts/v1/webfonts?key=${key}&sort=popularity`)
-   .then((r) => r.json())
+  GM.xmlHttpRequest({
+   url: `https://www.googleapis.com/webfonts/v1/webfonts?key=${key}&sort=popularity`,
+   method: 'GET',
+   responseType: 'json',
+  })
    .then((j) => {
     interface Font {
      family: string;
+     files: {
+      regular: string;
+     };
     }
 
-    const { items } = j;
+    const { items } = j.response;
     let selectedFont: Font;
     parameterForm(
      'google-fonts',
@@ -79,9 +99,12 @@ import parameterForm from '../../lib/util/parameter-form';
      {
       do: ({ target }) => {
        if (target instanceof HTMLElement) {
-        const { family } = selectedFont;
+        const {
+         family,
+         files: { regular },
+        } = selectedFont;
         if (!families.has(family)) {
-         insertHeadCode(family);
+         insertHeadCode(family, regular);
         }
 
         if (target.style.getPropertyValue('font-family')) {
