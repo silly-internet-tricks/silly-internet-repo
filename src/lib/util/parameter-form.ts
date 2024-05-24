@@ -1,3 +1,4 @@
+import observeElementRemovalAndReaddIt from './observe-element-removal-and-readd-it';
 import insertCSS from './insert-css';
 
 interface SliderParameter {
@@ -11,66 +12,86 @@ const formInput = (label: string, parameter: string[] | SliderParameter | boolea
  if (Array.isArray(parameter)) {
   if (parameter.length < 10) {
    // this means we will insert radio buttons
-   const buttons = parameter.map(
-    (radioValue) => `
-  <div>
-  <input
-    type="radio"
-    id="${radioValue}"
-    name="${label}"
-    value="${radioValue}">
-  <label for="${radioValue}">${radioValue}</label>
-  </div>
-  `,
-   );
+   const buttons = parameter.map((radioValue) => {
+    const div = document.createElement('div');
+    const input = document.createElement('input');
+    const labelElement = document.createElement('label');
+    input.setAttribute('type', 'radio');
+    input.setAttribute('id', radioValue);
+    input.setAttribute('name', label);
+    input.setAttribute('value', radioValue);
+    labelElement.setAttribute('for', radioValue);
+    labelElement.appendChild(new Text(radioValue));
+    div.appendChild(input);
+    div.appendChild(labelElement);
+    return div;
+   });
 
-   return `<fieldset><legend>${label}</legend>${buttons.join('')}</fieldset>`;
+   const fieldset = document.createElement('fieldset');
+   const legend = document.createElement('legend');
+   legend.appendChild(new Text(label));
+   buttons.forEach((button) => {
+    fieldset.appendChild(button);
+   });
+
+   return fieldset;
   }
 
   // this means we will insert a dropdown
-  const options = parameter.map(
-   (optionValue) => `
-        <option value="${optionValue}">
-          ${optionValue}
-        </option>
-      `,
-  );
+  const options = parameter.map((optionValue) => {
+   const option = document.createElement('option');
+   option.setAttribute('value', optionValue);
+   option.appendChild(new Text(optionValue));
+   return option;
+  });
 
-  return `<label for="${label}" >${label}</label><select name="${label}" id="${label}" >${options.join(
-   '',
-  )}</select>`;
+  const div = document.createElement('div');
+  const labelElement = document.createElement('label');
+  const select = document.createElement('select');
+  labelElement.setAttribute('for', label);
+  labelElement.appendChild(new Text(label));
+  select.setAttribute('name', label);
+  select.setAttribute('id', label);
+  options.forEach((option) => select.appendChild(option));
+  div.appendChild(labelElement);
+  div.appendChild(select);
+  return div;
  }
 
  if (typeof parameter === 'boolean') {
   // this means we will insert a toggle (checkbox)
-  return `
-  <div>
-    <input
-      type="checkbox"
-      id="${label}"
-      name="${label}"
-      ${parameter ? 'checked' : ''}>
-    <label for="${label}>${label}</label>
-  </div>
-  `;
+  const div = document.createElement('div');
+  const input = document.createElement('input');
+  const labelElement = document.createElement('label');
+  input.setAttribute('type', 'checkbox');
+  input.setAttribute('id', label);
+  input.setAttribute('name', label);
+  if (parameter) input.setAttribute('checked', 'true'); // TODO: look again to see what goes here (true or something else)
+  labelElement.setAttribute('for', label);
+  labelElement.appendChild(new Text(label));
+  div.appendChild(input);
+  div.appendChild(labelElement);
+  return div;
  }
 
  // TODO: there will probably be more than one object type
  if (typeof parameter === 'object') {
   // this means we will insert a slider (unless other object types are added later)
-  return `
-  <div>
-    <input
-      type="range"
-      id="${label}"
-      name="${label}"
-      min="${parameter.min}"
-      max="${parameter.max}"
-      value="${parameter.val}"
-      step="${parameter.step}">
-    <label for="${label}>${label}</label>
-  </div>
-  `;
+  const div = document.createElement('div');
+  const input = document.createElement('input');
+  const labelElement = document.createElement('label');
+  input.setAttribute('type', 'range');
+  input.setAttribute('id', label);
+  input.setAttribute('name', label);
+  input.setAttribute('min', parameter.min.toString());
+  input.setAttribute('max', parameter.max.toString());
+  input.setAttribute('value', parameter.val.toString());
+  input.setAttribute('step', parameter.step.toString());
+  labelElement.setAttribute('for', label);
+  labelElement.appendChild(new Text(label));
+  div.appendChild(input);
+  div.appendChild(labelElement);
+  return div;
  }
 
  throw `parameter type not recognized! ${parameter}`;
@@ -100,13 +121,13 @@ export default function parameterForm(
  }
   `);
 
- const formHtml = `
- <form id="${formName}">
-  <h3>${formName}</h3>
-  ${[...parameters].map(([label, parameter]) => formInput(label, parameter)).join('')}
- </form>
-
- `;
+ const form = document.createElement('form');
+ const h3 = document.createElement('h3');
+ form.setAttribute('id', formName);
+ form.appendChild(h3);
+ [...parameters].forEach(([label, parameter]) => {
+  form.appendChild(formInput(label, parameter));
+ });
 
  console.log(parameters);
  console.log(callback);
@@ -117,11 +138,13 @@ export default function parameterForm(
   formContainer = document.createElement('div');
   formContainer.id = formContainerId;
   document.body.appendChild(formContainer);
+  observeElementRemovalAndReaddIt(formContainer);
  }
 
  const formSection = document.createElement('section');
- formSection.innerHTML = formHtml;
+ formSection.appendChild(form);
  formContainer.appendChild(formSection);
+ observeElementRemovalAndReaddIt(formSection);
  // add event listeners
  [...formContainer.querySelectorAll('input,select')].forEach(
   (input: HTMLInputElement | HTMLSelectElement) => {

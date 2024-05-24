@@ -14,7 +14,6 @@
 import insertCSS from '../../lib/util/insert-css';
 import holdKeyAndClickWithUndo from '../../lib/util/hold-key-and-click-with-undo';
 import parameterForm from '../../lib/util/parameter-form';
-import bufferToBase64 from '../../lib/util/buffer-to-base64';
 
 (function useGoogleFont() {
  const gmKey = 'google-font-api-key';
@@ -30,23 +29,11 @@ import bufferToBase64 from '../../lib/util/buffer-to-base64';
  const families = new Set<string>();
 
  const insertHeadCode = (family: string, regular: string) =>
-  new Promise<void>((solve, ject) => {
-   const fileType = regular.match(/\.(\w+)$/i)[1];
-   GM.xmlHttpRequest({
-    url: regular,
-    method: 'GET',
-    responseType: 'arraybuffer',
-   })
-    .then((r) => {
-     insertCSS(`
+  insertCSS(`
      @font-face {
       font-family: '${family}';
-      src: url(data:font/${fileType};base64,${bufferToBase64(r.response)});
+      src: url(${regular});
     }`);
-     solve();
-    })
-    .catch((e) => ject(e));
-  });
 
  const promptForKey = () =>
   new Promise((solve) => {
@@ -98,15 +85,23 @@ import bufferToBase64 from '../../lib/util/buffer-to-base64';
     holdKeyAndClickWithUndo(
      {
       do: ({ target }) => {
-       if (target instanceof HTMLElement) {
-        const {
-         family,
-         files: { regular },
-        } = selectedFont;
-        if (!families.has(family)) {
-         insertHeadCode(family, regular);
-        }
+       // special case for https://news.google.com/*
+       if (
+        window.location.href.match(/https:\/\/news.google.com\/.*/) &&
+        [...document.querySelectorAll('main a')].find((e) => e === target)
+       ) {
+        if (target instanceof HTMLElement) target = target.parentElement.parentElement;
+       }
 
+       const {
+        family,
+        files: { regular },
+       } = selectedFont;
+       if (!families.has(family)) {
+        insertHeadCode(family, regular);
+       }
+
+       if (target instanceof HTMLElement) {
         if (target.style.getPropertyValue('font-family')) {
          target.setAttribute('old-inline-font-family', target.style.getPropertyValue('font-family'));
         }
