@@ -10,6 +10,7 @@
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/text-effect/propeller.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/e000924743705a297d5277ff9f09dd98/raw/propeller.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/e000924743705a297d5277ff9f09dd98/raw/propeller.meta.js
+// @sandbox      JavaScript
 // ==/UserScript==
 
 import generalAnimationifier from '../../lib/effects/general-animation-ifier';

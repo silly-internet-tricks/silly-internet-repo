@@ -10,6 +10,7 @@
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/text-effect/color-cycling.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/afcf88326de111771a22335808873726/raw/color-cycling.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/afcf88326de111771a22335808873726/raw/color-cycling.meta.js
+// @sandbox      JavaScript
 // ==/UserScript==
 
 import generalAnimationifier from '../../lib/effects/general-animation-ifier';

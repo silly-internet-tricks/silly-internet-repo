@@ -121,13 +121,13 @@ listeners.onOpen = () => {
   if (queue.size() > 0) {
    const message = queue.dequeue();
    ws.send(message);
-   chatPercent -= 1;
+   chatPercent -= 15;
   } else {
    chatPercent += 1;
   }
 
   console.log(`chat percent: ${chatPercent}`);
- }, 20000);
+ }, 30000);
 };
 
 setupWs();

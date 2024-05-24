@@ -10,6 +10,7 @@
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/text-effect/glitch.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/a264ce6c2e4640d1348fe5ea59f3e0e0/raw/glitch.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/a264ce6c2e4640d1348fe5ea59f3e0e0/raw/glitch.meta.js
+// @sandbox      JavaScript
 // ==/UserScript==
 import generalAnimationifier from '../../lib/effects/general-animation-ifier';
 import glitchSvg from '../../lib/effects/effect-util/glitch-svg';
@@ -19,6 +20,7 @@ const glitchAnimationClass: string = 'glitch-animation';
 const glitchFilterId: string = 'glitch-filter';
 
 (function glitchify() {
+ console.log('starting glitchify');
  // TODO: use a form to control the effect parameters in real time.
 
  const filter = document.createElement('div');

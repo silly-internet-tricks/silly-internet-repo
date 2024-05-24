@@ -10,6 +10,7 @@
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/text-effect/breatheify.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/d09ec1d4d6cd4f1077841bd83e9e1918/raw/breatheify.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/d09ec1d4d6cd4f1077841bd83e9e1918/raw/breatheify.meta.js
+// @sandbox      JavaScript
 // ==/UserScript==
 
 import generalAnimationifier from '../../lib/effects/general-animation-ifier';

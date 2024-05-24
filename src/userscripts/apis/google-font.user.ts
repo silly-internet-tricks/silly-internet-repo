@@ -9,6 +9,7 @@
 // @grant        GM_setValue
 // @grant        GM_getValue
 // @grant        GM_xmlhttpRequest
+// @sandbox      JavaScript
 // ==/UserScript==
 
 import insertCSS from '../../lib/util/insert-css';
@@ -16,6 +17,7 @@ import holdKeyAndClickWithUndo from '../../lib/util/hold-key-and-click-with-undo
 import parameterForm from '../../lib/util/parameter-form';
 
 (function useGoogleFont() {
+ console.log('starting useGoogleFont');
  const gmKey = 'google-font-api-key';
 
  insertCSS(`
