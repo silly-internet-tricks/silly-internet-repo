@@ -10,6 +10,7 @@ interface Handlers {
  do: (event: Event) => void;
  undo: (event: Event) => void;
 }
+
 export default function holdKeyAndClickWithUndo(handlers: Handlers, scriptName: string) {
  const getEffectKey: (requestedKeys: string[], label: string) => string = makeAvailableKeys();
  const keys: string[] = [

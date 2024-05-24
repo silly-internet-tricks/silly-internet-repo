@@ -11,7 +11,7 @@
 // ==/UserScript==
 
 import insertCSS from '../../lib/util/insert-css';
-// import generalAnimationifier from '../../lib/effects/general-animation-ifier';
+import holdKeyAndClickWithUndo from '../../lib/util/hold-key-and-click-with-undo';
 import parameterForm from '../../lib/util/parameter-form';
 
 (function useGoogleFont() {
@@ -24,16 +24,16 @@ import parameterForm from '../../lib/util/parameter-form';
   inset: 0;
  }
  `);
- /*
- const headCode = (family: string) => `
- <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=${family.replace(
-  /\s+/,
-  '+',
- )}:ital@0;1&display=swap" rel="stylesheet">
- `;
-*/
+
+ const families = new Set<string>();
+
+ const insertHeadCode = (family: string) => {
+  const stylesheet = document.createElement('link');
+  stylesheet.setAttribute('rel', 'stylesheet');
+  stylesheet.setAttribute('href', `https://fonts.googleapis.com/css2?family=${family.replace(/\s+/, '+')}`);
+  document.head.appendChild(stylesheet);
+ };
+
  const promptForKey = () =>
   new Promise((solve) => {
    const oldKey = GM_getValue(gmKey);
@@ -57,19 +57,15 @@ import parameterForm from '../../lib/util/parameter-form';
   });
 
  promptForKey().then((key) => {
-  console.log(' i have a key 😍 ');
-  fetch(`https://www.googleapis.com/webfonts/v1/webfonts?key=${key}`)
+  fetch(`https://www.googleapis.com/webfonts/v1/webfonts?key=${key}&sort=popularity`)
    .then((r) => r.json())
    .then((j) => {
-    console.log(j);
-
     interface Font {
      family: string;
     }
+
     const { items } = j;
-    // steps:
-    // one: show a dropdown with the list of fonts
-    let selectedFont;
+    let selectedFont: Font;
     parameterForm(
      'google-fonts',
      new Map<string, string[]>([['font', items.map((font: Font) => font.family)]]),
@@ -79,7 +75,37 @@ import parameterForm from '../../lib/util/parameter-form';
      },
     );
 
-    // two: put the font style on an element using the effects techniques
+    holdKeyAndClickWithUndo(
+     {
+      do: ({ target }) => {
+       if (target instanceof HTMLElement) {
+        const { family } = selectedFont;
+        if (!families.has(family)) {
+         insertHeadCode(family);
+        }
+
+        if (target.style.getPropertyValue('font-family')) {
+         target.setAttribute('old-inline-font-family', target.style.getPropertyValue('font-family'));
+        }
+
+        target.style.setProperty('font-family', `"${family}"`);
+       }
+      },
+      undo: ({ target }) => {
+       if (target instanceof HTMLElement) {
+        if (target.getAttribute('old-inline-font-family')) {
+         target.style.setProperty('font-family', target.getAttribute('font-family'));
+        } else {
+         target.style.removeProperty('font-family');
+        }
+       }
+      },
+     },
+     'google-font',
+    );
+   })
+   .catch((e) => {
+    console.error(e);
    });
  });
 })();
