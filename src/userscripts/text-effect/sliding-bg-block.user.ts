@@ -28,7 +28,13 @@ const slidingBgBlockAnimationClass: string = 'sliding-bg-block-animation';
      animation-name: sliding-bg-block;
      animation-iteration-count: infinite;
      animation-timing-function: linear;
-     background-image: linear-gradient(to right, rgba(255,255,255,0.0) var(--slide), red var(--slide), red calc(var(--slide) + 20%), rgba(255,255,255, 0.0) calc(var(--slide) + 20%));
+     background-image: linear-gradient(
+        to right,
+        rgba(255,255,255,0.0) var(--slide),
+        red var(--slide),
+        red calc(var(--slide) + 20%),
+        rgba(255,255,255, 0.0) calc(var(--slide) + 20%)
+    );
  }
  
  @keyframes sliding-bg-block {

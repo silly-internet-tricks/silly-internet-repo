@@ -60,7 +60,11 @@ import observeElementRemovalAndReaddIt from '../../lib/util/observe-element-remo
    left: 2px;
    font-size: 2rem;
    z-index: 102;
-   background-image: linear-gradient(to top, chartreuse 0%, yellow 100%);
+   background-image: linear-gradient(
+    to top, #3FFF00 var(--gradient-bottom),
+    #FFBF00 var(--gradient-top)
+  );
+
    padding: 0.5rem;
    box-shadow: 2px 2px 2px black;
    text-shadow: 1px 1px 1px magenta;
@@ -73,11 +77,39 @@ import observeElementRemovalAndReaddIt from '../../lib/util/observe-element-remo
 @keyframes modal-fade-out {
  0% {
   opacity: 100%;
+  --gradient-top: 0%;
+  --gradient-bottom: 0%;
+ }
+
+ 25% {
+  opacity: 100%;
+  --gradient-top: 100%;
+  --gradient-bottom: 0%;
+ }
+
+ 50% {
+  opacity: 100%;
+  --gradient-top: 100%;
+  --gradient-bottom: 100%;
  }
 
  100% {
   opacity: 0%;
+  --gradient-top: 100%;
+  --gradient-bottom: 100%;
  }
+}
+
+@property --gradient-top {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+@property --gradient-bottom {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
 }
   `);
 
