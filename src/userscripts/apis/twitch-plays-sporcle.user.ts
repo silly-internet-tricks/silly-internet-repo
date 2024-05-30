@@ -16,6 +16,8 @@
 import fillInputElement from '../../lib/util/fill-input-element';
 import getTwitchChatMessage from '../../lib/apis/get-twitch-chat-message';
 
+// ISSUE: it occasionally fails when the show twitch chat usercript is disabled
+//        (maybe only the first time)
 (function twitchPlaysSporcle() {
  getTwitchChatMessage((chunk) => {
   fillInputElement(document.getElementById('gameinput') as HTMLInputElement, chunk);

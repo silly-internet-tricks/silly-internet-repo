@@ -35,18 +35,19 @@ const ollamaCallback =
   console.log(`\x1b[1m\x1b[45m${messagePiece}\x1b[0m`);
   const editedMessage = messagePiece.replace(/^\*+[\w\d-]+\*+:?/, '');
   if (!retry) {
-   enqueueMessage(msgId, editedMessage.replace(/\([34][^)]+\)/, '').replace(/42 ?cha?r(acter)?s? ?(max)?\.?/i, ''));
-  } else if (100 * Math.random() < chatPercent) {
-   if (editedMessage.length > 126) {
-    ollamaChatRequest('chatter:latest', [
-     {
-      role: 'user',
-      content: `The following response was much too long. Please summarize it very briefly using no more than 42 characters: ${editedMessage}`,
-     },
-    ]).then(ollamaCallback(msgId, false));
-   } else {
-    enqueueMessage(msgId, editedMessage);
-   }
+   enqueueMessage(
+    msgId,
+    editedMessage.replace(/\([34][^)]+\)/, '').replace(/42 ?cha?r(acter)?s? ?(max)?\.?/i, ''),
+   );
+  } else if (editedMessage.length > 126) {
+   ollamaChatRequest('chatter:latest', [
+    {
+     role: 'user',
+     content: `The following response was much too long. Please summarize it very briefly using no more than 42 characters: ${editedMessage}`,
+    },
+   ]).then(ollamaCallback(msgId, false));
+  } else {
+   enqueueMessage(msgId, editedMessage);
   }
  };
 
@@ -107,7 +108,9 @@ listeners.onMessage = (data: WebSocket.RawData) => {
 
   history.push(message);
 
-  ollamaChatRequest('chatter:latest', history.slice(-6)).then(ollamaCallback(msgId));
+  if (100 * Math.random() < chatPercent) {
+   ollamaChatRequest('chatter:latest', history.slice(-6)).then(ollamaCallback(msgId));
+  }
  }
 };
 

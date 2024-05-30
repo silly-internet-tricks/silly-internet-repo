@@ -41,7 +41,16 @@ import insertCSS from '../../lib/util/insert-css';
  overflow: hidden;
  margin: auto;
  background-image: linear-gradient(to right, rgba(0,255,0, 0.1), rgba(255,255,0, 0.1));
- text-shadow: 0 0 10px #FFFFFF, 0 0 20px #DFBFFF, 0 0 30px #CF9FFF, 0 0 40px #BF7FFF, 0 0 50px #AF5FFF, 0 0 60px #9F3FFF;
+ animation-name: brb-color-cycle;
+ animation-iteration-count: infinite;
+ animation-duration: 8s;
+ animation-timing-function: linear;
+ text-shadow: 0 0 10px hsl(var(--hue), 100%, 100%),
+              0 0 20px hsl(var(--hue), 100%, 87%),
+              0 0 30px hsl(var(--hue), 100%, 81%),
+              0 0 40px hsl(var(--hue), 100%, 75%),
+              0 0 50px hsl(var(--hue), 100%, 69%),
+              0 0 60px hsl(var(--hue), 100%, 62%);
 }
 
 div#brb-screen h1 {
@@ -54,6 +63,16 @@ div#brb-screen h1 {
  animation-duration: 10s;
 }
 
+@keyframes brb-color-cycle {
+    from {
+        --hue: 0;
+    }
+
+    to {
+        --hue: 360;
+    }
+}
+
 @keyframes brb {
  from {
      transform: scale(0.9);
@@ -63,6 +82,13 @@ div#brb-screen h1 {
      transform: scale(1.2);
  }
 }
+
+
+@property --hue {
+    syntax: "<number>";
+    inherits: false;
+    initial-value: 0;
+  }
 `,
  );
 })();
