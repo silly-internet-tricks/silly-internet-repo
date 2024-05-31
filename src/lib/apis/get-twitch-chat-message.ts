@@ -1,6 +1,6 @@
 import getStringFromChunk from '../util/get-string-from-chunk';
 
-export default function getTwitchChatMessage(callback: (chunk: string) => void) {
+export default function getTwitchChatMessage(callback: (message: string, username: string) => void) {
  const requestOptions: GmXmlHttpRequestRequestOptions = {
   url: 'http://localhost:9821',
   responseType: 'stream',
@@ -9,7 +9,8 @@ export default function getTwitchChatMessage(callback: (chunk: string) => void) 
    for await (const chunk of response) {
     const chunkString = getStringFromChunk(chunk);
     console.log(chunkString);
-    callback(chunkString);
+    const { message, username } = JSON.parse(chunkString);
+    callback(message, username);
    }
   },
  };

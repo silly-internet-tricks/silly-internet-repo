@@ -34,7 +34,7 @@ export default function ollamaChatRequest(model: string, messages: Message[]) {
       message: { content },
      } = response;
 
-     solve(content.replace(/ð[^\s\p{Emoji_Presentation}]+/u, (match: string) => mojibakeFix(match)));
+     solve(content.replace(/ð[^\s\p{Emoji_Presentation}]+/ug, (match: string) => mojibakeFix(match)));
     });
    },
   );

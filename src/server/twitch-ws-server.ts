@@ -48,7 +48,17 @@ const requestListener: RequestListener = (req: IncomingMessage, res: ServerRespo
  console.log('connected to webpage');
 
  ws.addEventListener('message', (event: WebSocket.MessageEvent) => {
-  res.write(event.data.toString());
+  try {
+   const data = event.data.toString();
+   if (data.startsWith('PING')) return;
+   const username = data.match(/:(.*)!/)[1];
+   console.log('username: ', username);
+   const message = data.match(/:([^:]*)$/)[1];
+   console.log('message: ', message);
+   res.write(JSON.stringify({ message, username }));
+  } catch (e) {
+   console.error(e);
+  }
  });
 };
 
