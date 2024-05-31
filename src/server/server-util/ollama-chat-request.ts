@@ -34,6 +34,7 @@ export default function ollamaChatRequest(model: string, messages: Message[]) {
       message: { content },
      } = response;
 
+     // TODO: see if this can be fixed: 'Pika, pika! â€Ã‚ï¸'
      solve(content.replace(/ð[^\s\p{Emoji_Presentation}]+/ug, (match: string) => mojibakeFix(match)));
     });
    },
