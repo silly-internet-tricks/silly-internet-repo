@@ -18,6 +18,7 @@ import getStringFromChunk from '../../lib/util/get-string-from-chunk';
 import insertCSS from '../../lib/util/insert-css';
 import observeElementRemovalAndReaddIt from '../../lib/util/observe-element-removal-and-readd-it';
 
+// TODO: try showing emotes as mentioned at https://dev.twitch.tv/docs/irc/emotes/#getting-channel-emotes
 (function subscribeTwitchChat() {
  const showChat = (function makeShowChat() {
   const chatModal = document.createElement('div');

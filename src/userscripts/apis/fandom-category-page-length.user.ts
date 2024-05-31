@@ -14,6 +14,8 @@
 
 import categoryPageSort from '../../lib/apis/category-page-sort';
 
+// TODO: research why using this script on https://forgottenrealms.fandom.com/wiki/Category:Inns?from=Silverale+Hall
+//       fails specifically when trying to fetch https://forgottenrealms.fandom.com/wiki/The_Beacon?action=info
 (function fandomCategoryPageLength() {
  const categoryContentSelector = '.category-page__members-wrapper';
  const buttonParentSelector = '#mw-content-text p.category-page__total-number';
