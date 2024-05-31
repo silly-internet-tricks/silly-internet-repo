@@ -28,17 +28,15 @@ const listeners: Listeners = {
  },
 
  onOpen: () => {
-  console.log('opened websocket');
+  // got the pass message and nick message from: https://discuss.dev.twitch.com/t/anonymous-connection-to-twitch-chat/20392/8
   const passMessage = `PASS ${randomString()}`;
-  console.log('will send message: ', passMessage);
-  ws.send(passMessage);
   const nickMessage = `NICK justinfan${Math.floor(Math.random() * 1000)
    .toString()
    .padStart(3, '0')}`;
-  console.log('will send message: ', nickMessage);
+   const joinMessage = `JOIN #${channelName}`;
+   console.log('Opened websocket! Will send: ', passMessage, nickMessage, joinMessage);
+   ws.send(passMessage);
   ws.send(nickMessage);
-  const joinMessage = `JOIN #${channelName}`;
-  console.log('will send message: ', joinMessage);
   ws.send(joinMessage);
  },
 };
