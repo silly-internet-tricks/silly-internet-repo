@@ -6,6 +6,12 @@ export default function categoryPageSort(
  fetchPromiseHandler: (link: HTMLAnchorElement, solve: (x: string) => void) => (r: Response) => void,
  categoryContentSelector: string,
  linkAttribute: string,
+ fetchCatchHandler?: (
+  reason: unknown,
+  link: HTMLAnchorElement,
+  solve: (x: string) => void,
+  ject: (jectReason?: unknown) => void,
+ ) => void,
 ) {
  const button = document.createElement('button');
  const buttonParent = document.querySelector(buttonParentSelector);
@@ -25,9 +31,12 @@ export default function categoryPageSort(
          .then(fetchPromiseHandler(link, solve))
 
          .catch((reason) => {
-          console.log('Hey! Listen!');
-          console.log(reason);
-          ject(reason);
+          if (fetchCatchHandler) fetchCatchHandler(reason, link, solve, ject);
+          else {
+           console.log('Hey! Listen!');
+           console.log(reason);
+           ject(reason);
+          }
          }),
        10 * i,
       );

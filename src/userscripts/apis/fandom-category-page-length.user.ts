@@ -38,6 +38,15 @@ import categoryPageSort from '../../lib/apis/category-page-sort';
   });
  };
 
+ const fetchCatchHandler = (reason: unknown, link: HTMLAnchorElement, solve: (x: string) => void) => {
+  console.error(reason);
+  const result = `using zero for ${link.title} since ${metricName} was not found`;
+  console.error(result);
+  link.appendChild(new Text(` 😡 ERROR! (page ${metricName}: 0)`));
+  link.setAttribute(linkAttribute, '0');
+  solve(result);
+ };
+
  categoryPageSort(
   buttonParentSelector,
   metricName,
@@ -46,5 +55,6 @@ import categoryPageSort from '../../lib/apis/category-page-sort';
   fetchPromiseHandler,
   categoryContentSelector,
   linkAttribute,
+  fetchCatchHandler,
  );
 })();
