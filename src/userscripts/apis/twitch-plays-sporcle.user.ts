@@ -37,6 +37,25 @@ span.correct-answer-twitch {
  font-size: 0.6rem;
  font-family: monospace;
 }
+
+.counting-down {
+ animation-name: countdown-timer;
+ animation-duration: 15s;
+ animation-timing-function: cubic-bezier(0.62, 0, 1.0, 0.80);
+ animation-iteration-count: 1;
+ animation-fill-mode: forwards;
+ transform-origin: 50dvw 50dvh;
+}
+
+@keyframes countdown-timer {
+ 0% {
+  transform: scale(100%);
+ }
+
+ 100% {
+  transform: scale(0%);
+ }
+}
  `);
 
  const input = document.getElementById('gameinput') as HTMLInputElement;
@@ -56,10 +75,11 @@ span.correct-answer-twitch {
    const gameOverMessage = document.querySelector('div#gameOverMsg');
    if (gameOverMessage.checkVisibility()) {
     const nextQuiz = pick([
-     ...document.querySelectorAll('a[href^="/games"]:not([href*=category])'),
+     ...document.querySelectorAll('a[href^="/games"]:not([href*=category]):not([href*=tags])'),
     ]) as HTMLAnchorElement;
 
     toast(`Next quiz in 15 seconds: ${nextQuiz.textContent}`);
+    document.body.classList.add('counting-down');
     setTimeout(() => {
      nextQuiz.click();
     }, 15000);
