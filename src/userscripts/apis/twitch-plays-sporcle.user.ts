@@ -38,22 +38,33 @@ span.correct-answer-twitch {
  font-family: monospace;
 }
 
-.counting-down {
+.countdown-timer-bar {
+ position: fixed;
+ top: 0;
+ left: 0;
+ right: 0;
+ height: 9dvh;
+ background-color: red;
+ border: 0.25rem solid black;
+}
+
+div.counting-down {
+ background-color: green;
  animation-name: countdown-timer;
  animation-duration: 15s;
- animation-timing-function: cubic-bezier(0.62, 0, 1.0, 0.80);
+ animation-timing-function: linear;
  animation-iteration-count: 1;
  animation-fill-mode: forwards;
- transform-origin: 50dvw 50dvh;
+ transform-origin: top left;
 }
 
 @keyframes countdown-timer {
  0% {
-  transform: scale(100%);
+  transform: scaleX(0%);
  }
 
  100% {
-  transform: scale(0%);
+  transform: scaleX(100%);
  }
 }
  `);
@@ -79,7 +90,14 @@ span.correct-answer-twitch {
     ]) as HTMLAnchorElement;
 
     toast(`Next quiz in 15 seconds: ${nextQuiz.textContent}`);
-    document.body.classList.add('counting-down');
+    const redBar = document.createElement('div');
+    const greenBar = document.createElement('div');
+    redBar.classList.add('countdown-timer-bar');
+    greenBar.classList.add('countdown-timer-bar');
+    greenBar.classList.add('counting-down');
+    document.body.appendChild(redBar);
+    document.body.appendChild(greenBar);
+
     setTimeout(() => {
      nextQuiz.click();
     }, 15000);
@@ -128,4 +146,9 @@ span.correct-answer-twitch {
   input.value = '';
   fillInputElement(input, message);
  });
+
+ setTimeout(() => {
+  const playButton = document.querySelector('button#button-play') as HTMLButtonElement;
+  playButton.click();
+ }, 2000);
 })();
