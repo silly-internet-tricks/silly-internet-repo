@@ -195,5 +195,28 @@ div.counting-down {
 
   const playButton = document.querySelector('button#button-play') as HTMLButtonElement;
   playButton.click();
+
+  // now let's set a ten second interval to alternately scroll to the top and bottom of the div#quiz-area
+  const quizArea = document.querySelector('div#quiz-area') as HTMLDivElement;
+  const stickyGameHeaderWrapper = document.querySelector('div#gameHeaderWrapper') as HTMLDivElement;
+  let lastScroll = 0;
+  setInterval(() => {
+   // NOTE: I am assuming here that the quizArea.offsetTop will not change.
+   if (lastScroll < quizArea.offsetTop) {
+    quizArea.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+    lastScroll = quizArea.offsetTop;
+   } else {
+    const effectiveInnerHeight = window.innerHeight - stickyGameHeaderWrapper.offsetHeight;
+    const maxScroll = quizArea.offsetTop + quizArea.offsetHeight - effectiveInnerHeight;
+    const nextScroll = lastScroll + effectiveInnerHeight;
+    if (nextScroll < maxScroll) {
+     window.scroll({ top: nextScroll, behavior: 'smooth' });
+     lastScroll = nextScroll;
+    } else {
+     quizArea.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+     lastScroll = 0;
+    }
+   }
+  }, 10000);
  }, 2000);
 })();
