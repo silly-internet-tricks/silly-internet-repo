@@ -29,6 +29,7 @@ const listeners: Listeners = {
 
  onOpen: () => {
   // got the pass message and nick message from: https://discuss.dev.twitch.com/t/anonymous-connection-to-twitch-chat/20392/8
+  // (i confirmed that using a random string in place of "justinfan" is not accepted)
   const passMessage = `PASS ${randomString()}`;
   const nickMessage = `NICK justinfan${Math.floor(Math.random() * 1000)
    .toString()

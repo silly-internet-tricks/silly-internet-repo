@@ -19,6 +19,25 @@ import toast from '../../lib/util/toast';
 import pick from '../../lib/util/pick';
 import insertCSS from '../../lib/util/insert-css';
 
+const nextQuiz = (waitTimeSeconds: number) => {
+ const nextQuizLink = pick([
+  ...document.querySelectorAll('a[href^="/games"]:not([href*=category]):not([href*=tags])'),
+ ]) as HTMLAnchorElement;
+
+ toast(`Next quiz in ${waitTimeSeconds} seconds: ${nextQuizLink.textContent}`);
+ const redBar = document.createElement('div');
+ const greenBar = document.createElement('div');
+ redBar.classList.add('countdown-timer-bar');
+ greenBar.classList.add('countdown-timer-bar');
+ greenBar.classList.add('counting-down');
+ document.body.appendChild(redBar);
+ document.body.appendChild(greenBar);
+
+ setTimeout(() => {
+  nextQuizLink.click();
+ }, 1000 * waitTimeSeconds);
+};
+
 // ISSUE: it occasionally fails when the show twitch chat usercript is enabled
 //        (maybe only the first time)
 (function twitchPlaysSporcle() {
@@ -85,22 +104,7 @@ div.counting-down {
   setTimeout(() => {
    const gameOverMessage = document.querySelector('div#gameOverMsg');
    if (gameOverMessage.checkVisibility()) {
-    const nextQuiz = pick([
-     ...document.querySelectorAll('a[href^="/games"]:not([href*=category]):not([href*=tags])'),
-    ]) as HTMLAnchorElement;
-
-    toast(`Next quiz in 15 seconds: ${nextQuiz.textContent}`);
-    const redBar = document.createElement('div');
-    const greenBar = document.createElement('div');
-    redBar.classList.add('countdown-timer-bar');
-    greenBar.classList.add('countdown-timer-bar');
-    greenBar.classList.add('counting-down');
-    document.body.appendChild(redBar);
-    document.body.appendChild(greenBar);
-
-    setTimeout(() => {
-     nextQuiz.click();
-    }, 15000);
+    nextQuiz(15);
    }
   }, 1000);
  });
@@ -139,7 +143,16 @@ div.counting-down {
   mutationRecords[0].target.appendChild(outerSpan);
  });
 
- tableMo.observe(document.querySelector('table#gameTable'), { subtree: true, childList: true });
+ const gameTable = document.querySelector('table#gameTable');
+
+ if (!gameTable) {
+  // TODO: see if we can find ways to show player names by answers in game types where the game table does not exist.
+  console.warn(
+   'The game table does not exist. Player names will not be shown by answers.',
+  );
+ } else {
+  tableMo.observe(gameTable, { subtree: true, childList: true });
+ }
 
  getTwitchChatMessage((message, username) => {
   mostRecentUsername = username;
@@ -147,7 +160,27 @@ div.counting-down {
   fillInputElement(input, message);
  });
 
+ // TODO: Maybe support grid type in the future?
+ const validQuizTypes = ['classic', 'map', 'picturebox', 'slideshow'];
+ const invalidQuizTypes = ['pictureclick', 'clickable', 'grid', 'multiplechoice', 'orderup'];
+
  setTimeout(() => {
+  const gameTypeIcon = document.querySelector('.game-type .game-type-icon');
+
+  const gameIsInvalid = invalidQuizTypes.some((type) => gameTypeIcon.classList.contains(type));
+
+  const gameIsValid = validQuizTypes.some((type) => gameTypeIcon.classList.contains(type));
+
+  if (gameIsInvalid === gameIsValid) {
+   console.error(gameTypeIcon);
+   throw 'Hey! 😭 The game type was something unexpected! Please check it out.';
+  }
+
+  if (gameIsInvalid) {
+   toast('Whoops! This game type is unsupported. Moving on in two seconds...');
+   nextQuiz(2);
+  }
+
   const playButton = document.querySelector('button#button-play') as HTMLButtonElement;
   playButton.click();
  }, 2000);
