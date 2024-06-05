@@ -100,16 +100,30 @@ div.counting-down {
   }
 
   toast(`${mostRecentUsername} has ${score.get(mostRecentUsername)} points!`);
-
-  setTimeout(() => {
-   const gameOverMessage = document.querySelector('div#gameOverMsg');
-   if (gameOverMessage.checkVisibility()) {
-    nextQuiz(15);
-   }
-  }, 1000);
  });
 
- mo.observe(sporcleScore, { childList: true });
+ try {
+  mo.observe(sporcleScore, { childList: true });
+ } catch (e) {
+  console.error(e);
+  console.error('it seems that this game does not have a score box!');
+  console.error("please check it out. If it is an unsupported quiz type, it's probably fine for now");
+ }
+
+ const postGameBox = document.querySelector('div#postGameBox');
+
+ const gameOverMo = new MutationObserver((mutationRecords) => {
+  console.log(mutationRecords);
+  if (mutationRecords[0].attributeName !== 'style') {
+   console.error('observed an unexpected mutation!');
+   console.error(mutationRecords);
+   throw 'Please look at the unexpected mutation! 🕵️';
+  }
+
+  nextQuiz(15);
+ });
+
+ gameOverMo.observe(postGameBox, { attributes: true });
 
  // observe the table for added correct answers
  // one for the entire table (for efficiency's sake)
@@ -147,9 +161,7 @@ div.counting-down {
 
  if (!gameTable) {
   // TODO: see if we can find ways to show player names by answers in game types where the game table does not exist.
-  console.warn(
-   'The game table does not exist. Player names will not be shown by answers.',
-  );
+  console.warn('The game table does not exist. Player names will not be shown by answers.');
  } else {
   tableMo.observe(gameTable, { subtree: true, childList: true });
  }
