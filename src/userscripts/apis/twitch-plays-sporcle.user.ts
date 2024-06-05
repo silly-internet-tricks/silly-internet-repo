@@ -18,6 +18,7 @@ import getTwitchChatMessage from '../../lib/apis/get-twitch-chat-message';
 import toast from '../../lib/util/toast';
 import pick from '../../lib/util/pick';
 import insertCSS from '../../lib/util/insert-css';
+import { storeMap, retrieveMap } from '../../lib/util/store-map';
 
 const nextQuiz = (waitTimeSeconds: number) => {
  const nextQuizLink = pick([
@@ -41,9 +42,16 @@ const nextQuiz = (waitTimeSeconds: number) => {
 // ISSUE: it occasionally fails when the show twitch chat usercript is enabled
 //        (maybe only the first time)
 (function twitchPlaysSporcle() {
+ const usernameColorsStorageKey = 'silly-internet-tricks-username-colors';
+ const usernameColors = retrieveMap(usernameColorsStorageKey) as Map<string, string>;
+ const randomUsernameColor = () =>
+  `hsl(${(Math.floor(Math.random() * 300) + 250) % 360}, ${(
+   Math.round(Math.random() * 5000) / 100 +
+   50
+  ).toPrecision(4)}%, ${(Math.round(Math.random() * 2500) / 100 + 25).toPrecision(4)}%)`;
+
  insertCSS(`
 span.correct-answer-twitch-username {
- color: #FF003F;
  font-weight: 900;
 }
  
@@ -99,6 +107,11 @@ div.counting-down {
    score.set(mostRecentUsername, 1);
   }
 
+  if (!usernameColors.has(mostRecentUsername)) {
+   usernameColors.set(mostRecentUsername, randomUsernameColor());
+   storeMap(usernameColorsStorageKey, usernameColors);
+  }
+
   toast(`${mostRecentUsername} has ${score.get(mostRecentUsername)} points!`);
  });
 
@@ -135,10 +148,16 @@ div.counting-down {
   }
 
   if (mutationRecords[0].removedNodes.length !== 1) {
-   return;
+   console.warn('mutation record had different number of removed nodes');
+   console.log(mutationRecords[0].removedNodes);
+   console.log(mutationRecords[0]);
+
+   // It will be an added text node if sporcle is adding an answer.
+   // If I am adding my span to the table, the node type will be different
+   if (!(mutationRecords[0].addedNodes[0].nodeType === Node.TEXT_NODE)) return;
   }
 
-  if (mutationRecords[0].removedNodes[0].textContent.match(/\S/)) {
+  if (mutationRecords[0].removedNodes[0]?.textContent.match(/\S/)) {
    console.log(mutationRecords[0].removedNodes[0].textContent);
    console.log('no further action necessary');
    return;
@@ -149,6 +168,7 @@ div.counting-down {
   // (I doubt it because I believe the table cell gets filled nearly instantaneously)
   span.appendChild(new Text(mostRecentUsername));
   span.classList.add('correct-answer-twitch-username');
+  span.style.setProperty('color', usernameColors.get(mostRecentUsername));
 
   const outerSpan = document.createElement('span');
   outerSpan.appendChild(new Text('Answered by: '));
