@@ -7,6 +7,8 @@ const channelName = 'sillyinternettricks';
 const chatAddress = 'ws://irc-ws.chat.twitch.tv:80';
 let ws = new WebSocket(chatAddress);
 
+const messageEventListeners: ((event: WebSocket.MessageEvent) => void)[] = [];
+
 const listeners: Listeners = {
  onError: (err: Error) => console.error(err.toString()),
 
@@ -20,6 +22,9 @@ const listeners: Listeners = {
    ws.close();
    ws = new WebSocket(chatAddress);
    setupWs(ws, listeners);
+   messageEventListeners.forEach((eventListener) => {
+    ws.addEventListener('message', eventListener);
+   });
   }
  },
 
@@ -34,9 +39,9 @@ const listeners: Listeners = {
   const nickMessage = `NICK justinfan${Math.floor(Math.random() * 1000)
    .toString()
    .padStart(3, '0')}`;
-   const joinMessage = `JOIN #${channelName}`;
-   console.log('Opened websocket! Will send: ', passMessage, nickMessage, joinMessage);
-   ws.send(passMessage);
+  const joinMessage = `JOIN #${channelName}`;
+  console.log('Opened websocket! Will send: ', passMessage, nickMessage, joinMessage);
+  ws.send(passMessage);
   ws.send(nickMessage);
   ws.send(joinMessage);
  },
@@ -46,7 +51,7 @@ const requestListener: RequestListener = (req: IncomingMessage, res: ServerRespo
  res.writeHead(200);
  console.log('connected to webpage');
 
- ws.addEventListener('message', (event: WebSocket.MessageEvent) => {
+ const eventListener = (event: WebSocket.MessageEvent) => {
   try {
    const data = event.data.toString();
    if (data.startsWith('PING')) return;
@@ -58,7 +63,11 @@ const requestListener: RequestListener = (req: IncomingMessage, res: ServerRespo
   } catch (e) {
    console.error(e);
   }
- });
+ };
+
+ messageEventListeners.push(eventListener);
+
+ ws.addEventListener('message', eventListener);
 };
 
 createServer(requestListener).listen(9821);
