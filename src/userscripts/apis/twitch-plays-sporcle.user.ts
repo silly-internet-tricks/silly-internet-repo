@@ -171,19 +171,30 @@ div.counting-down {
   span.style.setProperty('color', usernameColors.get(mostRecentUsername));
 
   const outerSpan = document.createElement('span');
+
+  // TODO: consider whether the text "answered by" is actually needed
+  //       or whether the name alone might suffice
   outerSpan.appendChild(new Text('Answered by: '));
   outerSpan.appendChild(span);
   outerSpan.classList.add('correct-answer-twitch');
   mutationRecords[0].target.appendChild(outerSpan);
  });
 
- const gameTable = document.querySelector('table#gameTable');
+ const playAreaSelector = 'div#mapcanvas,table#gameTable';
 
- if (!gameTable) {
-  // TODO: see if we can find ways to show player names by answers in game types where the game table does not exist.
-  console.warn('The game table does not exist. Player names will not be shown by answers.');
+ // My assumption is that there will either be a map canvas or a game table or neither, but not both
+ if (document.querySelectorAll(playAreaSelector).length > 1) {
+  console.warn(
+   'Hey! Listen! 🧚✨ There was more than one play area found! Please check it out and figure out why!',
+  );
+ }
+
+ const playArea = document.querySelector(playAreaSelector);
+
+ if (!playArea) {
+  console.warn('The play area does not exist. Player names will not be shown by answers.');
  } else {
-  tableMo.observe(gameTable, { subtree: true, childList: true });
+  tableMo.observe(playArea, { subtree: true, childList: true });
  }
 
  getTwitchChatMessage((message, username) => {
