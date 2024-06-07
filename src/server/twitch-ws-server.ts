@@ -7,6 +7,8 @@ const channelName = 'sillyinternettricks';
 const chatAddress = 'ws://irc-ws.chat.twitch.tv:80';
 let ws = new WebSocket(chatAddress);
 
+let nick: string;
+
 const messageEventListeners: ((event: WebSocket.MessageEvent) => void)[] = [];
 
 const listeners: Listeners = {
@@ -36,9 +38,11 @@ const listeners: Listeners = {
   // got the pass message and nick message from: https://discuss.dev.twitch.com/t/anonymous-connection-to-twitch-chat/20392/8
   // (i confirmed that using a random string in place of "justinfan" is not accepted)
   const passMessage = `PASS ${randomString()}`;
-  const nickMessage = `NICK justinfan${Math.floor(Math.random() * 1000)
+  nick = `justinfan${Math.floor(Math.random() * 1000)
    .toString()
    .padStart(3, '0')}`;
+
+  const nickMessage = `NICK ${nick}`;
   const joinMessage = `JOIN #${channelName}`;
   console.log('Opened websocket! Will send: ', passMessage, nickMessage, joinMessage);
   ws.send(passMessage);
@@ -54,12 +58,21 @@ const requestListener: RequestListener = (req: IncomingMessage, res: ServerRespo
  const eventListener = (event: WebSocket.MessageEvent) => {
   try {
    const data = event.data.toString();
-   if (data.startsWith('PING')) return;
-   const username = data.match(/:(.*)!/)[1];
-   console.log('username: ', username);
-   const message = data.match(/:([^:]*)$/)[1];
-   console.log('message: ', message);
-   res.write(JSON.stringify({ message, username }));
+   console.log(data);
+   if (data.match(/PRIVMSG/)) {
+    const username = data.match(/:(.*)!/)[1];
+
+    // some messages seem to come from my own username. Let's skip those.
+    if (username === nick) {
+     console.log('message from me');
+     return;
+    }
+
+    console.log('username: ', username);
+    const message = data.match(/:([^:]*)$/)[1];
+    console.log('message: ', message);
+    res.write(JSON.stringify({ message, username }));
+   }
   } catch (e) {
    console.error(e);
   }

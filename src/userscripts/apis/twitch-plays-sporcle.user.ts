@@ -57,7 +57,7 @@ span.correct-answer-twitch-username {
  
 span.correct-answer-twitch {
  display: inline-block;
- background-color: rgba(100, 140, 220, 0.3);
+ background-color: rgba(190, 210, 240, 0.8);
  border-radius: 0.3rem;
  padding: 0.15rem;
  margin: 0;
@@ -187,9 +187,33 @@ div.counting-down {
  }
 
  getTwitchChatMessage((message, username) => {
-  mostRecentUsername = username;
-  input.value = '';
-  fillInputElement(input, message);
+  if (message.startsWith('!sporcle')) {
+   // bot utility commands section
+
+   // TODO: add some sporcle bot utility commands:
+   // !sporcle goto <cell>
+   // EXAMPLE: if the chatter sends the message: "!sporcle goto pakistan"
+   //          then we will select the cell that says pakistan in the name (if any)
+   // !sporcle next
+   // !sporcle prev
+   const command = message.replace(/^!sporcle/, '').trim();
+   if (command.startsWith('goto')) {
+    const gotoTarget = command.replace(/^goto/, '').trim();
+    console.log('going to target: ', gotoTarget);
+
+    // NOTE: For now, I am assuming that the goto target element will be a td.
+    // I'll need to check whether it might be something else, depending on quiz type
+
+    const names = [...document.querySelectorAll('td[id^=name]')] as HTMLTableCellElement[];
+    names.find((e) => e.checkVisibility() && e.textContent.match(new RegExp(gotoTarget, 'i'))).click();
+   }
+  } else {
+   // answering a quiz question section
+   mostRecentUsername = username;
+
+   input.value = '';
+   fillInputElement(input, message);
+  }
  });
 
  // TODO: Maybe support grid type in the future?
@@ -216,7 +240,6 @@ div.counting-down {
   const playButton = document.querySelector('button#button-play') as HTMLButtonElement;
   playButton.click();
 
-  // now let's set a ten second interval to alternately scroll to the top and bottom of the div#quiz-area
   const quizArea = document.querySelector('div#quiz-area') as HTMLDivElement;
   const stickyGameHeaderWrapper = document.querySelector('div#gameHeaderWrapper') as HTMLDivElement;
   let lastScroll = 0;
