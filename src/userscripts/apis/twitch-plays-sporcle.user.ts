@@ -20,23 +20,53 @@ import pick from '../../lib/util/pick';
 import insertCSS from '../../lib/util/insert-css';
 import { storeMap, retrieveMap } from '../../lib/util/store-map';
 
-const nextQuiz = (waitTimeSeconds: number) => {
+const quizIsInvalid = (dom: Document) => {
+ // TODO: Maybe support grid type in the future?
+ const validQuizTypes = ['classic', 'map', 'picturebox', 'slideshow'];
+ const invalidQuizTypes = ['pictureclick', 'clickable', 'grid', 'multiplechoice', 'orderup'];
+
+ const gameTypeIcon = dom.querySelector('.game-type .game-type-icon');
+
+ const gameIsInvalid = invalidQuizTypes.some((type) => gameTypeIcon.classList.contains(type));
+
+ const gameIsValid = validQuizTypes.some((type) => gameTypeIcon.classList.contains(type));
+
+ if (gameIsInvalid === gameIsValid) {
+  console.error(gameTypeIcon);
+  throw 'Hey! 😭 The game type was something unexpected! Please check it out.';
+ }
+
+ return gameIsInvalid;
+};
+
+const nextQuiz = async (waitTimeSeconds: number) => {
+ const parser = new DOMParser();
  const nextQuizLink = pick([
-  ...document.querySelectorAll('a[href^="/games"]:not([href*=category]):not([href*=tags])'),
+  ...document.querySelectorAll(
+   'a[href^="/games"]:not([href*=category]):not([href*=tags]):not([href*=result])',
+  ),
  ]) as HTMLAnchorElement;
 
- toast(`Next quiz in ${waitTimeSeconds} seconds: ${nextQuizLink.textContent}`);
- const redBar = document.createElement('div');
- const greenBar = document.createElement('div');
- redBar.classList.add('countdown-timer-bar');
- greenBar.classList.add('countdown-timer-bar');
- greenBar.classList.add('counting-down');
- document.body.appendChild(redBar);
- document.body.appendChild(greenBar);
+ const r = await fetch(nextQuizLink.href);
+ const html = await r.text();
+ const dom = parser.parseFromString(html, 'text/html');
 
- setTimeout(() => {
-  nextQuizLink.click();
- }, 1000 * waitTimeSeconds);
+ if (quizIsInvalid(dom)) {
+  nextQuiz(waitTimeSeconds);
+ } else {
+  toast(`Next quiz in ${waitTimeSeconds} seconds: ${nextQuizLink.textContent}`);
+  const redBar = document.createElement('div');
+  const greenBar = document.createElement('div');
+  redBar.classList.add('countdown-timer-bar');
+  greenBar.classList.add('countdown-timer-bar');
+  greenBar.classList.add('counting-down');
+  document.body.appendChild(redBar);
+  document.body.appendChild(greenBar);
+
+  setTimeout(() => {
+   nextQuizLink.click();
+  }, 1000 * waitTimeSeconds);
+ }
 };
 
 // ISSUE: it occasionally fails when the show twitch chat usercript is enabled
@@ -73,6 +103,7 @@ span.correct-answer-twitch {
  height: 9dvh;
  background-color: red;
  border: 0.25rem solid black;
+ z-index: 101;
 }
 
 div.counting-down {
@@ -98,7 +129,7 @@ div.counting-down {
 
  const input = document.getElementById('gameinput') as HTMLInputElement;
 
- input.style.setProperty('display', 'none');
+ if (input) input.style.setProperty('display', 'none');
 
  let mostRecentUsername: string;
  const score = new Map<string, number>();
@@ -236,23 +267,8 @@ div.counting-down {
   }
  });
 
- // TODO: Maybe support grid type in the future?
- const validQuizTypes = ['classic', 'map', 'picturebox', 'slideshow'];
- const invalidQuizTypes = ['pictureclick', 'clickable', 'grid', 'multiplechoice', 'orderup'];
-
  setTimeout(() => {
-  const gameTypeIcon = document.querySelector('.game-type .game-type-icon');
-
-  const gameIsInvalid = invalidQuizTypes.some((type) => gameTypeIcon.classList.contains(type));
-
-  const gameIsValid = validQuizTypes.some((type) => gameTypeIcon.classList.contains(type));
-
-  if (gameIsInvalid === gameIsValid) {
-   console.error(gameTypeIcon);
-   throw 'Hey! 😭 The game type was something unexpected! Please check it out.';
-  }
-
-  if (gameIsInvalid) {
+  if (quizIsInvalid(document)) {
    toast('Whoops! This game type is unsupported. Moving on in two seconds...');
    nextQuiz(2);
   }
