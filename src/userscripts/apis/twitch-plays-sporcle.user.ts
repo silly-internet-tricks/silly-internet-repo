@@ -200,15 +200,13 @@ div.counting-down {
  getTwitchChatMessage((message, username) => {
   if (message.startsWith('!sporcle')) {
    // bot utility commands section
-
-   // TODO: add some sporcle bot utility commands:
-   // !sporcle goto <cell>
-   // EXAMPLE: if the chatter sends the message: "!sporcle goto pakistan"
-   //          then we will select the cell that says pakistan in the name (if any)
-   // !sporcle next
-   // !sporcle prev
    const command = message.replace(/^!sporcle/, '').trim();
+
+   // TODO: consider refactoring this chain of if/else if
    if (command.startsWith('goto')) {
+    // !sporcle goto <cell>
+    // EXAMPLE: if the chatter sends the message: "!sporcle goto pakistan"
+    //          then we will select the cell that says pakistan in the name (if any)
     const gotoTarget = command.replace(/^goto/, '').trim();
     console.log('going to target: ', gotoTarget);
 
@@ -217,6 +215,14 @@ div.counting-down {
 
     const names = [...document.querySelectorAll('td[id^=name]')] as HTMLTableCellElement[];
     names.find((e) => e.checkVisibility() && e.textContent.match(new RegExp(gotoTarget, 'i'))).click();
+   } else if (command.startsWith('next')) {
+    // !sporcle next
+    const nextButton = document.querySelector('button#nextButton') as HTMLButtonElement;
+    nextButton.click();
+   } else if (command.startsWith('prev')) {
+    // !sporcle prev
+    const prevButton = document.querySelector('button#previousButton') as HTMLButtonElement;
+    prevButton.click();
    }
   } else {
    // answering a quiz question section
