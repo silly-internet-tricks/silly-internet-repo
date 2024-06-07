@@ -97,6 +97,9 @@ div.counting-down {
  `);
 
  const input = document.getElementById('gameinput') as HTMLInputElement;
+
+ input.style.setProperty('display', 'none');
+
  let mostRecentUsername: string;
  const score = new Map<string, number>();
  const sporcleScore = document.querySelector('#scoreBox > .currentScore');
