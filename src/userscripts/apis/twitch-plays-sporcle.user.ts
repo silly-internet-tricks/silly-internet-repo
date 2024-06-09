@@ -81,8 +81,8 @@ const chooseValidQuiz: (quizHrefSet: Set<string>) => Promise<QuizRequest> = asyn
  };
 };
 
-const toastNextQuiz = (waitTimeSeconds: number, nextQuizText: string) => {
- toast(`Next quiz in ${waitTimeSeconds} seconds: ${nextQuizText}`);
+const toastNextQuiz = (waitTimeSeconds: number, nextQuizTitle: string) => {
+ toast(`Next quiz in ${waitTimeSeconds} seconds: ${nextQuizTitle}`);
  const redBar = document.createElement('div');
  const greenBar = document.createElement('div');
  redBar.classList.add('countdown-timer-bar');
@@ -149,6 +149,8 @@ const gameRequest: (gameQuery: string) => void = (() => {
     try {
      const nextGame = await chooseValidQuiz(gameNameHrefSet);
      const queuedGameRequest = nextGame;
+
+     toast(`game added to queue: ${queuedGameRequest.title}`);
 
      gameRequestQueue.enqueue(queuedGameRequest);
      storeQueue(quizRequestQueueStorageKey, gameRequestQueue);
