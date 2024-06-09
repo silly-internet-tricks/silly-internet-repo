@@ -74,10 +74,19 @@ const toast = (function makeToast() {
 }
  );`);
 
- const chatModal = document.createElement('div');
- const chatModalUl = document.createElement('ul');
- chatModal.appendChild(chatModalUl);
+ // @ts-expect-error
+ if (!unsafeWindow.sitToastChatModal) {
+  // @ts-expect-error
+  unsafeWindow.sitToastChatModal = document.createElement('div');
+   const chatModalUl = document.createElement('ul');
+   // @ts-expect-error
+   unsafeWindow.sitToastChatModal.appendChild(chatModalUl);
+ }
+
  let timeoutNumber: NodeJS.Timeout;
+ // @ts-expect-error
+ const chatModal = unsafeWindow.sitToastChatModal;
+ const chatModalUl = chatModal.querySelector('ul');
 
  const emptyElement = document.createElement('div');
  emptyElement.id = emptyElementId;
