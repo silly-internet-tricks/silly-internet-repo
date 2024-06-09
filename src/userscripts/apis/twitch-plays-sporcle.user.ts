@@ -49,12 +49,13 @@ const quizIsInvalid = (dom: Document) => {
  return gameIsInvalid;
 };
 
-const quizHrefIsInvalid = async (quizHref: string) => {
+const fetchQuizForTypeAndTitle = async (quizHref: string) => {
  const parser = new DOMParser();
  const r = await fetch(quizHref);
  const html = await r.text();
  const dom = parser.parseFromString(html, 'text/html');
- return quizIsInvalid(dom);
+ const title = dom.querySelector('head title')?.textContent.trim().replace(/Quiz$/, '').trim();
+ return { title, dom };
 };
 
 const chooseValidQuiz: (quizHrefSet: Set<string>) => Promise<QuizRequest> = async (
@@ -65,11 +66,8 @@ const chooseValidQuiz: (quizHrefSet: Set<string>) => Promise<QuizRequest> = asyn
  }
 
  const nextQuizHref = pick(quizHrefSet);
- const parser = new DOMParser();
- const r = await fetch(nextQuizHref);
- const html = await r.text();
- const dom = parser.parseFromString(html, 'text/html');
- const title = dom.querySelector('head title')?.textContent.trim().replace(/Quiz$/, '').trim();
+
+ const { title, dom } = await fetchQuizForTypeAndTitle(nextQuizHref);
 
  const notValid = quizIsInvalid(dom);
  if (notValid) {
@@ -117,14 +115,16 @@ const nextQuiz = async (waitTimeSeconds: number) => {
   ),
  ]) as HTMLAnchorElement;
 
- const notValid: boolean = await quizHrefIsInvalid(nextQuizLink.href);
+ const { dom, title } = await fetchQuizForTypeAndTitle(nextQuizLink.href);
+
+ const notValid: boolean = quizIsInvalid(dom);
 
  if (notValid) {
   // NOTE: I haven't bothered to take the invalid quiz out of the set
   // this could cause the game to not work if there are no valid quizzes
   nextQuiz(waitTimeSeconds);
  } else {
-  toastNextQuiz(waitTimeSeconds, nextQuizLink.textContent);
+  toastNextQuiz(waitTimeSeconds, title);
 
   setTimeout(() => {
    nextQuizLink.click();
