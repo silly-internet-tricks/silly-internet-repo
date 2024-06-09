@@ -20,7 +20,6 @@ import holdKeyAndClickWithUndo from '../../lib/util/hold-key-and-click-with-undo
 import parameterForm from '../../lib/util/parameter-form';
 
 (function useGoogleFont() {
- console.log('starting useGoogleFont');
  const gmKey = 'google-font-api-key';
 
  insertCSS(`

@@ -19,9 +19,6 @@ const glitchAnimationClass: string = 'glitch-animation';
 const glitchFilterId: string = 'glitch-filter';
 
 (function glitchify() {
- console.log('starting glitchify');
- // TODO: use a form to control the effect parameters in real time.
-
  const filter = document.createElement('div');
  filter.style.setProperty('position', 'fixed');
  filter.style.setProperty('width', '101dvw');
