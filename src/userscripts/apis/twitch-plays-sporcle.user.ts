@@ -76,7 +76,9 @@ const nextQuiz = async (waitTimeSeconds: number) => {
 //        (maybe only the first time)
 (function twitchPlaysSporcle() {
  const usernameColorsStorageKey = 'silly-internet-tricks-username-colors';
+ const usernameAlltimeScoreStorageKey = 'silly-internet-tricks-username-alltime-score';
  const usernameColors = retrieveMap(usernameColorsStorageKey) as Map<string, string>;
+ const usernameAlltimeScore = retrieveMap(usernameAlltimeScoreStorageKey) as Map<string, number>;
  const randomUsernameColor = () =>
   `hsl(${(Math.floor(Math.random() * 300) + 250) % 360}, ${(
    Math.round(Math.random() * 5000) / 100 +
@@ -144,12 +146,26 @@ div.counting-down {
    score.set(mostRecentUsername, 1);
   }
 
+  const alltimeScore = usernameAlltimeScore.get(mostRecentUsername);
+  if (alltimeScore) {
+   usernameAlltimeScore.set(mostRecentUsername, alltimeScore + 1);
+  } else {
+   usernameAlltimeScore.set(mostRecentUsername, 1);
+  }
+
+  storeMap(usernameAlltimeScoreStorageKey, usernameAlltimeScore);
+
   if (!usernameColors.has(mostRecentUsername)) {
    usernameColors.set(mostRecentUsername, randomUsernameColor());
    storeMap(usernameColorsStorageKey, usernameColors);
   }
 
-  toast(`${mostRecentUsername} has ${score.get(mostRecentUsername)} points!`);
+  // TODO: consider whether we only want to toast all time milestones (for now I just toast it every time)
+  toast(
+   `${mostRecentUsername} has ${score.get(mostRecentUsername)} points! ${usernameAlltimeScore.get(
+    mostRecentUsername,
+   )} all time!`,
+  );
  });
 
  try {
