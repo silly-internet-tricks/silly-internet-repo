@@ -6,8 +6,8 @@ export default function makeAvailableKeys() {
  // if the window has getEffectKey defined on it, I assume that this function has been called already
  // and thus that the #effect-keys-menu div must already exist as well
  // @ts-expect-error I add the getEffectKey function to the window because it's meant to be accessible to any script that uses the hold key and click function
- if (!window.getEffectKey) {
-  console.log('window.getEffectKey not defined');
+ if (!unsafeWindow.getEffectKey) {
+  console.log('unsafeWindow.getEffectKey not defined');
   const getEffectKey: (requestedKeys: string[]) => string = (() => {
    const availableKeys: Set<string> = new Set<string>('abcdefghijklmnopqrstuvwxyz1234567890');
    return (requestedKeys: string[]) => {
@@ -18,7 +18,7 @@ export default function makeAvailableKeys() {
   })();
 
   // @ts-expect-error I add the getEffectKey function to the window because it's meant to be accessible to any script that uses the hold key and click function
-  window.getEffectKey = getEffectKey;
+  unsafeWindow.getEffectKey = getEffectKey;
 
   insertCSS(`
 #effect-keys-menu {
@@ -71,7 +71,7 @@ export default function makeAvailableKeys() {
 
  return function getEffectKey(requestedKeys: string[], label: string) {
   // @ts-expect-error I add the getEffectKey function to the window because it's meant to be accessible to any script that uses the hold key and click function
-  const effectKey: string = window.getEffectKey(requestedKeys);
+  const effectKey: string = unsafeWindow.getEffectKey(requestedKeys);
   const p: Element = document.createElement('p');
   p.appendChild(new Text(`${label}: ${effectKey}`));
   div.appendChild(p);

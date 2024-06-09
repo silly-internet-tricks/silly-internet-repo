@@ -2,6 +2,9 @@ import insertCSS from '../util/insert-css';
 import holdKeyAndClickWithUndo from '../util/hold-key-and-click-with-undo';
 import { makeInlineInlineBlock, undoInlineInlineBlock } from './make-inline-inline-block';
 
+/**
+ * This function requires "@grant unsafeWindow"
+ */
 export default function generalAnimationifier(
  animationClassName: string,
  CSS: string,

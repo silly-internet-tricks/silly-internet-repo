@@ -6,11 +6,10 @@
 // @author       Josh Parker
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=wikipedia.org
-// @grant        none
+// @grant        unsafeWindow
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/text-effect/staticify.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/664c8801b9616b66cb34ceecedbf7537/raw/staticify.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/664c8801b9616b66cb34ceecedbf7537/raw/staticify.meta.js
-// @sandbox      JavaScript
 // ==/UserScript==
 import generalAnimationifier from '../../lib/effects/general-animation-ifier';
 

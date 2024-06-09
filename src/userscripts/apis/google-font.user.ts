@@ -6,10 +6,13 @@
 // @author       Josh Parker
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tampermonkey.net
+// @grant        unsafeWindow
 // @grant        GM_setValue
 // @grant        GM_getValue
 // @grant        GM_xmlhttpRequest
-// @sandbox      JavaScript
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/apis/google-font.user.ts
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/fffbe09f34dea576abe8b1507f3ff4d7/raw/google-font.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/fffbe09f34dea576abe8b1507f3ff4d7/raw/google-font.meta.js
 // ==/UserScript==
 
 import insertCSS from '../../lib/util/insert-css';

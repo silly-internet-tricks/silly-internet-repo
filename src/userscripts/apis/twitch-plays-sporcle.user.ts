@@ -7,6 +7,9 @@
 // @match        https://www.sporcle.com/games/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=sporcle.com
 // @grant        GM_xmlhttpRequest
+// @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/apis/twitch-plays-sporcle.user.ts
+// @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/44b414bf53792ab5cb5328b0f5f2463c/raw/twitch-plays-sporcle.user.js
+// @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/44b414bf53792ab5cb5328b0f5f2463c/raw/twitch-plays-sporcle.meta.js
 // ==/UserScript==
 
 // NOTE: this is only intended to work with sporcle quizzes

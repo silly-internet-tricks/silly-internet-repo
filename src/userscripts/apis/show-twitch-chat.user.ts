@@ -7,6 +7,7 @@
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=wikipedia.org
 // @grant        GM_xmlhttpRequest
+// @grant        unsafeWindow
 // @connect      localhost
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/apis/toast-twitch-chat.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/9b6d4a20dcf00cddd53ac1392aabc5f0/raw/toast-twitch-chat.user.js

@@ -6,11 +6,10 @@
 // @author       Josh Parker
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=wikipedia.org
-// @grant        none
+// @grant        unsafeWindow
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/text-effect/wiggle-glitch.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/caa03e1ff34d4931637877784d1fbb1d/raw/wiggle-glitch.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/caa03e1ff34d4931637877784d1fbb1d/raw/wiggle-glitch.meta.js
-// @sandbox      JavaScript
 // ==/UserScript==
 import generalAnimationifier from '../../lib/effects/general-animation-ifier';
 import glitchSvg from '../../lib/effects/effect-util/glitch-svg';

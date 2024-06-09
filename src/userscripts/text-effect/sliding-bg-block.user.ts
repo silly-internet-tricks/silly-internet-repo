@@ -6,11 +6,10 @@
 // @author       Josh Parker
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=stackexchange.com
-// @grant        none
+// @grant        unsafeWindow
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/text-effect/sliding-bg-block.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/002bc33024e0c79337af7d18e0cf81eb/raw/sliding-bg-block.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/002bc33024e0c79337af7d18e0cf81eb/raw/sliding-bg-block.meta.js
-// @sandbox      JavaScript
 // ==/UserScript==
 
 import generalAnimationifier from '../../lib/effects/general-animation-ifier';

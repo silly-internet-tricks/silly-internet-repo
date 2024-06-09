@@ -1,6 +1,9 @@
 import insertCSS from './insert-css';
 import observeElementRemovalAndReaddIt from './observe-element-removal-and-readd-it';
 
+/**
+ * this function requires "@grant unsafeWindow"
+ */
 const toast = (function makeToast() {
  const emptyElementId = 'toast-twitch-chat-empty-element';
 
