@@ -9,4 +9,5 @@ interface GmXmlHttpRequestRequestOptions {
  data?: string;
  fetch?: boolean;
  onloadstart?: (r: GmXmlHttpRequestResponse) => Promise;
+ onload?: () => void;
 }

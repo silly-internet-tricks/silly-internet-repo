@@ -30,8 +30,8 @@ const listeners: Listeners = {
   }
  },
 
- onMessage: (data: WebSocket.RawData) => {
-  console.log(`Got twitch chat message: ${data.toString()}`);
+ onMessage: () => {
+  console.log('✌️');
  },
 
  onOpen: () => {
@@ -60,7 +60,7 @@ const requestListener: RequestListener = (req: IncomingMessage, res: ServerRespo
    const data = event.data.toString();
    console.log(data);
    if (data.match(/PRIVMSG/)) {
-    const username = data.match(/:(.*)!/)[1];
+    const username = data.match(/:(.*?)!/)[1];
 
     // some messages seem to come from my own username. Let's skip those.
     if (username === nick) {
@@ -69,7 +69,7 @@ const requestListener: RequestListener = (req: IncomingMessage, res: ServerRespo
     }
 
     console.log('username: ', username);
-    const message = data.match(/:([^:]*)$/)[1];
+    const message = data.match(/:[^:]*:(.*)$/m)[1];
     console.log('message: ', message);
     res.write(JSON.stringify({ message, username }));
    }
