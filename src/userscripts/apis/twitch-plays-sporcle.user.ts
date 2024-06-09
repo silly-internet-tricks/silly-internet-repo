@@ -368,6 +368,9 @@ div.counting-down {
    } else if (command.startsWith('req')) {
     const requestedGame = command.replace(/^req(uest)?/, '').trim();
     gameRequest(requestedGame);
+   } else if (command.startsWith('give up')) {
+    const giveUpButton = document.querySelector('button#giveUp') as HTMLButtonElement;
+    giveUpButton.click();
    }
   } else {
    // answering a quiz question section
