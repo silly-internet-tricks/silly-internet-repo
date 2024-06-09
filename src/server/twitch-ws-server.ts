@@ -30,10 +30,6 @@ const listeners: Listeners = {
   }
  },
 
- onMessage: () => {
-  console.log('✌️');
- },
-
  onOpen: () => {
   // got the pass message and nick message from: https://discuss.dev.twitch.com/t/anonymous-connection-to-twitch-chat/20392/8
   // (i confirmed that using a random string in place of "justinfan" is not accepted)
@@ -58,7 +54,6 @@ const requestListener: RequestListener = (req: IncomingMessage, res: ServerRespo
  const eventListener = (event: WebSocket.MessageEvent) => {
   try {
    const data = event.data.toString();
-   console.log(data);
    if (data.match(/PRIVMSG/)) {
     const username = data.match(/:(.*?)!/)[1];
 
@@ -68,10 +63,10 @@ const requestListener: RequestListener = (req: IncomingMessage, res: ServerRespo
      return;
     }
 
-    console.log('username: ', username);
     const message = data.match(/:[^:]*:(.*)$/m)[1];
-    console.log('message: ', message);
-    res.write(JSON.stringify({ message, username }));
+    const outgoing = JSON.stringify({ message, username });
+    console.log(outgoing);
+    res.write(outgoing);
    }
   } catch (e) {
    console.error(e);

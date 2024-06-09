@@ -14,24 +14,12 @@
 // @noframes
 // ==/UserScript==
 
-import getStringFromChunk from '../../lib/util/get-string-from-chunk';
+import getTwitchChatMessage from '../../lib/apis/get-twitch-chat-message';
 import toast from '../../lib/util/toast';
 
 // TODO: try showing emotes as mentioned at https://dev.twitch.tv/docs/irc/emotes/#getting-channel-emotes
 (function subscribeTwitchChat() {
- const requestOptions: GmXmlHttpRequestRequestOptions = {
-  url: 'http://localhost:9821',
-  responseType: 'stream',
-  onloadstart: async ({ response }) => {
-   // eslint-disable-next-line no-restricted-syntax
-   for await (const chunk of response) {
-    const chunkString = getStringFromChunk(chunk);
-    console.log(chunkString);
-    const { message } = JSON.parse(chunkString);
-    toast(message);
-   }
-  },
- };
-
- GM.xmlHttpRequest(requestOptions);
+ getTwitchChatMessage((message, username) => {
+  toast(`${username}: ${message}`);
+ });
 })();

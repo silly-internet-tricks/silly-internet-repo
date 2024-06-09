@@ -3,14 +3,16 @@ import observeElementRemovalAndReaddIt from './observe-element-removal-and-readd
 
 const toast = (function makeToast() {
  const emptyElementId = 'toast-twitch-chat-empty-element';
- insertCSS(`
 
+ const zIndex = 9001;
+
+ insertCSS(`
  .twitch-chat-toast {
-   z-index: 9001;
+   z-index: ${zIndex};
  }
 
  #${emptyElementId} {
-   z-index: 9001;
+   z-index: ${zIndex};
  }
 
  .twitch-chat-modal {
@@ -18,7 +20,7 @@ const toast = (function makeToast() {
   top: 2px;
   left: 2px;
   font-size: 2rem;
-  z-index: 102;
+  z-index: ${zIndex};
   background-image: linear-gradient(
    to top, #3FFF00 var(--gradient-bottom),
    #FFBF00 var(--gradient-top)
