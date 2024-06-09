@@ -22,6 +22,13 @@ import toast from '../../lib/util/toast';
 import pick from '../../lib/util/pick';
 import insertCSS from '../../lib/util/insert-css';
 import { storeMap, retrieveMap } from '../../lib/util/store-map';
+import { storeQueue, retrieveQueue } from '../../lib/util/store-queue';
+
+const quizRequestQueueStorageKey = 'silly-internet-tricks-quiz-request-queue';
+interface QuizRequest {
+ title: string;
+ link: string;
+}
 
 const quizIsInvalid = (dom: Document) => {
  // TODO: Maybe support grid type in the future?
@@ -42,35 +49,117 @@ const quizIsInvalid = (dom: Document) => {
  return gameIsInvalid;
 };
 
-const nextQuiz = async (waitTimeSeconds: number) => {
+const quizHrefIsInvalid = async (quizHref: string) => {
  const parser = new DOMParser();
+ const r = await fetch(quizHref);
+ const html = await r.text();
+ const dom = parser.parseFromString(html, 'text/html');
+ return quizIsInvalid(dom);
+};
+
+const chooseValidQuiz: (quizHrefSet: Set<string>) => Promise<QuizRequest> = async (
+ quizHrefSet: Set<string>,
+) => {
+ if (quizHrefSet.size === 0) {
+  throw 'no valid quizzes!';
+ }
+
+ const nextQuizHref = pick(quizHrefSet);
+ const parser = new DOMParser();
+ const r = await fetch(nextQuizHref);
+ const html = await r.text();
+ const dom = parser.parseFromString(html, 'text/html');
+ const title = dom.querySelector('head title')?.textContent.trim().replace(/Quiz$/, '').trim();
+
+ const notValid = quizIsInvalid(dom);
+ if (notValid) {
+  quizHrefSet.delete(nextQuizHref);
+  return chooseValidQuiz(quizHrefSet);
+ }
+
+ return {
+  link: nextQuizHref,
+  title,
+ };
+};
+
+const toastNextQuiz = (waitTimeSeconds: number, nextQuizText: string) => {
+ toast(`Next quiz in ${waitTimeSeconds} seconds: ${nextQuizText}`);
+ const redBar = document.createElement('div');
+ const greenBar = document.createElement('div');
+ redBar.classList.add('countdown-timer-bar');
+ greenBar.classList.add('countdown-timer-bar');
+ greenBar.classList.add('counting-down');
+ document.body.appendChild(redBar);
+ document.body.appendChild(greenBar);
+};
+
+const nextQuiz = async (waitTimeSeconds: number) => {
+ // if there is a quiz on the queue, get that instead of getting a random one from the page
+ const queue = retrieveQueue(quizRequestQueueStorageKey);
+ if (queue.size() > 0) {
+  const quizRequest = queue.dequeue() as QuizRequest;
+
+  storeQueue(quizRequestQueueStorageKey, queue);
+
+  toastNextQuiz(waitTimeSeconds, quizRequest.title);
+
+  setTimeout(() => {
+   window.location.assign(quizRequest.link);
+  }, 1000 * waitTimeSeconds);
+
+  return;
+ }
+
  const nextQuizLink = pick([
   ...document.querySelectorAll(
    'a[href^="/games"]:not([href*=category]):not([href*=tags]):not([href*=result])',
   ),
  ]) as HTMLAnchorElement;
 
- const r = await fetch(nextQuizLink.href);
- const html = await r.text();
- const dom = parser.parseFromString(html, 'text/html');
+ const notValid: boolean = await quizHrefIsInvalid(nextQuizLink.href);
 
- if (quizIsInvalid(dom)) {
+ if (notValid) {
+  // NOTE: I haven't bothered to take the invalid quiz out of the set
+  // this could cause the game to not work if there are no valid quizzes
   nextQuiz(waitTimeSeconds);
  } else {
-  toast(`Next quiz in ${waitTimeSeconds} seconds: ${nextQuizLink.textContent}`);
-  const redBar = document.createElement('div');
-  const greenBar = document.createElement('div');
-  redBar.classList.add('countdown-timer-bar');
-  greenBar.classList.add('countdown-timer-bar');
-  greenBar.classList.add('counting-down');
-  document.body.appendChild(redBar);
-  document.body.appendChild(greenBar);
+  toastNextQuiz(waitTimeSeconds, nextQuizLink.textContent);
 
   setTimeout(() => {
    nextQuizLink.click();
   }, 1000 * waitTimeSeconds);
  }
 };
+
+const gameRequest: (gameQuery: string) => void = (() => {
+ const gameRequestQueue = retrieveQueue(quizRequestQueueStorageKey);
+
+ return (gameQuery: string) => {
+  console.log('got game request', gameQuery);
+  const parser = new DOMParser();
+  const encodedQuery = encodeURIComponent(gameQuery);
+  fetch(`https://www.sporcle.com/search/quizzes/?s=${encodedQuery}`)
+   .then((r) => r.text())
+   .then(async (h) => {
+    const dom = parser.parseFromString(h, 'text/html');
+    const gameNames = [...dom.querySelectorAll('a.gameName')] as HTMLAnchorElement[];
+    const gameNameHrefSet = new Set(gameNames.map((e) => e.href));
+
+    try {
+     const nextGame = await chooseValidQuiz(gameNameHrefSet);
+     const queuedGameRequest = nextGame;
+
+     gameRequestQueue.enqueue(queuedGameRequest);
+     storeQueue(quizRequestQueueStorageKey, gameRequestQueue);
+    } catch (e) {
+     console.error(e);
+     toast(`No valid quizzes found for query ${gameQuery}`);
+     toast('(the valid quiz types are classic, map, picturebox, and slideshow)');
+    }
+   });
+ };
+})();
 
 // ISSUE: it occasionally fails when the show twitch chat usercript is enabled
 //        (maybe only the first time)
@@ -252,6 +341,7 @@ div.counting-down {
 
  getTwitchChatMessage((message, username) => {
   if (message.startsWith('!sporcle')) {
+   console.log(message);
    // bot utility commands section
    const command = message.replace(/^!sporcle/, '').trim();
 
@@ -261,7 +351,6 @@ div.counting-down {
     // EXAMPLE: if the chatter sends the message: "!sporcle goto pakistan"
     //          then we will select the cell that says pakistan in the name (if any)
     const gotoTarget = command.replace(/^goto/, '').trim();
-    console.log('going to target: ', gotoTarget);
 
     // NOTE: For now, I am assuming that the goto target element will be a td.
     // I'll need to check whether it might be something else, depending on quiz type
@@ -276,6 +365,9 @@ div.counting-down {
     // !sporcle prev
     const prevButton = document.querySelector('button#previousButton') as HTMLButtonElement;
     prevButton.click();
+   } else if (command.startsWith('req')) {
+    const requestedGame = command.replace(/^req(uest)?/, '').trim();
+    gameRequest(requestedGame);
    }
   } else {
    // answering a quiz question section

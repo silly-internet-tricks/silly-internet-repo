@@ -1,4 +1,13 @@
 export default class Queue<T> {
+ constructor(s?: string) {
+  const newStore = JSON.parse(s);
+  if (newStore && Array.isArray(newStore)) {
+   // if there are nulls here, I will get rid of them.
+   this.store = newStore.filter((e) => e);
+   this.last = this.store.length;
+  }
+ }
+
  first: number = 0;
 
  last: number = 0;
@@ -18,4 +27,7 @@ export default class Queue<T> {
  };
 
  size: () => number = () => this.last - this.first;
+
+ // when we stringify this, let's filter it to just the contents.
+ toString: () => string = () => JSON.stringify(this.store.filter((e) => e));
 }
