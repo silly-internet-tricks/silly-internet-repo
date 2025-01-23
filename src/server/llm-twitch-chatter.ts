@@ -1,15 +1,14 @@
 import * as WebSocket from 'ws';
+import { spawn } from 'child_process';
 import Queue from '../lib/util/queue';
 import ollamaChatRequest from './server-util/ollama-chat-request';
 import refreshTwitchAccessToken from './server-util/refresh-twitch-access-token';
-import { token, refreshToken, clientId, clientSecret } from '../../secrets/twitch-chatbot.json';
+import { token, refreshToken, clientId, clientSecret, soundFileName } from '../../secrets/twitch-chatbot.json';
 import { setupWs, Listeners } from './server-util/setup-ws';
 
 const channelName = 'sillyinternettricks';
 
 const msgPrefix = '';
-
-let chatPercent = 1;
 
 const chatAddress = 'ws://irc-ws.chat.twitch.tv:80';
 
@@ -99,7 +98,9 @@ const listeners: Listeners = {
 
    history.push(message);
 
-   if (100 * Math.random() < chatPercent) {
+   spawn('/usr/bin/mpg123', [soundFileName]);
+
+   if (history[history.length - 1].content.match(/^AI\b/i)) {
     ollamaChatRequest('chatter:latest', history.slice(-6)).then(ollamaCallback(msgId));
    }
   }
@@ -115,13 +116,8 @@ const listeners: Listeners = {
    if (queue.size() > 0) {
     const message = queue.dequeue();
     ws.send(message);
-    chatPercent -= 15;
-   } else {
-    chatPercent += 1;
    }
-
-   console.log(`chat percent: ${chatPercent}`);
-  }, 30000);
+  }, 300);
  },
 };
 
