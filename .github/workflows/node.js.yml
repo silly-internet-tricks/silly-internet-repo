@@ -29,7 +29,7 @@ jobs:
     - run: npm ci
     - run: npm audit
     - run: mkdir secrets
-    - run: echo "{\"token\":\"\",\"refreshToken\":\"\",\"clientId\":\"\",\"clientSecret\":\"\"}" > ./secrets/twitch-chatbot.json
+    - run: echo "{\"token\":\"\",\"refreshToken\":\"\",\"clientId\":\"\",\"clientSecret\":\"\",\"soundFileName\":\"\"}" > ./secrets/twitch-chatbot.json
     - run: npm run build --if-present
     - run: npm run lint
     - run: npm run test
@@ -48,4 +48,4 @@ jobs:
     - run: npm run build
     - run: npm run publish
       env:
-        PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}  
+        PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
