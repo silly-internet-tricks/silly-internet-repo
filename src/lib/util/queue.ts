@@ -1,5 +1,6 @@
 export default class Queue<T> {
  constructor(s?: string) {
+  if (!s) return;
   const newStore = JSON.parse(s);
   if (newStore && Array.isArray(newStore)) {
    // if there are nulls here, I will get rid of them.

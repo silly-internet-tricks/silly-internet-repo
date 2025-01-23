@@ -170,6 +170,8 @@ const gameRequest: (gameQuery: string) => void = (() => {
  const usernameAlltimeScoreStorageKey = 'silly-internet-tricks-username-alltime-score';
  const usernameColors = retrieveMap(usernameColorsStorageKey) as Map<string, string>;
  const usernameAlltimeScore = retrieveMap(usernameAlltimeScoreStorageKey) as Map<string, number>;
+ let answerNumber = 1;
+
  const randomUsernameColor = () =>
   `hsl(${(Math.floor(Math.random() * 300) + 250) % 360}, ${(
    Math.round(Math.random() * 5000) / 100 +
@@ -318,7 +320,10 @@ div.counting-down {
 
   // TODO: consider whether the text "answered by" is actually needed
   //       or whether the name alone might suffice
-  outerSpan.appendChild(new Text('Answered by: '));
+  outerSpan.appendChild(new Text(`${answerNumber} `));
+
+  answerNumber += 1;
+
   outerSpan.appendChild(span);
   outerSpan.classList.add('correct-answer-twitch');
   mutationRecords[0].target.appendChild(outerSpan);
@@ -394,10 +399,14 @@ div.counting-down {
 
   const quizArea = document.querySelector('div#quiz-area') as HTMLDivElement;
   const stickyGameHeaderWrapper = document.querySelector('div#gameHeaderWrapper') as HTMLDivElement;
-  let lastScroll = 0;
+  quizArea.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+  let lastScroll = quizArea.offsetTop;
   setInterval(() => {
+   console.log(lastScroll);
    // NOTE: I am assuming here that the quizArea.offsetTop will not change.
-   if (lastScroll < quizArea.offsetTop) {
+   if (lastScroll >= quizArea.offsetTop && quizArea.offsetHeight < window.innerHeight) {
+    // do nothing
+   } else if (lastScroll < quizArea.offsetTop) {
     quizArea.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
     lastScroll = quizArea.offsetTop;
    } else {
