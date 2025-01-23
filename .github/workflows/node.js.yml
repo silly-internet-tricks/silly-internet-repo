@@ -9,6 +9,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  SECRET_STUB: "{\"token\":\"\",\"refreshToken\":\"\",\"clientId\":\"\",\"clientSecret\":\"\",\"soundFileName\":\"\"}"
+
 jobs:
   build:
 
@@ -29,7 +32,7 @@ jobs:
     - run: npm ci
     - run: npm audit
     - run: mkdir secrets
-    - run: echo "{\"token\":\"\",\"refreshToken\":\"\",\"clientId\":\"\",\"clientSecret\":\"\",\"soundFileName\":\"\"}" > ./secrets/twitch-chatbot.json
+    - run: echo $SECRET_STUB > ./secrets/twitch-chatbot.json
     - run: npm run build --if-present
     - run: npm run lint
     - run: npm run test
@@ -44,7 +47,7 @@ jobs:
         node-version: 20.x
         cache: npm
     - run: npm ci
-    - run: mkdir secrets && echo "{\"token\":\"\",\"refreshToken\":\"\",\"clientId\":\"\",\"clientSecret\":\"\"}" > ./secrets/twitch-chatbot.json
+    - run: mkdir secrets && echo $SECRET_STUB > ./secrets/twitch-chatbot.json
     - run: npm run build
     - run: npm run publish
       env:
