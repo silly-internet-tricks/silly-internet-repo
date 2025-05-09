@@ -1,4 +1,4 @@
-FROM llama3
+FROM gemma3
 PARAMETER temperature 1.1
 PARAMETER num_ctx 1536
 PARAMETER top_k 50
