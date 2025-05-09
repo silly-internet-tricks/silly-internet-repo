@@ -12,20 +12,21 @@ if (process.env.CI) {
  });
 } else {
  const processImages = async function processImages() {
-  // Please note that only webp is handled. Add other types as needed.
-  const webps = await glob('./assets/**/*.webp');
-  webps.forEach(async (webp) => {
-   const tsFilename = webp.replace(/webp$/, 'ts');
+  // Please note that only webp and jpg are handled. Add other types as needed.
+  const imgs = await glob('./assets/**/*.{webp,jpg}');
+  imgs.forEach(async (img) => {
+   const tsFilename = img.replace(/(webp|jpg)$/, 'ts');
    try {
     // NOTE: This means that to update the image, the ts file will have to be deleted
-    access(tsFilename);
+    await access(tsFilename);
    } catch (e) {
-    console.log(e);
-    const webpBuffer = await readFile(webp);
-    const base64Webp = webpBuffer.toString('base64');
-    const dataUrl = `data:image/webp;base64,${base64Webp}`;
+    const imgBuffer = await readFile(img);
+    const base64Img = imgBuffer.toString('base64');
+    const fileType = img.match(/(webp|jpg)$/)[1];
+    const dataUrl = `data:image/${fileType};base64,${base64Img}`;
     const tsFile = `export default '${dataUrl}';\n`;
-    writeFile(tsFilename, tsFile);
+    console.log(`now writing file to ${tsFilename}`);
+    await writeFile(tsFilename, tsFile);
    }
   });
  };
