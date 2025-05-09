@@ -13,8 +13,9 @@
     "publish": "node bundle-publish.js",
     "blt": "npm run build && npm run lint && npm run test",
     "get-jeff": "curl \"https://static.wikia.nocookie.net/creepypasta-files/images/5/56/JeffTheKiller%282%29.jpg\" -o \"assets/jeff.jpg\"",
-    "get-started": "npm i && npm audit fix && npm run get-jeff && npm run images && mkdir -p secrets && echo '{\"token\":\"\",\"refreshToken\":\"\",\"clientId\":\"\",\"clientSecret\":\"\",\"soundFileName\":\"\"}' > secrets/twitch-chatbot.json && npm run blt",
-    "twitch-chatter": "npm run blt && ./ts-compiled/server/src/server/llm-twitch-chatter.js"
+    "get-navi": "curl \"https://archive.org/download/NaviHeyListen/Navi%20Hey%20Listen.ogg\" -o ./assets/hey-listen.ogg",
+    "get-started": "npm i && npm audit fix && npm run get-jeff && npm run get-navi && npm run images && mkdir -p secrets && echo '{\"token\":\"\",\"refreshToken\":\"\",\"clientId\":\"\",\"clientSecret\":\"\",\"soundFileName\":\"\"}' > secrets/twitch-chatbot.json && npm run blt",
+    "twitch-chatter": "npm run blt && ollama create chatter -f ./src/server/Modelfile && node ./ts-compiled/server/src/server/llm-twitch-chatter.js"
   },
   "author": "",
   "license": "ISC",
