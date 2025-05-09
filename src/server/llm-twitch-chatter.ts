@@ -98,7 +98,7 @@ const listeners: Listeners = {
 
    history.push(message);
 
-   spawn('/usr/bin/mpg123', [soundFileName]);
+   spawn('mpg123', [soundFileName]);
 
    if (history[history.length - 1].content.match(/^AI\b/i)) {
     ollamaChatRequest('chatter:latest', history.slice(-6)).then(ollamaCallback(msgId));
