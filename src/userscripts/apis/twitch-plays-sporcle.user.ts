@@ -378,7 +378,7 @@ div.counting-down {
    } else if (command.startsWith('req')) {
     const requestedGame = command.replace(/^req(uest)?/, '').trim();
     gameRequest(requestedGame);
-   } else if (command.startsWith('give up')) {
+   } else if (command.startsWith('give up') || command.startsWith('skip')) {
     const giveUpButton = document.querySelector('button#giveUp') as HTMLButtonElement;
     giveUpButton.click();
    }
