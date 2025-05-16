@@ -201,13 +201,13 @@ span.correct-answer-twitch {
  left: 0;
  right: 0;
  height: 9dvh;
- background-color: red;
+ background-color: linear-gradient(45deg, transparent, red);
  border: 0.25rem solid black;
  z-index: 101;
 }
 
 div.counting-down {
- background-color: green;
+ background-image: linear-gradient(45deg, green, transparent);
  animation-name: countdown-timer;
  animation-duration: ${quizCountdownTimeSeconds}s;
  animation-timing-function: linear;
