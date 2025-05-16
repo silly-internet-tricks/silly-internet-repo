@@ -36,6 +36,7 @@ const toast = (function makeToast() {
    animation-duration: 5s;
    animation-timing-function: linear;
    animation-iteration-count: 1;
+   animation-fill-mode: forwards;
 }
 
 @keyframes modal-fade-out {
