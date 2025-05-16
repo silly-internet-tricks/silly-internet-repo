@@ -349,10 +349,11 @@ div.counting-down {
  }
 
  getTwitchChatMessage((message, username) => {
-  if (message.startsWith('!sporcle')) {
+  // will try removing the sporcle (cause it's a bit annoying to type out each time)
+  if (message.startsWith('!')) {
    console.log(message);
    // bot utility commands section
-   const command = message.replace(/^!sporcle/, '').trim();
+   const command = message.replace(/^!/, '').trim();
 
    // TODO: consider refactoring this chain of if/else if
    if (command.startsWith('goto')) {
