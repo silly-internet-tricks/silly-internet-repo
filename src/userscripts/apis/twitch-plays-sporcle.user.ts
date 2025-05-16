@@ -30,6 +30,8 @@ interface QuizRequest {
  link: string;
 }
 
+const quizCountdownTimeSeconds = 2;
+
 const quizIsInvalid = (dom: Document) => {
  // TODO: Maybe support grid type in the future?
  const validQuizTypes = ['classic', 'map', 'picturebox', 'slideshow'];
@@ -207,7 +209,7 @@ span.correct-answer-twitch {
 div.counting-down {
  background-color: green;
  animation-name: countdown-timer;
- animation-duration: 15s;
+ animation-duration: ${quizCountdownTimeSeconds}s;
  animation-timing-function: linear;
  animation-iteration-count: 1;
  animation-fill-mode: forwards;
@@ -279,7 +281,7 @@ div.counting-down {
    throw 'Please look at the unexpected mutation! 🕵️';
   }
 
-  nextQuiz(15);
+  nextQuiz(quizCountdownTimeSeconds);
  });
 
  gameOverMo.observe(postGameBox, { attributes: true });

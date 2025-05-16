@@ -2,5 +2,7 @@
   "typescript.preferences.quoteStyle": "single",
   "[typescript]": {
     "editor.tabSize": 1
-  }
+  },
+  "editor.fontLigatures: true,
+  "editor.fontFamily": "'JetBrainsMono NerdFont', Menlo, Monaco, 'Courier New', monospace"
 }
