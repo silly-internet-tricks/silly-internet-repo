@@ -5,6 +5,7 @@
 // @description  Make the local llm (using ollama) chat at chat gpt
 // @author       Josh Parker
 // @match        https://chat.openai.com/
+// @match        https://chatgpt.com/c/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=tampermonkey.net
 // @grant        GM_xmlhttpRequest
 // @connect      localhost
@@ -19,7 +20,7 @@ import chatBetweenXAndSelectedOllamaModel from '../../lib/ollama/chat-between-x-
  chatBetweenXAndSelectedOllamaModel(
   '[data-message-author-role]',
   {
-   textAreaSelector: '#prompt-textarea',
+   textAreaSelector: 'textarea.text-token-text-primary',
    sendButtonSelector: '[data-testid="send-button"]',
   },
   (e) => {
