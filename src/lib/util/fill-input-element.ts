@@ -3,7 +3,8 @@
 export default function fillInputElement(element: HTMLInputElement, value: string) {
  const previousValue: string = element.value;
  const newValue: string = previousValue + value;
- const prototypeValueSetter: (e: string) => void = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(element), 'value').set;
+ const prototypePropertyDescriptor = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(element), 'value');
+ const prototypeValueSetter: (e: string) => void = prototypePropertyDescriptor ? prototypePropertyDescriptor.set : Object.getOwnPropertyDescriptor(element, 'value').set;
 
  prototypeValueSetter.call(element, newValue);
 
