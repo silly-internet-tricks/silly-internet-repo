@@ -39,6 +39,7 @@ import chatBetweenXAndSelectedOllamaModel from '../../lib/ollama/chat-between-x-
       } else {
           const newP = document.createElement('p');
           newP.textContent = msg;
+          newP.id = 'my-silly-internet-tricks-message';
           e.appendChild(newP);
       }
   },
