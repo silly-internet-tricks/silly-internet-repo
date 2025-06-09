@@ -15,6 +15,7 @@ export default function chatBetweenXAndOllama(
  reverseMessageOrder?: boolean,
  getMessageContent?: (e: Element) => string,
  customFillInput?: (e: Element, msg: string) => void,
+ finishUp?: (e: Element) => void,
 ) {
  insertCSS(`
 #ollama-text {
@@ -108,6 +109,11 @@ export default function chatBetweenXAndOllama(
         }
 
         if (done) {
+         if (finishUp && typeof sendMessageSelectors.textAreaSelector === 'string') {
+             // For now, this is actually just for the chatgpt script
+             finishUp(document.querySelector(sendMessageSelectors.textAreaSelector));
+         }
+
          const { sendButtonSelector } = sendMessageSelectors;
          const button: HTMLElement =
           typeof sendButtonSelector === 'string'

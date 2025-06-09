@@ -33,15 +33,16 @@ import chatBetweenXAndSelectedOllamaModel from '../../lib/ollama/chat-between-x-
   undefined,
   undefined,
   (e, msg) => {
-      const p = document.querySelector('p#my-silly-internet-tricks-message');
-      if (p) {
-          p.textContent += msg;
-      } else {
-          const newP = document.createElement('p');
-          newP.textContent = msg;
-          newP.id = 'my-silly-internet-tricks-message';
-          e.appendChild(newP);
-      }
+      const newP = document.createElement('p');
+      newP.textContent = msg;
+      e.appendChild(newP);
+  },
+  (e) => {
+      const completedMessage = e.textContent;
+      e.innerHTML = '';
+      const p = document.createElement('p');
+      p.textContent = completedMessage;
+      e.appendChild(p);
   },
  );
 })();
