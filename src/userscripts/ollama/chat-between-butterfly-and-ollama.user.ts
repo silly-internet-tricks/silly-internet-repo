@@ -20,7 +20,7 @@ import chatBetweenXAndSelectedOllamaModel from '../../lib/ollama/chat-between-x-
   '[id^="context-menu"]',
   {
    textAreaSelector: '[data-onboarding="send-message"] textarea',
-   sendButtonSelector: '[data-onboarding="send-message"] .flex-grow ~ button',
+   sendButtonSelector: '[data-onboarding="send-message"] button[style]',
   },
   (e) => {
    if (e.parentElement.parentElement.classList.contains('flex-row-reverse')) {
