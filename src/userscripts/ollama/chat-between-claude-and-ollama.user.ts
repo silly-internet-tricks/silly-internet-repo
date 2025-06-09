@@ -29,7 +29,7 @@ import insertCSS from '../../lib/util/insert-css';
    textAreaSelector: (s) => {
     document.querySelector('[contenteditable] > p').textContent += s;
    },
-   sendButtonSelector: 'button[aria-label="Send Message"]',
+   sendButtonSelector: 'button[aria-label="Send message"]',
   },
   (e) => {
    if (e.getAttribute('class').match(/user/)) {
