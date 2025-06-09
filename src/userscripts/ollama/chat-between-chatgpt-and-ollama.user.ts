@@ -38,7 +38,7 @@ import chatBetweenXAndSelectedOllamaModel from '../../lib/ollama/chat-between-x-
   },
   (e) => {
       const p = document.createElement('p');
-      p.textContent = completedMessage;
+      p.textContent = completedMessage.trim().replace(/\s+/, ' ');
       e.appendChild(p);
   },
  );

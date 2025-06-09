@@ -115,11 +115,20 @@ export default function chatBetweenXAndOllama(
          }
 
          const { sendButtonSelector } = sendMessageSelectors;
-         const button: HTMLElement =
+         const getButton: () => HTMLElement = () => (
           typeof sendButtonSelector === 'string'
            ? (document.querySelector(sendButtonSelector) as HTMLElement)
-           : sendButtonSelector();
-         button.click();
+           : sendButtonSelector()
+         );
+
+         const button = getButton();
+         if (button) {
+             button.click();
+         } else {
+             setTimeout(() => {
+                 getButton().click();
+             }, 666);
+         }
         }
        }
       });
