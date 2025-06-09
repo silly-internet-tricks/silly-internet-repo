@@ -10,6 +10,7 @@ export default function chatBetweenXAndSelectedOllamaModel(
  roleCallback: (e: Element) => string,
  reverseMessageOrder?: boolean,
  getMessageText?: (e: Element) => string,
+ customFillInput?: (e: Element, msg: string) => void,
 ) {
  // TODO: what about the case where the desired ollama model is unavailable on the user's machine?
  const desiredOllamaModel: string = 'llama3:latest';
@@ -24,5 +25,6 @@ export default function chatBetweenXAndSelectedOllamaModel(
   formSelectors,
   !!reverseMessageOrder,
   getMessageText,
+  customFillInput,
  );
 }

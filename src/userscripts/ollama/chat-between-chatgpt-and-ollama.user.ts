@@ -30,5 +30,12 @@ import chatBetweenXAndSelectedOllamaModel from '../../lib/ollama/chat-between-x-
 
    return 'user';
   },
+  undefined,
+  undefined,
+  (e, msg) => {
+      const p = document.createElement('p');
+      p.textContent = msg;
+      e.appendChild(p);
+  },
  );
 })();

@@ -14,6 +14,7 @@ export default function chatBetweenXAndOllama(
  },
  reverseMessageOrder?: boolean,
  getMessageContent?: (e: Element) => string,
+ customFillInput?: (e: Element, msg: string) => void,
 ) {
  insertCSS(`
 #ollama-text {
@@ -97,10 +98,11 @@ export default function chatBetweenXAndOllama(
        span.appendChild(new Text(content));
        responseParagraph.appendChild(span);
        if (sendMessageSelectors) {
+        const fill = customFillInput || fillInputElement;
         if (typeof sendMessageSelectors.textAreaSelector === 'string') {
-         fillInputElement(document.querySelector(sendMessageSelectors.textAreaSelector), content);
+         fill(document.querySelector(sendMessageSelectors.textAreaSelector), content);
         } else if (sendMessageSelectors.textAreaSelector.toString().substring(0, 2) === '()') {
-         fillInputElement(sendMessageSelectors.textAreaSelector() as HTMLInputElement, content);
+         fill(sendMessageSelectors.textAreaSelector() as HTMLInputElement, content);
         } else {
          sendMessageSelectors.textAreaSelector(content);
         }
