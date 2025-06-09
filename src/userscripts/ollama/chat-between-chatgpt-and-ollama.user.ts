@@ -39,7 +39,7 @@ import chatBetweenXAndSelectedOllamaModel from '../../lib/ollama/chat-between-x-
       } else {
           const newP = document.createElement('p');
           newP.textContent = msg;
-          e.appendChild(p);
+          e.appendChild(newP);
       }
   },
  );
