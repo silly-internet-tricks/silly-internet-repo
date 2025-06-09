@@ -40,6 +40,7 @@ import chatBetweenXAndSelectedOllamaModel from '../../lib/ollama/chat-between-x-
       const p = document.createElement('p');
       p.textContent = completedMessage.trim().replace(/\s+/, ' ');
       e.appendChild(p);
+      completedMessage = '';
   },
  );
 })();
