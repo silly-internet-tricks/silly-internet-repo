@@ -17,6 +17,7 @@
 import chatBetweenXAndSelectedOllamaModel from '../../lib/ollama/chat-between-x-and-selected-ollama-model';
 
 (function chatBetweenChatGptAndOllama() {
+ let completedMessage = '';
  chatBetweenXAndSelectedOllamaModel(
   '[data-message-author-role]',
   {
@@ -32,14 +33,10 @@ import chatBetweenXAndSelectedOllamaModel from '../../lib/ollama/chat-between-x-
   },
   undefined,
   undefined,
-  (e, msg) => {
-      const newP = document.createElement('p');
-      newP.textContent = msg;
-      e.appendChild(newP);
+  (_, msg) => {
+      completedMessage += msg;
   },
   (e) => {
-      const completedMessage = e.textContent;
-      e.innerHTML = '';
       const p = document.createElement('p');
       p.textContent = completedMessage;
       e.appendChild(p);
