@@ -20,7 +20,7 @@ import chatBetweenXAndSelectedOllamaModel from '../../lib/ollama/chat-between-x-
  chatBetweenXAndSelectedOllamaModel(
   '[data-message-author-role]',
   {
-   textAreaSelector: '#prompt-textarea',
+   textAreaSelector: 'textarea.text-token-text-primary',
    sendButtonSelector: '[data-testid="send-button"]',
   },
   (e) => {
