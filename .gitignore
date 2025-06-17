@@ -6,7 +6,11 @@ src/example.html
 red-gradient.png
 demo.html
 secrets/
-assets/
+assets/*.png
+assets/*.jpg
+assets/*.ogg
+assets/*.ts
+assets/*.mp3
 twitch-chatbot.json
 disttree
 srctree
