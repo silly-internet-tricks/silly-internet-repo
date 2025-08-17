@@ -24,9 +24,14 @@ const getExampleDOM: () => HTMLElement = function getExampleDOM() {
   // (you'd want to mock this imaginary request in your unit tests)...
   setTimeout(() => {
    const printedUsernameContainer: Element = document.createElement('div');
-   printedUsernameContainer.innerHTML = `
-       <div data-testid="printed-username">${input.value}</div>
-     `;
+   const printedUsername: Element = document.createElement('div');
+   printedUsername.setAttribute('data-testid', 'printed-username');
+   printedUsername.appendChild(new Text(input.value));
+
+   printedUsernameContainer.appendChild(new Text('\n       '));
+   printedUsernameContainer.appendChild(printedUsername);
+   printedUsernameContainer.appendChild(new Text('\n     '));
+
    div.appendChild(printedUsernameContainer);
   }, Math.floor(Math.random() * 200));
  });
