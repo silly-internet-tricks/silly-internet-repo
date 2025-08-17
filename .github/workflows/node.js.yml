@@ -17,7 +17,8 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    permissions: repository
+    permissions:
+        actions: read
 
     strategy:
       matrix:
