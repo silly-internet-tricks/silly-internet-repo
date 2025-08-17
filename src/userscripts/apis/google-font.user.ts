@@ -91,7 +91,7 @@ import parameterForm from '../../lib/util/parameter-form';
       do: ({ target }) => {
        // special case for https://news.google.com/*
        if (
-        window.location.href.match(/https:\/\/news.google.com\/.*/) &&
+        window.location.href.match(/https:\/\/news\.google\.com\/.*/) &&
         [...document.querySelectorAll('main a')].find((e) => e === target)
        ) {
         if (target instanceof HTMLElement) target = target.parentElement.parentElement;
