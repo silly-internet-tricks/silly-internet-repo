@@ -59,6 +59,7 @@ export default function chatBetweenXAndOllama(
    method: 'POST',
    responseType: 'stream',
    data: JSON.stringify({
+    think: false,
     model: typeof desiredOllamaModel === 'string' ? desiredOllamaModel : desiredOllamaModel(),
     messages: chatMessages
      .map((e) => ({
