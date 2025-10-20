@@ -6,7 +6,7 @@
 // @author       Josh Parker
 // @match        *://*/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=js.org
-// @grant        none
+// @grant        unsafeWindow
 // @source       https://github.com/silly-internet-tricks/silly-internet-repo/blob/main/src/userscripts/text-effect/wiggle-grow.user.ts
 // @downloadURL  https://gist.githubusercontent.com/silly-internet-tricks/d269d9eae99e4971b46bd125fa3fe96b/raw/wiggle-grow.user.js
 // @updateURL    https://gist.githubusercontent.com/silly-internet-tricks/d269d9eae99e4971b46bd125fa3fe96b/raw/wiggle-grow.meta.js
