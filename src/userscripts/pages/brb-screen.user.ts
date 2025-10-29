@@ -37,7 +37,7 @@ import insertCSS from '../../lib/util/insert-css';
   `div#brb-screen {
  position: fixed;
  inset: 0;
- z-index: 9001;
+ z-index: 1000000;
  overflow: hidden;
  margin: auto;
  background-image: linear-gradient(to right, rgba(0,255,0, 0.1), rgba(255,255,0, 0.1));
